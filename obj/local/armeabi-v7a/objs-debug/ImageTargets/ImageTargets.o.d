@@ -1,5 +1,5 @@
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/obj/local/armeabi-v7a/objs-debug/ImageTargets/ImageTargets.o: \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/ImageTargets.cpp \
+/cygdrive/i/proj/ImageTargets/obj/local/armeabi-v7a/objs-debug/ImageTargets/ImageTargets.o: \
+ /cygdrive/i/proj/ImageTargets/jni/ImageTargets.cpp \
  /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/jni.h \
  /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/android/log.h \
  /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/stdio.h \
@@ -24,25 +24,24 @@
  /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/GLES/glplatform.h \
  /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/KHR/khrplatform.h \
  /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/GLES/glext.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/QCAR.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/System.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/CameraDevice.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/NonCopyable.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/VideoMode.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/Renderer.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/Matrices.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/Vectors.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/State.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/Frame.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/VideoBackgroundConfig.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/Trackable.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/Tool.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/Tracker.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/CameraCalibration.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/SampleUtils.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/Texture.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/CubeShaders.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/Teapot.h
+ ../../../AllTools/qcar-android-1-0-6/build/include/QCAR/QCAR.h \
+ ../../../AllTools/qcar-android-1-0-6/build/include/QCAR/System.h \
+ ../../../AllTools/qcar-android-1-0-6/build/include/QCAR/CameraDevice.h \
+ ../../../AllTools/qcar-android-1-0-6/build/include/QCAR/NonCopyable.h \
+ ../../../AllTools/qcar-android-1-0-6/build/include/QCAR/VideoMode.h \
+ ../../../AllTools/qcar-android-1-0-6/build/include/QCAR/Renderer.h \
+ ../../../AllTools/qcar-android-1-0-6/build/include/QCAR/Matrices.h \
+ ../../../AllTools/qcar-android-1-0-6/build/include/QCAR/Vectors.h \
+ ../../../AllTools/qcar-android-1-0-6/build/include/QCAR/State.h \
+ ../../../AllTools/qcar-android-1-0-6/build/include/QCAR/Frame.h \
+ ../../../AllTools/qcar-android-1-0-6/build/include/QCAR/VideoBackgroundConfig.h \
+ ../../../AllTools/qcar-android-1-0-6/build/include/QCAR/Trackable.h \
+ ../../../AllTools/qcar-android-1-0-6/build/include/QCAR/Tool.h \
+ ../../../AllTools/qcar-android-1-0-6/build/include/QCAR/Tracker.h \
+ ../../../AllTools/qcar-android-1-0-6/build/include/QCAR/CameraCalibration.h \
+ /cygdrive/i/proj/ImageTargets/jni/SampleUtils.h \
+ /cygdrive/i/proj/ImageTargets/jni/Texture.h \
+ /cygdrive/i/proj/ImageTargets/jni/CubeShaders.h /cygdrive/i/proj/ImageTargets/jni/Teapot.h
 
 /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/jni.h:
 
@@ -92,40 +91,40 @@
 
 /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/GLES/glext.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/QCAR.h:
+../../../AllTools/qcar-android-1-0-6/build/include/QCAR/QCAR.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/System.h:
+../../../AllTools/qcar-android-1-0-6/build/include/QCAR/System.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/CameraDevice.h:
+../../../AllTools/qcar-android-1-0-6/build/include/QCAR/CameraDevice.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/NonCopyable.h:
+../../../AllTools/qcar-android-1-0-6/build/include/QCAR/NonCopyable.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/VideoMode.h:
+../../../AllTools/qcar-android-1-0-6/build/include/QCAR/VideoMode.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/Renderer.h:
+../../../AllTools/qcar-android-1-0-6/build/include/QCAR/Renderer.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/Matrices.h:
+../../../AllTools/qcar-android-1-0-6/build/include/QCAR/Matrices.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/Vectors.h:
+../../../AllTools/qcar-android-1-0-6/build/include/QCAR/Vectors.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/State.h:
+../../../AllTools/qcar-android-1-0-6/build/include/QCAR/State.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/Frame.h:
+../../../AllTools/qcar-android-1-0-6/build/include/QCAR/Frame.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/VideoBackgroundConfig.h:
+../../../AllTools/qcar-android-1-0-6/build/include/QCAR/VideoBackgroundConfig.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/Trackable.h:
+../../../AllTools/qcar-android-1-0-6/build/include/QCAR/Trackable.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/Tool.h:
+../../../AllTools/qcar-android-1-0-6/build/include/QCAR/Tool.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/Tracker.h:
+../../../AllTools/qcar-android-1-0-6/build/include/QCAR/Tracker.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/CameraCalibration.h:
+../../../AllTools/qcar-android-1-0-6/build/include/QCAR/CameraCalibration.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/SampleUtils.h:
+/cygdrive/i/proj/ImageTargets/jni/SampleUtils.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/Texture.h:
+/cygdrive/i/proj/ImageTargets/jni/Texture.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/CubeShaders.h:
+/cygdrive/i/proj/ImageTargets/jni/CubeShaders.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/Teapot.h:
+/cygdrive/i/proj/ImageTargets/jni/Teapot.h:

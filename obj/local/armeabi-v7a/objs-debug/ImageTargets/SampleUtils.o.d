@@ -1,6 +1,6 @@
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/obj/local/armeabi-v7a/objs-debug/ImageTargets/SampleUtils.o: \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/SampleUtils.cpp \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/SampleUtils.h \
+/cygdrive/i/proj/ImageTargets/obj/local/armeabi-v7a/objs-debug/ImageTargets/SampleUtils.o: \
+ /cygdrive/i/proj/ImageTargets/jni/SampleUtils.cpp \
+ /cygdrive/i/proj/ImageTargets/jni/SampleUtils.h \
  /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/stdio.h \
  /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/sys/cdefs.h \
  /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/sys/cdefs_elf.h \
@@ -35,7 +35,7 @@
  /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/KHR/khrplatform.h \
  /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/GLES/glext.h
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/SampleUtils.h:
+/cygdrive/i/proj/ImageTargets/jni/SampleUtils.h:
 
 /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/stdio.h:
 

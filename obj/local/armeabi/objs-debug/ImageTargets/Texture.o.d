@@ -1,8 +1,7 @@
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/obj/local/armeabi/objs-debug/ImageTargets/Texture.o: \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/Texture.cpp \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/Texture.h \
+/cygdrive/i/proj/ImageTargets/obj/local/armeabi/objs-debug/ImageTargets/Texture.o: \
+ /cygdrive/i/proj/ImageTargets/jni/Texture.cpp /cygdrive/i/proj/ImageTargets/jni/Texture.h \
  /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/jni.h \
- /cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/SampleUtils.h \
+ /cygdrive/i/proj/ImageTargets/jni/SampleUtils.h \
  /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/stdio.h \
  /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/sys/cdefs.h \
  /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/sys/cdefs_elf.h \
@@ -22,11 +21,11 @@
  /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/string.h \
  /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/malloc.h
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/Texture.h:
+/cygdrive/i/proj/ImageTargets/jni/Texture.h:
 
 /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/jni.h:
 
-/cygdrive/i/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/SampleUtils.h:
+/cygdrive/i/proj/ImageTargets/jni/SampleUtils.h:
 
 /cygdrive/i/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/stdio.h:
 

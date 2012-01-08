@@ -1,2 +1,2 @@
-set solib-search-path I:/AllTools/qcar-android-1-0-6/samples/ImageTargets/obj/local/armeabi-v7a
-directory I:/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include I:/AllTools/android-ndk-r6b/sources/cxx-stl/system/include I:/AllTools/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include
+set solib-search-path I:/proj/ImageTargets/obj/local/armeabi-v7a
+directory I:/AllTools/android-ndk-r6b/platforms/android-5/arch-arm/usr/include I:/AllTools/android-ndk-r6b/sources/cxx-stl/system/include ../../../AllTools/qcar-android-1-0-6/build/include I:/proj/ImageTargets/jni
