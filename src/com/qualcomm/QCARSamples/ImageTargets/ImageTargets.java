@@ -34,7 +34,7 @@ import android.widget.ImageView;
 
 import com.qualcomm.QCAR.QCAR;
 
-
+//test comment (David)
 /** The main activity for the ImageTargets sample. */
 public class ImageTargets extends Activity
 {
