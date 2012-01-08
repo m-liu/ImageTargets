@@ -18,6 +18,7 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := QCAR-prebuilt
+QCAR_SDK_ROOT
 LOCAL_SRC_FILES = ../../../build/lib/$(TARGET_ARCH_ABI)/libQCAR.so
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../../../build/include
 include $(PREBUILT_SHARED_LIBRARY)
