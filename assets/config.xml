@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<QCARConfig xsi:noNamespaceSchemaLocation="qcar_config.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <Tracking>
+        <ImageTarget name="qrcode_wiki" size="90.066223 120"/>
+        <ImageTarget name="another_tower" size="120 120"/>
+        <ImageTarget name="tower3" size="63.360001 120"/>
+        <ImageTarget name="qrtest" size="120 120"/>
+        <ImageTarget name="qr2" size="120 120"/>
+        <ImageTarget name="qr3" size="120.99585 120"/>
+        <ImageTarget name="qr4" size="120 120"/>
+        <ImageTarget name="sq" size="120 120"/>
+        <ImageTarget name="stone" size="120 120"></ImageTarget>
+    </Tracking>
+</QCARConfig>
