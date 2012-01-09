@@ -1,5 +1,5 @@
 /*==============================================================================
-            Copyright (c) 2010-2011 QUALCOMM Incorporated.
+            Copyright (c) 2010-2011 RICKROLLD
             All Rights Reserved.
             Qualcomm Confidential and Proprietary
             
