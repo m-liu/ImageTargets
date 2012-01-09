@@ -279,6 +279,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         // Choose the texture based on the target name:
         int textureIndex = (!strcmp(trackable->getName(), "stones")) ? 0 : 1;
         const Texture* const thisTexture = textures[textureIndex];
+		const Texture* const thisTexture2 = textures[0];
 
 		struct graphics_arrays arrow_animate_array = get_graphics_stats (counter, 0);
 		struct graphics_arrays horse_animate_array = get_graphics_stats (counter, 1);
@@ -300,7 +301,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&LifeProjection1.data[0] );
-        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
+        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
 		
 		//Enemy 1
@@ -317,9 +318,9 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection1.data[0] );
-        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
+        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
 		
 		//Enemy 2
@@ -336,9 +337,9 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection2.data[0] );
-        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
+        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
 	   
 	  	//Enemy 3
@@ -355,9 +356,9 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection3.data[0] );
-        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
+        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
 	   
 		//Enemy 4
@@ -376,7 +377,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection4.data[0] );
-        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
+        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
 	   
 		//Enemy 5
@@ -395,7 +396,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection5.data[0] );
-        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
+        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
 	   
 		//Enemy 6
@@ -414,7 +415,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection6.data[0] );
-        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
+        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
 	   
 		//Enemy 7
@@ -433,7 +434,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection7.data[0] );
-        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
+        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
 	   
 		//Enemy 8
@@ -452,7 +453,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection8.data[0] );
-        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
+        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
 	   
 		//Enemy 9
@@ -471,7 +472,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection9.data[0] );
-        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
+        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
 	   
 		//Enemy 10
@@ -490,7 +491,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection10.data[0] );
-        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
+        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
 	   	   
 	   
@@ -518,7 +519,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&TowerProjection1.data[0] );
-        //glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
         glDrawArrays(GL_TRIANGLES, 0, towerNumVerts);
 		SampleUtils::checkGlError("ImageTargets renderFrame");
         
@@ -948,7 +948,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_startCamera(JNIEnv *,
 		enemy_type[1].X = 10000.0f;
 		enemy_type[1].Y = -10000.0f;
 		enemy_type[1].HP = enemy[0].max_HP;
-		enemy_type[1].speed = 3.0f;
+		enemy_type[1].speed = 1.2f;
 		enemy_type[1].defense = 1.0f;
 		
 		initEnemies == 1;
@@ -1143,7 +1143,8 @@ void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber)
 	int possibleTargetDistance = 0;
 	double time4 = getCurrentTime();  
 	float dt4 = (float)(time4-missile[missileNumber].prevTime);          // from frame to frame
-		
+	missile[missileNumber].prevTime = time4;
+			
 	//find target if there is no target
 	if (missile[missileNumber].currentTarget == -1 && numEnemies > 0) {
 		missile[missileNumber].currentTarget = 0;
@@ -1170,6 +1171,8 @@ void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber)
 		//y/x = slope (move along slope)
 		float xdist = sqrt(missile[missileNumber].speed*missile[missileNumber].speed/(1+(slope*slope)));
 		float ydist = sqrt(missile[missileNumber].speed*missile[missileNumber].speed-(xdist*xdist));
+		xdist = dt4*10.0f*xdist;
+		ydist = dt4*10.0f*ydist;
 		if (enemy[missile[missileNumber].currentTarget].X > missile[missileNumber].X)
 			missile[missileNumber].X = missile[missileNumber].X + xdist;
 		else
@@ -1222,7 +1225,6 @@ void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber)
 		}
 	}
 	SampleUtils::translatePoseMatrix(missile[missileNumber].X, missile[missileNumber].Y, 20.0f, &missileMatrix.data[0]);
-	missile[missileNumber].prevTime = time4;
 }
 
 void animateTower(QCAR::Matrix44F& towerMatrix)
@@ -1255,11 +1257,11 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber)
 		else {
 			enemy[enemyNumber].count += 1;
 			if (enemy[enemyNumber].Y < 150.0f) {
-				enemy[enemyNumber].Y += dt4 * 50.0f;
+				enemy[enemyNumber].Y += dt4 * 50.0f * enemy[enemyNumber].speed;
 			}
 			else 
 			{
-				enemy[enemyNumber].X -= dt4 * 50.0f;
+				enemy[enemyNumber].X -= dt4 * 50.0f * enemy[enemyNumber].speed;
 			}
 			if (enemy[enemyNumber].X < -75.0f) {
 				lives = lives - 1;
