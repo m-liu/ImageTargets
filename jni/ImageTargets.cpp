@@ -760,7 +760,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         // If this is our first time seeing the target, display a tip
         if (!displayedMessage) {
 		    showDeleteButton();
-            displayMessage("Rickroll'd Presents: 3d Augmented Reality Turret Defense");
+            displayMessage("GAME START!");
             displayedMessage = true;
         }
 

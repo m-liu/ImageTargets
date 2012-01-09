@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="15dip">
+    
+    <ToggleButton android:id="@+id/start_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="100px"
+        android:layout_height="70px"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:textOff="@string/button_start"
+        android:textOn="@string/button_reset"
+    />
+    
+    <Button android:id="@+id/clear_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="100px"
+        android:layout_height="70px"
+        android:layout_toLeftOf="@id/start_button"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="10dip"
+        android:text="@string/button_clear"
+    />
+    
+    <Button android:id="@+id/delete_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="100px"
+        android:layout_height="70px"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/button_delete"
+        android:visibility="invisible"
+    />
+    
+</RelativeLayout>
