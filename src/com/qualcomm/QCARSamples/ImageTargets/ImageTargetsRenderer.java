@@ -18,14 +18,17 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.opengl.GLSurfaceView;
+import android.os.Message;
 
 import com.qualcomm.QCAR.QCAR;
+import com.qualcomm.QCARSamples.ImageTargets.GUIManager;
 
 
 /** The renderer class for the ImageTargets sample. */
 public class ImageTargetsRenderer implements GLSurfaceView.Renderer
 {
     public boolean mIsActive = false;
+    private GUIManager mGUIManager;
     
     /** Native function for initializing the renderer. */
     public native void initRendering();
@@ -33,6 +36,9 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
     
     /** Native function to update the renderer. */
     public native void updateRendering(int width, int height);
+
+    /** Native function to store Java environment information for callbacks. */
+    public native void initNativeCallback();
 
     
     /** Called when the surface is created or recreated. */
@@ -46,6 +52,11 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
         // Call QCAR function to (re)initialize rendering after first use
         // or after OpenGL ES context was lost (e.g. after onPause/onResume):
         QCAR.onSurfaceCreated();
+        
+        // Call native function to store information about the Java environment
+        // It is important that we make this call from this thread (the rendering thread)
+        // as the native code will want to make callbacks from this thread
+        initNativeCallback();
     }
     
     
@@ -74,5 +85,44 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
 
         // Call our native function to render content
         renderFrame();
+    }
+    
+    /** Called from native to show the delete button. */
+    public void showDeleteButton()
+    {
+        Message message = new Message();
+        message.what = GUIManager.HIDE_DELETE_BUTTON;
+        mGUIManager.sendThreadSafeGUIMessage(message);
+    }
+    
+    /** Called from native to hide the delete button. */
+    public void hideDeleteButton()
+    {
+        Message message = new Message();
+        message.what = GUIManager.SHOW_DELETE_BUTTON;
+        mGUIManager.sendThreadSafeGUIMessage(message);
+    }
+    
+    /** Called from native to toggle the start button. */
+    public void toggleStartButton()
+    {
+        Message message = new Message();
+        message.what = GUIManager.TOGGLE_START_BUTTON;
+        mGUIManager.sendThreadSafeGUIMessage(message);
+    }
+    
+    /** Called from native to display a message. */
+    public void displayMessage(String text)
+    {
+        Message message = new Message();
+        message.what = GUIManager.DISPLAY_INFO_TOAST;
+        message.obj = text;
+        mGUIManager.sendThreadSafeGUIMessage(message);
+    }
+    
+    /** Setter for the gui manager. */
+    public void setGUIManager(GUIManager guiManager)
+    {
+        mGUIManager = guiManager;
     }
 }

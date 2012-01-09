@@ -16,13 +16,10 @@ LOCAL_PATH := $(call my-dir)
 # into the appropriate folder (libs/armeabi and libs/armeabi-v7a respectively)
 # and setting the include path for library-specific header files
 
-#EDIT THIS PATH TO POINT TO YOUR SDK ROOT!
-QCAR_SDK_ROOT = ../../../AllTools/qcar-android-1-0-6
-
 include $(CLEAR_VARS)
 LOCAL_MODULE := QCAR-prebuilt
-LOCAL_SRC_FILES = $(QCAR_SDK_ROOT)/build/lib/$(TARGET_ARCH_ABI)/libQCAR.so
-LOCAL_EXPORT_C_INCLUDES := $(QCAR_SDK_ROOT)/build/include
+LOCAL_SRC_FILES = ../../../build/lib/$(TARGET_ARCH_ABI)/libQCAR.so
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../../../build/include
 include $(PREBUILT_SHARED_LIBRARY)
 
 #-----------------------------------------------------------------------------
@@ -51,7 +48,7 @@ TARGET_PLATFORM := android-5
 # This variable determines the OpenGL ES API version to use:
 # If set to true, OpenGL ES 1.1 is used, otherwise OpenGL ES 2.0.
 
-USE_OPENGL_ES_1_1 := true
+USE_OPENGL_ES_1_1 := false
 
 # Set OpenGL ES version-specific settings.
 
