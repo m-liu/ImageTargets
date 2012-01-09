@@ -233,10 +233,10 @@ public class ImageTargets extends Activity {
 	 * for rendering.
 	 */
 	private void loadTextures() {
-		mTextures.add(Texture.loadTextureFromApk("TextureTeapotBrass.png",
+		//mTextures.add(Texture.loadTextureFromApk("TextureTeapotBrass.png",
+		//		getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("dwight_as_jim.gif",
 				getAssets()));
-		//mTextures.add(Texture.loadTextureFromApk("dwight_as_jim.gif",
-			//	getAssets()));
 	}
 
 	/** Configure QCAR with the desired version of OpenGL ES. */
