@@ -42,6 +42,7 @@
 #include "Teapot.h"
 #include "Tower.h"
 #include "Arrow.h"
+#include "graphics_arrays.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -79,6 +80,7 @@ struct Missile_unit
 	float cost;
 	int currentTarget;
 	float currentTargetDistance;
+	double prevTime;
 };
 
 struct Starting_position
@@ -138,6 +140,8 @@ GLint mvpMatrixHandle           = 0;
 unsigned int screenWidth        = 0;
 unsigned int screenHeight       = 0;
 
+unsigned int counter = 1;
+
 // Indicates whether screen is in portrait (true) or landscape (false) mode
 bool isActivityInPortraitMode   = false;
 
@@ -145,7 +149,7 @@ bool isActivityInPortraitMode   = false;
 QCAR::Matrix44F projectionMatrix;
 
 // Constants:
-static const float kObjectScale = 40.0f;
+static const float kObjectScale = 50.0f;
 static const float kCubeScaleX    = 120.0f * 0.75f / 2.0f;
 static const float kCubeScaleY    = 120.0f * 1.00f / 2.0f;
 static const float kCubeScaleZ    = 120.0f * 0.50f / 2.0f;
@@ -248,6 +252,10 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
     // Render video background:
     QCAR::State state = QCAR::Renderer::getInstance().begin();
         
+	if (counter == 49){
+   		counter = 1;
+   	}
+		
 #ifdef USE_OPENGL_ES_1_1
     // Set GL11 flags:
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -272,16 +280,20 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         int textureIndex = (!strcmp(trackable->getName(), "stones")) ? 0 : 1;
         const Texture* const thisTexture = textures[textureIndex];
 
+		struct graphics_arrays arrow_animate_array = get_graphics_stats (counter, 0);
+		struct graphics_arrays horse_animate_array = get_graphics_stats (counter, 1);
+		
 		//1 Life Teapot
 		QCAR::Matrix44F LifeMatrix1;
 		QCAR::Matrix44F LifeProjection1;
 		LifeMatrix1 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
 		SampleUtils::translatePoseMatrix(-100.0f, 100.0f, 60.0f, &LifeMatrix1.data[0]);						
-		SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&LifeMatrix1.data[0], &LifeProjection1.data[0]);
+		SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &LifeMatrix1.data[0]);
+        SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&LifeMatrix1.data[0], &LifeProjection1.data[0]);
         glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
+        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
+        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
+        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
         glEnableVertexAttribArray(vertexHandle);
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);      
@@ -295,11 +307,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         QCAR::Matrix44F EnemyMatrix1 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix1, 0);
         QCAR::Matrix44F EnemyProjection1;
+		SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix1.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix1.data[0], &EnemyProjection1.data[0]);
         glUseProgram(shaderProgramID);        
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);       
+        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
+        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
+        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords);       
         glEnableVertexAttribArray(vertexHandle);
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
@@ -313,12 +326,13 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 		QCAR::Matrix44F EnemyMatrix2 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix2, 1);                  
         QCAR::Matrix44F EnemyProjection2;
+        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix2.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix2.data[0], &EnemyProjection2.data[0]);
         glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
-        glEnableVertexAttribArray(vertexHandle);
+        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
+        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
+        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords);
+		glEnableVertexAttribArray(vertexHandle);
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
         glActiveTexture(GL_TEXTURE0);
@@ -331,12 +345,13 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 		QCAR::Matrix44F EnemyMatrix3 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix3, 2);                  
         QCAR::Matrix44F EnemyProjection3;
+        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix3.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix3.data[0], &EnemyProjection3.data[0]);
         glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
-        glEnableVertexAttribArray(vertexHandle);
+        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
+        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
+        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
+		glEnableVertexAttribArray(vertexHandle);
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
         glActiveTexture(GL_TEXTURE0);
@@ -349,12 +364,13 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 		QCAR::Matrix44F EnemyMatrix4 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix4, 3);                  
         QCAR::Matrix44F EnemyProjection4;
+        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix4.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix4.data[0], &EnemyProjection4.data[0]);
         glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
-        glEnableVertexAttribArray(vertexHandle);
+        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
+        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
+        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
+		glEnableVertexAttribArray(vertexHandle);
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
         glActiveTexture(GL_TEXTURE0);
@@ -367,11 +383,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 		QCAR::Matrix44F EnemyMatrix5 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix5, 4);                  
         QCAR::Matrix44F EnemyProjection5;
+        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix5.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix5.data[0], &EnemyProjection5.data[0]);
         glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
+        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
+        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
+        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
         glEnableVertexAttribArray(vertexHandle);
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
@@ -385,11 +402,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 		QCAR::Matrix44F EnemyMatrix6 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix6, 5);                  
         QCAR::Matrix44F EnemyProjection6;
+        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix6.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix6.data[0], &EnemyProjection6.data[0]);
         glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
+        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
+        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
+        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
         glEnableVertexAttribArray(vertexHandle);
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
@@ -403,11 +421,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 		QCAR::Matrix44F EnemyMatrix7 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix7, 6);                  
         QCAR::Matrix44F EnemyProjection7;
+        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix7.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix7.data[0], &EnemyProjection7.data[0]);
         glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
+        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
+        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
+        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
         glEnableVertexAttribArray(vertexHandle);
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
@@ -421,11 +440,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 		QCAR::Matrix44F EnemyMatrix8 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix8, 7);                  
         QCAR::Matrix44F EnemyProjection8;
+        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix8.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix8.data[0], &EnemyProjection8.data[0]);
         glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
+        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
+        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
+        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
         glEnableVertexAttribArray(vertexHandle);
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
@@ -439,11 +459,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 		QCAR::Matrix44F EnemyMatrix9 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix9, 8);                  
         QCAR::Matrix44F EnemyProjection9;
+        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix9.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix9.data[0], &EnemyProjection9.data[0]);
         glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
+        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
+        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
+        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
         glEnableVertexAttribArray(vertexHandle);
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
@@ -457,11 +478,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 		QCAR::Matrix44F EnemyMatrix10 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix10, 9);                  
         QCAR::Matrix44F EnemyProjection10;
+        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix10.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix10.data[0], &EnemyProjection10.data[0]);
         glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
+        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
+        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
+        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
         glEnableVertexAttribArray(vertexHandle);
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
@@ -477,7 +499,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         QCAR::Matrix44F TowerMatrix1 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         //animateTower(TowerMatrix1);
         QCAR::Matrix44F TowerProjection1;
-        SampleUtils::scalePoseMatrix(50.0f, 50.0f, 50.0f, &TowerMatrix1.data[0]);
+        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &TowerMatrix1.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &TowerMatrix1.data[0], &TowerProjection1.data[0]);
         glUseProgram(shaderProgramID);
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
@@ -525,11 +547,11 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glUseProgram(shaderProgramID);
         
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              arrowVerts);
+                              arrow_animate_array.Verts);
         glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              arrowNormals);
+                              arrow_animate_array.Normals);
         glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              arrowTexCoords);
+                              arrow_animate_array.TexCoords);
 		
 		//glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
         //glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
@@ -549,7 +571,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         QCAR::Matrix44F TowerMatrix2 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         QCAR::Matrix44F TowerProjection2;
 		SampleUtils::translatePoseMatrix(-50.0f, 50.0f, 0.0f, &TowerMatrix2.data[0]);
-        SampleUtils::scalePoseMatrix(50.0f, 50.0f, 50.0f, &TowerMatrix2.data[0]);
+		SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &TowerMatrix2.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &TowerMatrix2.data[0], &TowerProjection2.data[0]);
         glUseProgram(shaderProgramID);
         glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
@@ -597,12 +619,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         //glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
         //glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
         //glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              arrowVerts);
+		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
+                              arrow_animate_array.Verts);
         glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              arrowNormals);
+                              arrow_animate_array.Normals);
         glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              arrowTexCoords);
+                              arrow_animate_array.TexCoords);
 		
 		
 		glEnableVertexAttribArray(vertexHandle);
@@ -620,7 +642,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         QCAR::Matrix44F TowerMatrix3 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         SampleUtils::translatePoseMatrix(0.0f, 50.0f, 0.0f, &TowerMatrix3.data[0]);
         QCAR::Matrix44F TowerProjection3;
-        SampleUtils::scalePoseMatrix(50.0f, 50.0f, 50.0f, &TowerMatrix3.data[0]);
+        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &TowerMatrix3.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &TowerMatrix3.data[0], &TowerProjection3.data[0]);
         glUseProgram(shaderProgramID);
         glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
@@ -665,12 +687,13 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &MissileMatrix3.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &MissileMatrix3.data[0], &MissileProjection3.data[0]);
         glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              arrowVerts);
+		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
+                              arrow_animate_array.Verts);
         glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              arrowNormals);
+                              arrow_animate_array.Normals);
         glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              arrowTexCoords);
+                              arrow_animate_array.TexCoords);
+		
 		
 		//glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
         //glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
@@ -692,7 +715,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         QCAR::Matrix44F TowerMatrix4 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         SampleUtils::translatePoseMatrix(0.0f, 100.0f, 0.0f, &TowerMatrix4.data[0]);
         QCAR::Matrix44F TowerProjection4;
-        SampleUtils::scalePoseMatrix(50.0f, 50.0f, 50.0f, &TowerMatrix4.data[0]);
+        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &TowerMatrix4.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &TowerMatrix4.data[0], &TowerProjection4.data[0]);
         glUseProgram(shaderProgramID);
         glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
@@ -737,12 +760,13 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &MissileMatrix4.data[0]);
         SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &MissileMatrix4.data[0], &MissileProjection4.data[0]);
         glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              arrowVerts);
+		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
+                              arrow_animate_array.Verts);
         glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              arrowNormals);
+                              arrow_animate_array.Normals);
         glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              arrowTexCoords);
+                              arrow_animate_array.TexCoords);
+		
 		//glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
         //glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
         //glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
@@ -759,8 +783,9 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
         // If this is our first time seeing the target, display a tip
         if (!displayedMessage) {
-		    showDeleteButton();
-            displayMessage("GAME START!");
+		    //showDeleteButton();
+			//TODO: move this at some point
+			displayMessage("LEVEL 1 START!");
             displayedMessage = true;
         }
 
@@ -780,6 +805,8 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 #endif
 
     QCAR::Renderer::getInstance().end();
+	
+	counter++;
 }
 
 
@@ -1114,7 +1141,9 @@ void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber)
 	float slope;
 	int possibleTarget = 0;
 	int possibleTargetDistance = 0;
-	
+	double time4 = getCurrentTime();  
+	float dt4 = (float)(time4-missile[missileNumber].prevTime);          // from frame to frame
+		
 	//find target if there is no target
 	if (missile[missileNumber].currentTarget == -1 && numEnemies > 0) {
 		missile[missileNumber].currentTarget = 0;
@@ -1193,7 +1222,7 @@ void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber)
 		}
 	}
 	SampleUtils::translatePoseMatrix(missile[missileNumber].X, missile[missileNumber].Y, 20.0f, &missileMatrix.data[0]);
-
+	missile[missileNumber].prevTime = time4;
 }
 
 void animateTower(QCAR::Matrix44F& towerMatrix)
@@ -1225,14 +1254,14 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber)
 		}
 		else {
 			enemy[enemyNumber].count += 1;
-			if (enemy[enemyNumber].count < 60) {
+			if (enemy[enemyNumber].Y < 150.0f) {
 				enemy[enemyNumber].Y += dt4 * 50.0f;
 			}
 			else 
 			{
 				enemy[enemyNumber].X -= dt4 * 50.0f;
 			}
-			if (enemy[enemyNumber].count > 120) {
+			if (enemy[enemyNumber].X < -75.0f) {
 				lives = lives - 1;
 				enemy[enemyNumber].X = 10000.0f;
 				enemy[enemyNumber].Y = -10000.0f;
@@ -1270,6 +1299,7 @@ void makeMissile(int missileType, int missileNumber, float lx, float ly)
 	missile[missileNumber].currentTargetDistance = missile_type[missileType].currentTargetDistance;
 	missile[missileNumber].cost = missile_type[missileType].cost;
 	missile[missileNumber].attack = missile_type[missileType].attack;
+	missile[missileNumber].prevTime = getCurrentTime();
 }
 void makeEnemy(int enemyType, int enemyNumber, int delay)
 {
@@ -1298,6 +1328,8 @@ if (nextLevel == 0)
 		makeEnemy (0, 7, 1140);
 		makeEnemy (0, 8, 1160);
 		makeEnemy (0, 9, 1180);
+		//stuff isnt initiated at this point
+		//displayMessage("LEVEL 1 START!");
 		level[0].start = 1;
 	}
 
@@ -1313,6 +1345,7 @@ if (nextLevel == 0)
 		makeEnemy (1, 7, 1105);
 		makeEnemy (1, 8, 1120);
 		makeEnemy (1, 9, 1135);
+		displayMessage("LEVEL 2 START!");
 		level[1].start = 1;
 	}
 	
@@ -1328,6 +1361,7 @@ if (nextLevel == 0)
 		makeEnemy (1, 7, 1110);
 		makeEnemy (1, 8, 1115);
 		makeEnemy (1, 9, 1120);
+		displayMessage("LEVEL 3 START!");
 		level[2].start = 1;
 	}
 }
