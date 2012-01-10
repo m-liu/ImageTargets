@@ -279,7 +279,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         // Choose the texture based on the target name:
         int textureIndex = (!strcmp(trackable->getName(), "stones")) ? 0 : 1;
         const Texture* const thisTexture = textures[textureIndex];
-		const Texture* const thisTexture2 = textures[0];
+		const Texture* const thisTexture2 = textures[1];
 
 		struct graphics_arrays arrow_animate_array = get_graphics_stats (counter, 0);
 		struct graphics_arrays horse_animate_array = get_graphics_stats (counter, 1);
@@ -299,7 +299,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);      
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&LifeProjection1.data[0] );
         glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
@@ -375,7 +375,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection4.data[0] );
         glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
@@ -394,7 +394,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection5.data[0] );
         glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
@@ -413,7 +413,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection6.data[0] );
         glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
@@ -432,7 +432,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection7.data[0] );
         glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
@@ -451,7 +451,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection8.data[0] );
         glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
@@ -470,7 +470,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection9.data[0] );
         glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
@@ -489,7 +489,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glEnableVertexAttribArray(normalHandle);
         glEnableVertexAttribArray(textureCoordHandle);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
         glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection10.data[0] );
         glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
         SampleUtils::checkGlError("ImageTargets renderFrame");
