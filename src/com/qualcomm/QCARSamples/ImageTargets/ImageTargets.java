@@ -237,8 +237,8 @@ public class ImageTargets extends Activity {
 				getAssets()));
 		mTextures.add(Texture.loadTextureFromApk("headless_horse.png",
 				getAssets()));
-		//mTextures.add(Texture.loadTextureFromApk("TextureTeapotBrass.png",
-		//		getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("TextureTeapotBrass.png",
+				getAssets()));
 		//mTextures.add(Texture.loadTextureFromApk("dwight_as_jim.gif",
 		//		getAssets()));
 		

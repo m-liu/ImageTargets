@@ -161,6 +161,12 @@ void makeMissile(int missileType, int missileNumber, float lx, float ly);
 void makeEnemy(int enemyType, int enemyNumber, int Delay);
 void startLevel(int leveldone);
 double getCurrentTime();
+void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection);
+void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection);
+void DrawArrow (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection);
+
+
+
 void
 displayMessage(char* message)
 {
@@ -278,250 +284,84 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         const QCAR::Trackable* trackable = state.getActiveTrackable(tIdx);
         // Choose the texture based on the target name:
         int textureIndex = (!strcmp(trackable->getName(), "stones")) ? 0 : 1;
-        const Texture* const thisTexture = textures[textureIndex];
+        
+		/*const Texture* const thisTexture = textures[textureIndex];
 		const Texture* const thisTexture2 = textures[1];
-
-		struct graphics_arrays arrow_animate_array = get_graphics_stats (counter, 0);
 		struct graphics_arrays horse_animate_array = get_graphics_stats (counter, 1);
+		struct graphics_arrays arrow_animate_array = get_graphics_stats (counter, 0);*/
 		
 		//1 Life Teapot
-		QCAR::Matrix44F LifeMatrix1;
+		QCAR::Matrix44F LifeMatrix1 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
 		QCAR::Matrix44F LifeProjection1;
-		LifeMatrix1 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
 		SampleUtils::translatePoseMatrix(-100.0f, 100.0f, 60.0f, &LifeMatrix1.data[0]);						
-		SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &LifeMatrix1.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&LifeMatrix1.data[0], &LifeProjection1.data[0]);
-        glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
-        glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);      
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&LifeProjection1.data[0] );
-        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
-        SampleUtils::checkGlError("ImageTargets renderFrame");
+		DrawEnemy(LifeMatrix1, LifeProjection1);
 		
 		//Enemy 1
         QCAR::Matrix44F EnemyMatrix1 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix1, 0);
         QCAR::Matrix44F EnemyProjection1;
-		SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix1.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix1.data[0], &EnemyProjection1.data[0]);
-        glUseProgram(shaderProgramID);        
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords);       
-        glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection1.data[0] );
-        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
-        SampleUtils::checkGlError("ImageTargets renderFrame");
-		
+		DrawEnemy(EnemyMatrix1, EnemyProjection1);
+
 		//Enemy 2
 		QCAR::Matrix44F EnemyMatrix2 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix2, 1);                  
         QCAR::Matrix44F EnemyProjection2;
-        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix2.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix2.data[0], &EnemyProjection2.data[0]);
-        glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords);
-		glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection2.data[0] );
-        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
-        SampleUtils::checkGlError("ImageTargets renderFrame");
-	   
+		DrawEnemy(EnemyMatrix2, EnemyProjection2);
+      
 	  	//Enemy 3
 		QCAR::Matrix44F EnemyMatrix3 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix3, 2);                  
         QCAR::Matrix44F EnemyProjection3;
-        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix3.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix3.data[0], &EnemyProjection3.data[0]);
-        glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
-		glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection3.data[0] );
-        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
-        SampleUtils::checkGlError("ImageTargets renderFrame");
+		DrawEnemy(EnemyMatrix3, EnemyProjection3);
 	   
 		//Enemy 4
 		QCAR::Matrix44F EnemyMatrix4 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix4, 3);                  
         QCAR::Matrix44F EnemyProjection4;
-        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix4.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix4.data[0], &EnemyProjection4.data[0]);
-        glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
-		glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection4.data[0] );
-        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
-        SampleUtils::checkGlError("ImageTargets renderFrame");
+		DrawEnemy(EnemyMatrix4, EnemyProjection4);
 	   
 		//Enemy 5
 		QCAR::Matrix44F EnemyMatrix5 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix5, 4);                  
         QCAR::Matrix44F EnemyProjection5;
-        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix5.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix5.data[0], &EnemyProjection5.data[0]);
-        glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
-        glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection5.data[0] );
-        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
-        SampleUtils::checkGlError("ImageTargets renderFrame");
+		DrawEnemy(EnemyMatrix5, EnemyProjection5);
 	   
 		//Enemy 6
 		QCAR::Matrix44F EnemyMatrix6 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix6, 5);                  
         QCAR::Matrix44F EnemyProjection6;
-        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix6.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix6.data[0], &EnemyProjection6.data[0]);
-        glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
-        glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection6.data[0] );
-        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
-        SampleUtils::checkGlError("ImageTargets renderFrame");
+		DrawEnemy(EnemyMatrix6, EnemyProjection6);
 	   
 		//Enemy 7
 		QCAR::Matrix44F EnemyMatrix7 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix7, 6);                  
         QCAR::Matrix44F EnemyProjection7;
-        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix7.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix7.data[0], &EnemyProjection7.data[0]);
-        glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
-        glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection7.data[0] );
-        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
-        SampleUtils::checkGlError("ImageTargets renderFrame");
-	   
+		DrawEnemy(EnemyMatrix7, EnemyProjection7);
+		
 		//Enemy 8
 		QCAR::Matrix44F EnemyMatrix8 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix8, 7);                  
         QCAR::Matrix44F EnemyProjection8;
-        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix8.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix8.data[0], &EnemyProjection8.data[0]);
-        glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
-        glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection8.data[0] );
-        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
-        SampleUtils::checkGlError("ImageTargets renderFrame");
-	   
+		DrawEnemy(EnemyMatrix8, EnemyProjection8);
+		
 		//Enemy 9
 		QCAR::Matrix44F EnemyMatrix9 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix9, 8);                  
         QCAR::Matrix44F EnemyProjection9;
-        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix9.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix9.data[0], &EnemyProjection9.data[0]);
-        glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
-        glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection9.data[0] );
-        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
-        SampleUtils::checkGlError("ImageTargets renderFrame");
+		DrawEnemy(EnemyMatrix9, EnemyProjection9);
 	   
 		//Enemy 10
 		QCAR::Matrix44F EnemyMatrix10 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         animateEnemy(EnemyMatrix10, 9);                  
         QCAR::Matrix44F EnemyProjection10;
-        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix10.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &EnemyMatrix10.data[0], &EnemyProjection10.data[0]);
-        glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
-        glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture2->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection10.data[0] );
-        glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
-        SampleUtils::checkGlError("ImageTargets renderFrame");
-	   	   
-	   
+		DrawEnemy(EnemyMatrix10, EnemyProjection10);	   
 	   
 	   //Tower 1
         QCAR::Matrix44F TowerMatrix1 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         //animateTower(TowerMatrix1);
         QCAR::Matrix44F TowerProjection1;
-        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &TowerMatrix1.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &TowerMatrix1.data[0], &TowerProjection1.data[0]);
-        glUseProgram(shaderProgramID);
-		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              towerVerts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              towerNormals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              towerTexCoords);
+		DrawTower(TowerMatrix1, TowerProjection1);	
 		
-        //glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        //glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        //glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
-        glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&TowerProjection1.data[0] );
-        glDrawArrays(GL_TRIANGLES, 0, towerNumVerts);
-		SampleUtils::checkGlError("ImageTargets renderFrame");
-        
 		//Missile 1
         QCAR::Matrix44F MissileMatrix1 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());    
         animateMissile(MissileMatrix1, 0);
@@ -542,56 +382,14 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
 #else
         QCAR::Matrix44F MissileProjection1;
-        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &MissileMatrix1.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &MissileMatrix1.data[0], &MissileProjection1.data[0]);
-        glUseProgram(shaderProgramID);
-        
-		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              arrow_animate_array.Verts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              arrow_animate_array.Normals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              arrow_animate_array.TexCoords);
-		
-		//glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        //glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        //glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
-        glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&MissileProjection1.data[0] );
-        //glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
-        glDrawArrays(GL_TRIANGLES, 0, arrowNumVerts);
-		SampleUtils::checkGlError("ImageTargets renderFrame");
+		DrawArrow(MissileMatrix1, MissileProjection1);	
 #endif
 
-//Tower 2
+		//Tower 2
         QCAR::Matrix44F TowerMatrix2 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         QCAR::Matrix44F TowerProjection2;
 		SampleUtils::translatePoseMatrix(-50.0f, 50.0f, 0.0f, &TowerMatrix2.data[0]);
-		SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &TowerMatrix2.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &TowerMatrix2.data[0], &TowerProjection2.data[0]);
-        glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              towerVerts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              towerNormals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              towerTexCoords);
-		//glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        //glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        //glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
-        glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&TowerProjection2.data[0] );
-        //glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
-        glDrawArrays(GL_TRIANGLES, 0, towerNumVerts);
-		SampleUtils::checkGlError("ImageTargets renderFrame");
+		DrawTower(TowerMatrix2, TowerProjection2);	
         
 		//Missile 2
         QCAR::Matrix44F MissileMatrix2 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());  
@@ -613,56 +411,14 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
 #else
         QCAR::Matrix44F MissileProjection2;
-        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &MissileMatrix2.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &MissileMatrix2.data[0], &MissileProjection2.data[0]);
-        glUseProgram(shaderProgramID);
-        //glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        //glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        //glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
-		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              arrow_animate_array.Verts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              arrow_animate_array.Normals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              arrow_animate_array.TexCoords);
-		
-		
-		glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&MissileProjection2.data[0] );
-        //glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
-        glDrawArrays(GL_TRIANGLES, 0, arrowNumVerts);
-		SampleUtils::checkGlError("ImageTargets renderFrame");
+        DrawArrow(MissileMatrix2, MissileProjection2);	
 #endif
 
 	   //Tower 3
         QCAR::Matrix44F TowerMatrix3 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         SampleUtils::translatePoseMatrix(0.0f, 50.0f, 0.0f, &TowerMatrix3.data[0]);
         QCAR::Matrix44F TowerProjection3;
-        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &TowerMatrix3.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &TowerMatrix3.data[0], &TowerProjection3.data[0]);
-        glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              towerVerts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              towerNormals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              towerTexCoords);
-		//glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        //glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        //glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
-        glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&TowerProjection3.data[0] );
-        //glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
-        glDrawArrays(GL_TRIANGLES, 0, towerNumVerts);
-		SampleUtils::checkGlError("ImageTargets renderFrame");
+		DrawTower(TowerMatrix3, TowerProjection3);	
         
 		//Missile 3
         QCAR::Matrix44F MissileMatrix3 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());    
@@ -684,58 +440,14 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
 #else
         QCAR::Matrix44F MissileProjection3;
-        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &MissileMatrix3.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &MissileMatrix3.data[0], &MissileProjection3.data[0]);
-        glUseProgram(shaderProgramID);
-		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              arrow_animate_array.Verts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              arrow_animate_array.Normals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              arrow_animate_array.TexCoords);
-		
-		
-		//glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        //glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        //glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
-        glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&MissileProjection3.data[0] );
-        //glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
-        glDrawArrays(GL_TRIANGLES, 0, arrowNumVerts);
-		SampleUtils::checkGlError("ImageTargets renderFrame");
+        DrawArrow(MissileMatrix3, MissileProjection3);	
 #endif
 
-
-
-	   //Tower 4
+		//Tower 4
         QCAR::Matrix44F TowerMatrix4 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         SampleUtils::translatePoseMatrix(0.0f, 100.0f, 0.0f, &TowerMatrix4.data[0]);
         QCAR::Matrix44F TowerProjection4;
-        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &TowerMatrix4.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &TowerMatrix4.data[0], &TowerProjection4.data[0]);
-        glUseProgram(shaderProgramID);
-        glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              towerVerts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              towerNormals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              towerTexCoords);
-		//glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        //glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        //glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
-        glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&TowerProjection4.data[0] );
-        glDrawArrays(GL_TRIANGLES, 0, towerNumVerts);
-		//glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
-        SampleUtils::checkGlError("ImageTargets renderFrame");
+       	DrawTower(TowerMatrix4, TowerProjection4);	 
         
 		//Missile 4
         QCAR::Matrix44F MissileMatrix4 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());    
@@ -757,28 +469,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
 #else
         QCAR::Matrix44F MissileProjection4;
-        SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &MissileMatrix4.data[0]);
-        SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &MissileMatrix4.data[0], &MissileProjection4.data[0]);
-        glUseProgram(shaderProgramID);
-		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              arrow_animate_array.Verts);
-        glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0,
-                              arrow_animate_array.Normals);
-        glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0,
-                              arrow_animate_array.TexCoords);
-		
-		//glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotVertices[0]);
-        //glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotNormals[0]);
-        //glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &teapotTexCoords[0]);
-        glEnableVertexAttribArray(vertexHandle);
-        glEnableVertexAttribArray(normalHandle);
-        glEnableVertexAttribArray(textureCoordHandle);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
-        glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&MissileProjection4.data[0] );
-        //glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
-        glDrawArrays(GL_TRIANGLES, 0, arrowNumVerts);
-		SampleUtils::checkGlError("ImageTargets renderFrame");
+		DrawArrow(MissileMatrix4, MissileProjection4);	
 #endif
 
         // If this is our first time seeing the target, display a tip
@@ -935,7 +626,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_startCamera(JNIEnv *,
 	if (initEnemies == 0) {
 //		strcpy("Zergling", enemy_type[0].name);
 		enemy_type[0].type = 1;
-		enemy_type[0].max_HP = 8.0f;
+		enemy_type[0].max_HP = 10.0f;
 		enemy_type[0].X = 10000.0f;
 		enemy_type[0].Y = -10000.0f;
 		enemy_type[0].HP = enemy[0].max_HP;
@@ -944,11 +635,11 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_startCamera(JNIEnv *,
 	
 //		strcpy("Speedy Gonzalez", enemy_type[0].name);
 		enemy_type[1].type = 2;
-		enemy_type[1].max_HP = 6.0f;
+		enemy_type[1].max_HP = 8.0f;
 		enemy_type[1].X = 10000.0f;
 		enemy_type[1].Y = -10000.0f;
 		enemy_type[1].HP = enemy[0].max_HP;
-		enemy_type[1].speed = 1.2f;
+		enemy_type[1].speed = 1.8f;
 		enemy_type[1].defense = 1.0f;
 		
 		initEnemies == 1;
@@ -1367,6 +1058,64 @@ if (nextLevel == 0)
 		level[2].start = 1;
 	}
 }
+
+void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection) {
+	struct graphics_arrays horse_animate_array = get_graphics_stats (counter, 1);
+	const Texture* const thisTexture = textures[1];
+		
+	SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix.data[0]);
+    SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&EnemyMatrix.data[0], &EnemyProjection.data[0]);
+    glUseProgram(shaderProgramID);
+    glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
+    glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
+    glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
+    glEnableVertexAttribArray(vertexHandle);
+    glEnableVertexAttribArray(normalHandle);
+    glEnableVertexAttribArray(textureCoordHandle);      
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+    glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection.data[0] );
+    glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
+    SampleUtils::checkGlError("ImageTargets renderFrame");
+}
+
+void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection) {
+	const Texture* const thisTexture = textures[0];
+    SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &TowerMatrix.data[0]);
+    SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &TowerMatrix.data[0], &TowerProjection.data[0]);
+    glUseProgram(shaderProgramID);
+	glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, towerVerts);
+    glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, towerNormals);
+    glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, towerTexCoords);
+    glEnableVertexAttribArray(vertexHandle);
+	glEnableVertexAttribArray(normalHandle);
+	glEnableVertexAttribArray(textureCoordHandle);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+    glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&TowerProjection.data[0] );
+    glDrawArrays(GL_TRIANGLES, 0, towerNumVerts);
+	SampleUtils::checkGlError("ImageTargets renderFrame");
+}
+
+void DrawArrow (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection) {
+	struct graphics_arrays arrow_animate_array = get_graphics_stats (counter, 0);
+	const Texture* const thisTexture = textures[2];
+    SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &MissileMatrix.data[0]);
+    SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &MissileMatrix.data[0], &MissileProjection.data[0]);
+    glUseProgram(shaderProgramID);
+	glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.Verts);
+    glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.Normals);
+    glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.TexCoords);
+    glEnableVertexAttribArray(vertexHandle);
+    glEnableVertexAttribArray(normalHandle);
+    glEnableVertexAttribArray(textureCoordHandle);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+    glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&MissileProjection.data[0] );
+    glDrawArrays(GL_TRIANGLES, 0, (int)*arrow_animate_array.NumVerts);
+	SampleUtils::checkGlError("ImageTargets renderFrame");
+}
+
 #ifdef __cplusplus
 }
 #endif
