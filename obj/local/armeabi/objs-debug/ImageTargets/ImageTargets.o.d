@@ -55,102 +55,78 @@
  /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/Tower.h \
  /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/Arrow.h \
  /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/graphics_arrays.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000001.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000002.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000003.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000004.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000005.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000006.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000007.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000008.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000009.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000010.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000011.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000012.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000013.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000014.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000015.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000016.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000017.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000018.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000019.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000020.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000021.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000022.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000023.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000024.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000025.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000026.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000027.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000028.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000029.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000030.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000031.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000032.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000033.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000034.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000035.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000036.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000037.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000038.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000039.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000040.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000041.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000042.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000043.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000044.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000045.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000046.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000047.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000048.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000001.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000002.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000003.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000004.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000005.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000006.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000007.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000008.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000009.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000010.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000011.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000012.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000013.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000014.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000015.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000016.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000017.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000018.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000019.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000020.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000021.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000022.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000023.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000024.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000025.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000026.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000027.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000028.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000029.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000030.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000031.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000032.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000033.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000034.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000035.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000036.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000037.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000038.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000039.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000040.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000041.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000042.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000043.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000044.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000045.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000046.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000047.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000048.h
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000001.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000002.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000003.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000004.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000005.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000006.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000007.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000008.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000009.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000010.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000011.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000012.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000013.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000014.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000015.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000016.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000017.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000018.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000019.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000020.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000021.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000022.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000023.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000024.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000001.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000002.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000003.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000004.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000005.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000006.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000007.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000008.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000009.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000010.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000011.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000012.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000013.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000014.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000015.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000016.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000017.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000018.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000019.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000020.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000021.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000022.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000023.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000024.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000025.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000026.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000027.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000028.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000029.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000030.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000031.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000032.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000033.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000034.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000035.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000036.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000037.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000038.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000039.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000040.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000041.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000042.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000043.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000044.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000045.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000046.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000047.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000048.h
 
 /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/jni.h:
 
@@ -262,194 +238,146 @@
 
 /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/graphics_arrays.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000001.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000001.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000002.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000002.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000003.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000003.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000004.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000004.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000005.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000005.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000006.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000006.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000007.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000007.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000008.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000008.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000009.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000009.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000010.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000010.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000011.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000011.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000012.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000012.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000013.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000013.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000014.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000014.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000015.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000015.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000016.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000016.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000017.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000017.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000018.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000018.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000019.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000019.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000020.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000020.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000021.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000021.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000022.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000022.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000023.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000023.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000024.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_new_000024.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000025.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000001.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000026.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000002.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000027.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000003.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000028.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000004.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000029.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000005.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000030.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000006.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000031.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000007.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000032.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000008.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000033.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000009.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000034.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000010.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000035.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000011.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000036.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000012.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000037.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000013.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000038.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000014.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000039.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000015.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000040.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000016.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000041.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000017.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000042.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000018.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000043.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000019.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000044.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000020.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000045.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000021.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000046.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000022.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000047.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000023.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/arrow_animate2_000048.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000024.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000001.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000025.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000002.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000026.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000003.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000027.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000004.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000028.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000005.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000029.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000006.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000030.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000007.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000031.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000008.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000032.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000009.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000033.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000010.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000034.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000011.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000035.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000012.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000036.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000013.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000037.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000014.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000038.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000015.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000039.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000016.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000040.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000017.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000041.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000018.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000042.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000019.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000043.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000020.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000044.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000021.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000045.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000022.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000046.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000023.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000047.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000024.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000025.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000026.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000027.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000028.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000029.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000030.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000031.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000032.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000033.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000034.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000035.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000036.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000037.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000038.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000039.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000040.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000041.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000042.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000043.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000044.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000045.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000046.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000047.h:
-
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/headless_horse3_000048.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/cow_horse_000048.h:

@@ -288,7 +288,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 		/*const Texture* const thisTexture = textures[textureIndex];
 		const Texture* const thisTexture2 = textures[1];
 		struct graphics_arrays horse_animate_array = get_graphics_stats (counter, 1);
-		struct graphics_arrays arrow_animate_array = get_graphics_stats (counter, 0);*/
+		struct graphics_arrays arrow_animate_array = get_graphics_stats ((((counter-1)%24)+1), 0);*/
 		
 		//1 Life Teapot
 		QCAR::Matrix44F LifeMatrix1 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
@@ -1098,7 +1098,7 @@ void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection) {
 }
 
 void DrawArrow (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection) {
-	struct graphics_arrays arrow_animate_array = get_graphics_stats (counter, 0);
+	struct graphics_arrays arrow_animate_array = get_graphics_stats ((((counter-1)%24)+1), 0);
 	const Texture* const thisTexture = textures[2];
     SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &MissileMatrix.data[0]);
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &MissileMatrix.data[0], &MissileProjection.data[0]);
