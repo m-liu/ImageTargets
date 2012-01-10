@@ -41,6 +41,8 @@ public:
     /// Set the translation components of this 4x4 matrix.
     static void translatePoseMatrix(float x, float y, float z,
         float* nMatrix = NULL);
+
+	static void translatePoseMatrix_direct(float x, float y, float z, float* matrix);
     
     /// Applies a rotation.
     static void rotatePoseMatrix(float angle, float x, float y, float z, 

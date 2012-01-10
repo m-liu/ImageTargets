@@ -24,6 +24,18 @@
 #include <GLES2/gl2ext.h>
 #endif
 
+void
+SampleUtils::translatePoseMatrix_direct(float x, float y, float z, float* matrix)
+{
+   // Sanity check
+   if (!matrix)
+       return;
+
+   // directly concatenate translation deltas. Only use if translation changes with perspective
+   matrix[12] += x;
+   matrix[13] -= y;
+   matrix[14] += z;
+}
 
 void
 SampleUtils::printMatrix(const float* mat)

@@ -358,7 +358,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 	   
 	   //Tower 1
         QCAR::Matrix44F TowerMatrix1 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
-        //animateTower(TowerMatrix1);
+        animateTower(TowerMatrix1);
         QCAR::Matrix44F TowerProjection1;
 		DrawTower(TowerMatrix1, TowerProjection1);	
 		
@@ -388,7 +388,9 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 		//Tower 2
         QCAR::Matrix44F TowerMatrix2 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
         QCAR::Matrix44F TowerProjection2;
-		SampleUtils::translatePoseMatrix(-50.0f, 50.0f, 0.0f, &TowerMatrix2.data[0]);
+		//SampleUtils::translatePoseMatrix_direct(0.0f, 0.0f, 0.0f, &TowerMatrix2.data[0]);
+		//animateTower(TowerMatrix2);
+		SampleUtils::translatePoseMatrix_direct(-50.0f, 50.0f, 0.0f, &TowerMatrix2.data[0]);
 		DrawTower(TowerMatrix2, TowerProjection2);	
         
 		//Missile 2
@@ -629,17 +631,17 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_startCamera(JNIEnv *,
 		enemy_type[0].max_HP = 10.0f;
 		enemy_type[0].X = 10000.0f;
 		enemy_type[0].Y = -10000.0f;
-		enemy_type[0].HP = enemy[0].max_HP;
+		enemy_type[0].HP = enemy_type[0].max_HP;
 		enemy_type[0].speed = 1.0f;
 		enemy_type[0].defense = 1.0f;
 	
 //		strcpy("Speedy Gonzalez", enemy_type[0].name);
 		enemy_type[1].type = 2;
-		enemy_type[1].max_HP = 8.0f;
+		enemy_type[1].max_HP = 12.0f;
 		enemy_type[1].X = 10000.0f;
 		enemy_type[1].Y = -10000.0f;
-		enemy_type[1].HP = enemy[0].max_HP;
-		enemy_type[1].speed = 1.8f;
+		enemy_type[1].HP = enemy_type[1].max_HP;
+		enemy_type[1].speed = 1.3f;
 		enemy_type[1].defense = 1.0f;
 		
 		initEnemies == 1;
@@ -664,7 +666,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_startCamera(JNIEnv *,
 		missile_type[1].defaultY = 50.0f;
 		missile_type[1].X = missile_type[1].defaultX;
 		missile_type[1].Y = missile_type[1].defaultY;
-		missile_type[1].speed = 18;
+		missile_type[1].speed = 22;
 		missile_type[1].currentTarget = -1;
 		missile_type[1].currentTargetDistance = 0;
 		missile_type[1].cost = 2;
@@ -829,6 +831,7 @@ void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber)
 {
     float xdiff;
 	float ydiff;
+	float angle;
 	float slope;
 	int possibleTarget = 0;
 	int possibleTargetDistance = 0;
@@ -858,6 +861,7 @@ void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber)
 		xdiff = enemy[missile[missileNumber].currentTarget].X-missile[missileNumber].X;
 		ydiff = enemy[missile[missileNumber].currentTarget].Y-missile[missileNumber].Y;
 		slope = ydiff/xdiff;
+		angle = atan2(ydiff, xdiff) * 180 / 3.14159265;
 		//x2 + y2 = 196 (move 14 units each second)
 		//y/x = slope (move along slope)
 		float xdist = sqrt(missile[missileNumber].speed*missile[missileNumber].speed/(1+(slope*slope)));
@@ -874,8 +878,8 @@ void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber)
 			missile[missileNumber].Y = missile[missileNumber].Y - ydist;
 
 		//if there is a hit
-		if (missile[missileNumber].X-enemy[missile[missileNumber].currentTarget].X < 5 && missile[missileNumber].X-enemy[missile[missileNumber].currentTarget].X > -5 
-		&& missile[missileNumber].Y-enemy[missile[missileNumber].currentTarget].Y < 5 && missile[missileNumber].Y-enemy[missile[missileNumber].currentTarget].Y > -5 ) {
+		if (missile[missileNumber].X-enemy[missile[missileNumber].currentTarget].X < 15 && missile[missileNumber].X-enemy[missile[missileNumber].currentTarget].X > -15 
+		&& missile[missileNumber].Y-enemy[missile[missileNumber].currentTarget].Y < 15 && missile[missileNumber].Y-enemy[missile[missileNumber].currentTarget].Y > -15 ) {
 			missile[missileNumber].X = missile[missileNumber].defaultX;
 			missile[missileNumber].Y = missile[missileNumber].defaultY;
 			enemy[missile[missileNumber].currentTarget].HP = enemy[missile[missileNumber].currentTarget].HP - ((missile[missileNumber].attack)/(enemy[missile[missileNumber].currentTarget].defense));
@@ -915,7 +919,8 @@ void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber)
 			missile[missileNumber].currentTarget = -1;
 		}
 	}
-	SampleUtils::translatePoseMatrix(missile[missileNumber].X, missile[missileNumber].Y, 20.0f, &missileMatrix.data[0]);
+	SampleUtils::rotatePoseMatrix(angle, 0.0f, 0.0f, 1.0f, &missileMatrix.data[0]);
+	SampleUtils::translatePoseMatrix_direct(missile[missileNumber].X, missile[missileNumber].Y, 20.0f, &missileMatrix.data[0]);
 }
 
 void animateTower(QCAR::Matrix44F& towerMatrix)
@@ -949,12 +954,16 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber)
 			enemy[enemyNumber].count += 1;
 			if (enemy[enemyNumber].Y < 150.0f) {
 				enemy[enemyNumber].Y += dt4 * 50.0f * enemy[enemyNumber].speed;
+				SampleUtils::rotatePoseMatrix(90.0f, 0.0f, 0.0f, 1.0f, &enemyMatrix.data[0]);
+
 			}
 			else 
 			{
 				enemy[enemyNumber].X -= dt4 * 50.0f * enemy[enemyNumber].speed;
+				SampleUtils::rotatePoseMatrix(180.0f, 0.0f, 0.0f, 1.0f, &enemyMatrix.data[0]);
+
 			}
-			if (enemy[enemyNumber].X < -75.0f) {
+			if (enemy[enemyNumber].X < -150.0f) {
 				lives = lives - 1;
 				enemy[enemyNumber].X = 10000.0f;
 				enemy[enemyNumber].Y = -10000.0f;
@@ -976,7 +985,7 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber)
 		}		
 		enemy[enemyNumber].prevTime = time4;	
 	}	
-	SampleUtils::translatePoseMatrix(enemy[enemyNumber].X, enemy[enemyNumber].Y, 20.0f, &enemyMatrix.data[0]);
+	SampleUtils::translatePoseMatrix_direct(enemy[enemyNumber].X, enemy[enemyNumber].Y, 20.0f, &enemyMatrix.data[0]);
 
 }
 
