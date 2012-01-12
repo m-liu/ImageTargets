@@ -233,13 +233,19 @@ public class ImageTargets extends Activity {
 	 * for rendering.
 	 */
 	private void loadTextures() {
-		mTextures.add(Texture.loadTextureFromApk("tower.png",
+		mTextures.add(Texture.loadTextureFromApk("tower_bake.png",
 				getAssets()));
 		mTextures.add(Texture.loadTextureFromApk("horse_cow.png",
 				getAssets()));
 		mTextures.add(Texture.loadTextureFromApk("arrow_bake.png",
 				getAssets()));
 		//mTextures.add(Texture.loadTextureFromApk("dwight_as_jim.gif",
+		//		getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("igloo.png",
+				getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("snowball.png",
+				getAssets()));
+		//mTextures.add(Texture.loadTextureFromApk("arrow_bake.png",
 		//		getAssets()));
 		
 	}
