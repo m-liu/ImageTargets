@@ -299,8 +299,28 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 		//1 Life Teapot
 		QCAR::Matrix44F LifeMatrix1 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
 		QCAR::Matrix44F LifeProjection1;
+		SampleUtils::rotatePoseMatrix(90.0f, 0.0f, 0.0f, 1.0f, &LifeMatrix1.data[0]);
 		SampleUtils::translatePoseMatrix(-100.0f, 100.0f, 60.0f, &LifeMatrix1.data[0]);						
 		DrawEnemy(LifeMatrix1, LifeProjection1);
+		
+		//1 Life Teapot
+		QCAR::Matrix44F LifeMatrix2 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
+		QCAR::Matrix44F LifeProjection2;
+		SampleUtils::translatePoseMatrix(-100.0f, 150.0f, 60.0f, &LifeMatrix2.data[0]);						
+		DrawEnemy(LifeMatrix2, LifeProjection1);
+		
+				//1 Life Teapot
+		QCAR::Matrix44F LifeMatrix3 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
+		QCAR::Matrix44F LifeProjection3;
+		SampleUtils::translatePoseMatrix(-150.0f, 150.0f, 60.0f, &LifeMatrix3.data[0]);		
+		SampleUtils::rotatePoseMatrix(90.0f, 0.0f, 0.0f, 1.0f, &LifeMatrix3.data[0]);		
+		DrawEnemy(LifeMatrix3, LifeProjection3);
+		
+				//1 Life Teapot
+		QCAR::Matrix44F LifeMatrix4 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
+		QCAR::Matrix44F LifeProjection4;
+		SampleUtils::translatePoseMatrix(-150.0f, 100.0f, 60.0f, &LifeMatrix4.data[0]);						
+		DrawEnemy(LifeMatrix4, LifeProjection4);
 		
 		//Enemy 1
         QCAR::Matrix44F EnemyMatrix1 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
@@ -396,7 +416,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         QCAR::Matrix44F TowerProjection2;
 		//SampleUtils::translatePoseMatrix_direct(0.0f, 0.0f, 0.0f, &TowerMatrix2.data[0]);
 		//animateTower(TowerMatrix2);
-		SampleUtils::translatePoseMatrix_direct(-50.0f, 50.0f, 0.0f, &TowerMatrix2.data[0]);
+		SampleUtils::translatePoseMatrix(-50.0f, 50.0f, 0.0f, &TowerMatrix2.data[0]);
 		DrawTower(TowerMatrix2, TowerProjection2);	
         
 		//Missile 2
@@ -931,8 +951,8 @@ void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber)
 			missile[missileNumber].currentTarget = -1;
 		}
 	}
+	SampleUtils::translatePoseMatrix(missile[missileNumber].X, missile[missileNumber].Y, 20.0f, &missileMatrix.data[0]);
 	SampleUtils::rotatePoseMatrix(angle, 0.0f, 0.0f, 1.0f, &missileMatrix.data[0]);
-	SampleUtils::translatePoseMatrix_direct(missile[missileNumber].X, missile[missileNumber].Y, 20.0f, &missileMatrix.data[0]);
 }
 
 void animateTower(QCAR::Matrix44F& towerMatrix)
@@ -948,9 +968,11 @@ void animateTower(QCAR::Matrix44F& towerMatrix)
 
 void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber)
 {
+float direction = 0.0f;	
 	if (enemy[enemyNumber].count != -1) {
 		double time4 = getCurrentTime();  
-		float dt4 = (float)(time4-enemy[enemyNumber].prevTime);          // from frame to frame
+		float dt4 = (float)(time4-enemy[enemyNumber].prevTime);          // from frame to 
+	
 		if (enemy[enemyNumber].count > 950)
 		{
 			enemy[enemyNumber].count -= dt4*10.0f;
@@ -966,14 +988,12 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber)
 			//enemy[enemyNumber].count += 1;
 			if (enemy[enemyNumber].Y < 150.0f) {
 				enemy[enemyNumber].Y += dt4 * 50.0f * enemy[enemyNumber].speed;
-				SampleUtils::rotatePoseMatrix(90.0f, 0.0f, 0.0f, 1.0f, &enemyMatrix.data[0]);
-
+direction = 90.0f;
 			}
 			else 
 			{
 				enemy[enemyNumber].X -= dt4 * 50.0f * enemy[enemyNumber].speed;
-				SampleUtils::rotatePoseMatrix(180.0f, 0.0f, 0.0f, 1.0f, &enemyMatrix.data[0]);
-
+direction = 180.0f;
 			}
 			if (enemy[enemyNumber].X < -150.0f) {
 				lives = lives - 1;
@@ -998,7 +1018,8 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber)
 		}		
 		enemy[enemyNumber].prevTime = time4;	
 	}	
-	SampleUtils::translatePoseMatrix_direct(enemy[enemyNumber].X, enemy[enemyNumber].Y, 20.0f, &enemyMatrix.data[0]);
+	SampleUtils::translatePoseMatrix(enemy[enemyNumber].X, enemy[enemyNumber].Y, 20.0f, &enemyMatrix.data[0]);
+	SampleUtils::rotatePoseMatrix(direction, 0.0f, 0.0f, 1.0f, &enemyMatrix.data[0]);
 
 }
 
