@@ -105,18 +105,26 @@ jobject javaObj;
 jclass javaClass;
 bool displayedMessage = false;
 
+//enemy properties
+#define MAX_NUM_ENEMIES 10
+#define NUM_ENEMY_TYPES 2
+
+//tower properties
+#define NUM_MISSILE_TYPES 2
+#define MAX_NUM_TOWERS 4
+
+//board properties
+#define MARKER_SIZE 50
+#define BOARD_SIZE 8  //8x8 markers
+
+//game properties
+#define NUM_LEVELS 3
+
+
 static int lives = 5;
-
 static int startGame = 1;
-
 static int currentLevel = 0;
-
-static int initEnemies = 0;
-static int initMissiles = 0;
-static int initLevels = 0;
-
-static int numEnemies = 10;
-static int numMissiles = 4;
+static int numEnemies = MAX_NUM_ENEMIES; //TODO: What's this var for?
 
 //enemy properties
 #define MAX_NUM_ENEMIES 10
@@ -132,7 +140,6 @@ static int numMissiles = 4;
 
 //game properties
 #define NUM_LEVELS 3
-static int numEnemies = MAX_NUM_ENEMIES; //TODO: What's this var for?
 
 static class Enemy_unit enemy[MAX_NUM_ENEMIES];
 static class Missile_unit missile[MAX_NUM_TOWERS];
@@ -277,10 +284,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
     // Render video background:
     QCAR::State state = QCAR::Renderer::getInstance().begin();
-        
-	//if (counter == 49){
-   	//	counter = 1;
-   	//}
 		
 #ifdef USE_OPENGL_ES_1_1
     // Set GL11 flags:
@@ -302,7 +305,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
     int y_offset;
     int trackedCornerID=-1; //the corner marker # used to render enemies
     QCAR::Matrix44F cornerMarkerModelViewMatrix; //save the corner marker MVM
-
 
     // Did we find any trackables this frame?
     for(int tIdx = 0; tIdx < state.getNumActiveTrackables(); tIdx++)
@@ -785,11 +787,11 @@ void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber)
 				enemy[missile[missileNumber].currentTarget].count = -1;
 				level[currentLevel].killCount = level[currentLevel].killCount + 1;
 				if (level[currentLevel].killCount >=10) {
-					level[currentLevel].end == 1;
+					level[currentLevel].end = 1;
 					currentLevel++;
 					startLevel(currentLevel);
 				}
-				for (int i = 0; i < 2; i++) {
+				for (int i = 0; i < 2; i++) { //FIXME: why is 2 here?
 					if (missile[i].currentTarget == temp) {
 						missile[i].X = missile[i].defaultX;
 						missile[i].Y = missile[i].defaultY;
@@ -1129,7 +1131,7 @@ void getMarkerOffset(int trackedCornerID, int &x_offset, int &y_offset){
     {
         LOG ("ERROR getMarkerOffset");
     }
-
+}
 
 /**********************
  * Find the BOARD x, y coordinates of a marker placed inside the board
@@ -1148,7 +1150,7 @@ void convert2BoardCoord (int cornerID, QCAR::Matrix44F cornerMVM, QCAR::Matrix44
     y = ( cornerMVM.data[1] * targetMVM.data[12] - cornerMVM.data[0] * targetMVM.data[13] 
             - cornerMVM.data[1] * cornerMVM.data[12] + cornerMVM.data[0] * cornerMVM.data[13] )
         / ( cornerMVM.data[1] * cornerMVM.data[4] - cornerMVM.data[0] * cornerMVM.data[5] );
-    LOG ("Board (x,y)=(%f, %f)", x, y);
+    //LOG ("Board (x,y)=(%f, %f)", x, y);
 }
 
 //de-initislize all missiles

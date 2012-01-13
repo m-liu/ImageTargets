@@ -17,9 +17,10 @@ LOCAL_PATH := $(call my-dir)
 # and setting the include path for library-specific header files
 
 include $(CLEAR_VARS)
+QCAR_SDK_ROOT = ../../../qcar_sdk
 LOCAL_MODULE := QCAR-prebuilt
-LOCAL_SRC_FILES = ../../../build/lib/$(TARGET_ARCH_ABI)/libQCAR.so
-LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../../../build/include
+LOCAL_SRC_FILES = $(QCAR_SDK_ROOT)/build/lib/$(TARGET_ARCH_ABI)/libQCAR.so
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(QCAR_SDK_ROOT)/build/include
 include $(PREBUILT_SHARED_LIBRARY)
 
 #-----------------------------------------------------------------------------
@@ -66,7 +67,7 @@ endif
 # NOTE: flag "-Wno-write-strings" removes warning about deprecated conversion
 #       from string constant to ‘char*’
 
-LOCAL_CFLAGS := -Wno-write-strings $(OPENGLES_DEF)
+LOCAL_CFLAGS := -Wall -Wno-write-strings $(OPENGLES_DEF)
 
 # The list of additional linker flags to be used when building your
 # module. This is useful to pass the name of specific system libraries
