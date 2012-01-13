@@ -35,6 +35,7 @@
 #include <QCAR/Tool.h>
 #include <QCAR/Tracker.h>
 #include <QCAR/CameraCalibration.h>
+#include <QCAR/Marker.h>
 
 #include "SampleUtils.h"
 #include "Texture.h"
@@ -71,7 +72,8 @@ struct Enemy_unit
 
 struct Missile_unit
 {
-	int type;
+	bool initialized;
+    int type;
 //	char name[20];
     float X;
     float Y;
@@ -116,17 +118,27 @@ static int initLevels = 0;
 static int numEnemies = 10;
 static int numMissiles = 4;
 
-static int numEnemiesTypes = 2;
-static int numMissilesTypes = 2;
-static int numLevels = 2;
+//enemy properties
+#define MAX_NUM_ENEMIES 10
+#define NUM_ENEMY_TYPES 2
 
-static class Enemy_unit enemy[10];//[numEnemies]
-static class Missile_unit missile[4];//[numMissiles]
+//tower properties
+#define NUM_MISSILE_TYPES 2
+#define MAX_NUM_TOWERS 4
 
-static class Enemy_unit enemy_type[2];//[numEnemies]
-static class Missile_unit missile_type[2];//[numMissiles]
+//board properties
+#define MARKER_SIZE 50
+#define BOARD_SIZE 8  //8x8 markers
 
-static class Level level[3];//[numMissiles]
+//game properties
+#define NUM_LEVELS 3
+static int numEnemies = MAX_NUM_ENEMIES; //TODO: What's this var for?
+
+static class Enemy_unit enemy[MAX_NUM_ENEMIES];
+static class Missile_unit missile[MAX_NUM_TOWERS];
+static class Enemy_unit enemy_type[NUM_ENEMY_TYPES];
+static class Missile_unit missile_type[NUM_MISSILE_TYPES];
+static class Level level[NUM_LEVELS];
 
 
 // OpenGL ES 2.0 specific:
@@ -154,22 +166,24 @@ QCAR::Matrix44F projectionMatrix;
 
 // Constants:
 static const float kObjectScale = 50.0f;
-static const float kCubeScaleX    = 120.0f * 0.75f / 2.0f;
-static const float kCubeScaleY    = 120.0f * 1.00f / 2.0f;
-static const float kCubeScaleZ    = 120.0f * 0.50f / 2.0f;
 
 void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber);
 void animateTower(QCAR::Matrix44F& towerMatrix);
 void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber);
 void makeMissile(int missileType, int missileNumber, float lx, float ly);
+void updateMissileDefaultPos(int missileNumber, float lx, float ly);
 void makeEnemy(int enemyType, int enemyNumber, int Delay);
 void startLevel(int leveldone);
 double getCurrentTime();
-void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection);
+void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, int x_offset, int y_offset);
 void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection);
-void DrawIgloo (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection);
-void DrawArrow (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection);
-void DrawSnowball (QCAR::Matrix44F ArrowMatrix, QCAR::Matrix44F ArrowProjection);
+void DrawArrow (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection, int x_offset, int y_offset);
+//TODO: fix tower/igloo & snowball/arrow into 1 function
+void DrawIgloo (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, int x_offset, int y_offset);
+void DrawSnowball (QCAR::Matrix44F ArrowMatrix, QCAR::Matrix44F ArrowProjection, int x_offset, int y_offset);
+void deinitAllMissiles ();
+void getMarkerOffset(int trackedCornerID, int &x_offset, int &y_offset);
+void convert2BoardCoord (int cornerID, QCAR::Matrix44F cornerMVM, QCAR::Matrix44F targetMVM, float &x, float &y);
 
 
 
@@ -283,222 +297,82 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
     glEnable(GL_CULL_FACE);
 	
 	
+    //helper vars
+    int x_offset;
+    int y_offset;
+    int trackedCornerID=-1; //the corner marker # used to render enemies
+    QCAR::Matrix44F cornerMarkerModelViewMatrix; //save the corner marker MVM
+
+
     // Did we find any trackables this frame?
     for(int tIdx = 0; tIdx < state.getNumActiveTrackables(); tIdx++)
     {
         // Get the trackable
         const QCAR::Trackable* trackable = state.getActiveTrackable(tIdx);
-        // Choose the texture based on the target name:
-        int textureIndex = (!strcmp(trackable->getName(), "stones")) ? 0 : 1;
-        
-		/*const Texture* const thisTexture = textures[textureIndex];
-		const Texture* const thisTexture2 = textures[1];
-		struct graphics_arrays horse_animate_array = get_graphics_stats (counter, 1);
-		struct graphics_arrays arrow_animate_array = get_graphics_stats ((((counter-1)%24)+1), 0);*/
-		
-		//1 Life Teapot
-		QCAR::Matrix44F LifeMatrix1 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
-		QCAR::Matrix44F LifeProjection1;
-		SampleUtils::rotatePoseMatrix(90.0f, 0.0f, 0.0f, 1.0f, &LifeMatrix1.data[0]);
-		SampleUtils::translatePoseMatrix(-100.0f, 100.0f, 60.0f, &LifeMatrix1.data[0]);						
-		DrawEnemy(LifeMatrix1, LifeProjection1);
-		
-		//1 Life Teapot
-		QCAR::Matrix44F LifeMatrix2 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
-		QCAR::Matrix44F LifeProjection2;
-		SampleUtils::translatePoseMatrix(-100.0f, 150.0f, 60.0f, &LifeMatrix2.data[0]);						
-		DrawEnemy(LifeMatrix2, LifeProjection1);
-		
-				//1 Life Teapot
-		QCAR::Matrix44F LifeMatrix3 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
-		QCAR::Matrix44F LifeProjection3;
-		SampleUtils::translatePoseMatrix(-150.0f, 150.0f, 60.0f, &LifeMatrix3.data[0]);		
-		SampleUtils::rotatePoseMatrix(90.0f, 0.0f, 0.0f, 1.0f, &LifeMatrix3.data[0]);		
-		DrawEnemy(LifeMatrix3, LifeProjection3);
-		
-				//1 Life Teapot
-		QCAR::Matrix44F LifeMatrix4 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
-		QCAR::Matrix44F LifeProjection4;
-		SampleUtils::translatePoseMatrix(-150.0f, 100.0f, 60.0f, &LifeMatrix4.data[0]);						
-		DrawEnemy(LifeMatrix4, LifeProjection4);
-		
-		//Enemy 1
-        QCAR::Matrix44F EnemyMatrix1 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
-        animateEnemy(EnemyMatrix1, 0);
-        QCAR::Matrix44F EnemyProjection1;
-		DrawEnemy(EnemyMatrix1, EnemyProjection1);
 
-		//Enemy 2
-		QCAR::Matrix44F EnemyMatrix2 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
-        animateEnemy(EnemyMatrix2, 1);                  
-        QCAR::Matrix44F EnemyProjection2;
-		DrawEnemy(EnemyMatrix2, EnemyProjection2);
-      
-	  	//Enemy 3
-		QCAR::Matrix44F EnemyMatrix3 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
-        animateEnemy(EnemyMatrix3, 2);                  
-        QCAR::Matrix44F EnemyProjection3;
-		DrawEnemy(EnemyMatrix3, EnemyProjection3);
-	   
-		//Enemy 4
-		QCAR::Matrix44F EnemyMatrix4 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
-        animateEnemy(EnemyMatrix4, 3);                  
-        QCAR::Matrix44F EnemyProjection4;
-		DrawEnemy(EnemyMatrix4, EnemyProjection4);
-	   
-		//Enemy 5
-		QCAR::Matrix44F EnemyMatrix5 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
-        animateEnemy(EnemyMatrix5, 4);                  
-        QCAR::Matrix44F EnemyProjection5;
-		DrawEnemy(EnemyMatrix5, EnemyProjection5);
-	   
-		//Enemy 6
-		QCAR::Matrix44F EnemyMatrix6 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
-        animateEnemy(EnemyMatrix6, 5);                  
-        QCAR::Matrix44F EnemyProjection6;
-		DrawEnemy(EnemyMatrix6, EnemyProjection6);
-	   
-		//Enemy 7
-		QCAR::Matrix44F EnemyMatrix7 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
-        animateEnemy(EnemyMatrix7, 6);                  
-        QCAR::Matrix44F EnemyProjection7;
-		DrawEnemy(EnemyMatrix7, EnemyProjection7);
-		
-		//Enemy 8
-		QCAR::Matrix44F EnemyMatrix8 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
-        animateEnemy(EnemyMatrix8, 7);                  
-        QCAR::Matrix44F EnemyProjection8;
-		DrawEnemy(EnemyMatrix8, EnemyProjection8);
-		
-		//Enemy 9
-		QCAR::Matrix44F EnemyMatrix9 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
-        animateEnemy(EnemyMatrix9, 8);                  
-        QCAR::Matrix44F EnemyProjection9;
-		DrawEnemy(EnemyMatrix9, EnemyProjection9);
-	   
-		//Enemy 10
-		QCAR::Matrix44F EnemyMatrix10 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
-        animateEnemy(EnemyMatrix10, 9);                  
-        QCAR::Matrix44F EnemyProjection10;
-		DrawEnemy(EnemyMatrix10, EnemyProjection10);	   
-	   
-	   //Tower 1
-        QCAR::Matrix44F TowerMatrix1 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
-        //animateTower(TowerMatrix1);
-        QCAR::Matrix44F TowerProjection1;
-		DrawIgloo(TowerMatrix1, TowerProjection1);	
-		
-		//Missile 1
-        QCAR::Matrix44F MissileMatrix1 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());    
-        animateMissile(MissileMatrix1, 0);
+        // Check the type of the trackable:
+        assert(trackable->getType() == QCAR::Trackable::MARKER);
+        const QCAR::Marker* marker = static_cast<const QCAR::Marker*>(trackable);
+
+        //if a corner marker is seen, render the enemies relative to that marker
+        if (trackedCornerID<0 && marker->getMarkerId()<4 ){
+            //get the modelview matrix of the corner marker
+            cornerMarkerModelViewMatrix = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
+            trackedCornerID=marker->getMarkerId();
+
+            getMarkerOffset(trackedCornerID, x_offset, y_offset);
+
+            //1 Life Teapot
+            /*
+            QCAR::Matrix44F LifeMatrix1 = markerModelViewMatrix;
+            QCAR::Matrix44F LifeProjection1;
+            SampleUtils::translatePoseMatrix(-100.0f, 100.0f, 60.0f, &LifeMatrix1.data[0]);			
+    		DrawEnemy(LifeMatrix1, LifeProjection1, x_offset, y_offset);
+		    */
+
+            //animate and draw the enemy units in reference to the marker position
+            for (int i=0; i<MAX_NUM_ENEMIES; i++){
+                QCAR::Matrix44F enemyMatrix = cornerMarkerModelViewMatrix;        
+                animateEnemy(enemyMatrix, i); //animate the i-th enemy
+                QCAR::Matrix44F enemyProjection;
+                DrawEnemy(enemyMatrix, enemyProjection, x_offset, y_offset);
+            }
+        } //end enemy rendering
+        
+        //render towers and missiles
+        //Note: do not draw the towers if a corner marker is not seen
+        else if (trackedCornerID>=0 && marker->getMarkerId() >= 4 && marker->getMarkerId() < 4+MAX_NUM_TOWERS) {
+
+            //get the tower number from the markers;
+            int towerID = (marker->getMarkerId()) - 4;
+            QCAR::Matrix44F towerMatrix = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
+            QCAR::Matrix44F towerProjection;
+            //draw the tower at the precise location of the marker
+            DrawTower(towerMatrix, towerProjection); 
+            
+            //render the missile relative to the corner marker
+            //1) find x, y board coordinates of the tower marker
+            float x_board, y_board;
+            convert2BoardCoord (trackedCornerID, cornerMarkerModelViewMatrix, towerMatrix, x_board,  y_board);
+
+		    //initialize the missile if not init
+            if (!missile[towerID].initialized){
+    		    makeMissile (0, towerID, x_board, y_board);
+            }
+            //always update the original missile position (in case of glitches)
+            updateMissileDefaultPos (towerID, x_board, y_board);
+
+            //animate missile with respect to corner marker
+            QCAR::Matrix44F missileMatrix = cornerMarkerModelViewMatrix;    
+            getMarkerOffset(trackedCornerID, x_offset, y_offset);
+            animateMissile(missileMatrix, towerID);
 #ifdef USE_OPENGL_ES_1_1
-        // Load projection matrix:
-        glMatrixMode(GL_PROJECTION);
-        glLoadMatrixf(projectionMatrix.data);
-        // Load model view matrix:
-        glMatrixMode(GL_MODELVIEW);
-        glLoadMatrixf(MissileMatrix1.data);
-        glTranslatef(0.f, 0.f, kObjectScale);
-        glScalef(kObjectScale, kObjectScale, kObjectScale);
-        // Draw object:
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
-        glTexCoordPointer(2, GL_FLOAT, 0, (const GLvoid*) &teapotTexCoords[0]);
-        glVertexPointer(3, GL_FLOAT, 0, (const GLvoid*) &teapotVertices[0]);
-        glNormalPointer(GL_FLOAT, 0,  (const GLvoid*) &teapotNormals[0]);
-        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
 #else
-        QCAR::Matrix44F MissileProjection1;
-		DrawSnowball(MissileMatrix1, MissileProjection1);	
+            QCAR::Matrix44F missileProjection;
+            DrawArrow(missileMatrix, missileProjection, x_offset, y_offset); 
 #endif
 
-		//Tower 2
-        QCAR::Matrix44F TowerMatrix2 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
-        QCAR::Matrix44F TowerProjection2;
-		//SampleUtils::translatePoseMatrix_direct(0.0f, 0.0f, 0.0f, &TowerMatrix2.data[0]);
-		//animateTower(TowerMatrix2);
-		SampleUtils::translatePoseMatrix(-50.0f, 50.0f, 0.0f, &TowerMatrix2.data[0]);
-		DrawTower(TowerMatrix2, TowerProjection2);	
-        
-		//Missile 2
-        QCAR::Matrix44F MissileMatrix2 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());  
-        animateMissile(MissileMatrix2, 1);
-#ifdef USE_OPENGL_ES_1_1
-        // Load projection matrix:
-        glMatrixMode(GL_PROJECTION);
-        glLoadMatrixf(projectionMatrix.data);
-        // Load model view matrix:
-        glMatrixMode(GL_MODELVIEW);
-        glLoadMatrixf(modelViewMatrix.data);
-        glTranslatef(0.f, 0.f, kObjectScale);
-        glScalef(kObjectScale, kObjectScale, kObjectScale);
-        // Draw object:
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
-        glTexCoordPointer(2, GL_FLOAT, 0, (const GLvoid*) &teapotTexCoords[0]);
-        glVertexPointer(3, GL_FLOAT, 0, (const GLvoid*) &teapotVertices[0]);
-        glNormalPointer(GL_FLOAT, 0,  (const GLvoid*) &teapotNormals[0]);
-        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
-#else
-        QCAR::Matrix44F MissileProjection2;
-        DrawArrow(MissileMatrix2, MissileProjection2);	
-#endif
-
-	   //Tower 3
-        QCAR::Matrix44F TowerMatrix3 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
-        SampleUtils::translatePoseMatrix(0.0f, 50.0f, 0.0f, &TowerMatrix3.data[0]);
-        QCAR::Matrix44F TowerProjection3;
-		DrawIgloo(TowerMatrix3, TowerProjection3);	
-        
-		//Missile 3
-        QCAR::Matrix44F MissileMatrix3 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());    
-        animateMissile(MissileMatrix3, 2);
-#ifdef USE_OPENGL_ES_1_1
-        // Load projection matrix:
-        glMatrixMode(GL_PROJECTION);
-        glLoadMatrixf(projectionMatrix.data);
-        // Load model view matrix:
-        glMatrixMode(GL_MODELVIEW);
-        glLoadMatrixf(MissileMatrix3.data);
-        glTranslatef(0.f, 0.f, kObjectScale);
-        glScalef(kObjectScale, kObjectScale, kObjectScale);
-        // Draw object:
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
-        glTexCoordPointer(2, GL_FLOAT, 0, (const GLvoid*) &teapotTexCoords[0]);
-        glVertexPointer(3, GL_FLOAT, 0, (const GLvoid*) &teapotVertices[0]);
-        glNormalPointer(GL_FLOAT, 0,  (const GLvoid*) &teapotNormals[0]);
-        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
-#else
-        QCAR::Matrix44F MissileProjection3;
-        DrawSnowball(MissileMatrix3, MissileProjection3);	
-#endif
-
-		//Tower 4
-        QCAR::Matrix44F TowerMatrix4 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());        
-        SampleUtils::translatePoseMatrix(0.0f, 100.0f, 0.0f, &TowerMatrix4.data[0]);
-        QCAR::Matrix44F TowerProjection4;
-       	DrawTower(TowerMatrix4, TowerProjection4);	 
-        
-		//Missile 4
-        QCAR::Matrix44F MissileMatrix4 = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());    
-        animateMissile(MissileMatrix4, 3);
-#ifdef USE_OPENGL_ES_1_1
-        // Load projection matrix:
-        glMatrixMode(GL_PROJECTION);
-        glLoadMatrixf(projectionMatrix.data);
-        // Load model view matrix:
-        glMatrixMode(GL_MODELVIEW);
-        glLoadMatrixf(MissileMatrix4.data);
-        glTranslatef(0.f, 0.f, kObjectScale);
-        glScalef(kObjectScale, kObjectScale, kObjectScale);
-        // Draw object:
-        glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
-        glTexCoordPointer(2, GL_FLOAT, 0, (const GLvoid*) &teapotTexCoords[0]);
-        glVertexPointer(3, GL_FLOAT, 0, (const GLvoid*) &teapotVertices[0]);
-        glNormalPointer(GL_FLOAT, 0,  (const GLvoid*) &teapotNormals[0]);
-        glDrawElements(GL_TRIANGLES, NUM_TEAPOT_OBJECT_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &teapotIndices[0]);
-#else
-        QCAR::Matrix44F MissileProjection4;
-		DrawArrow(MissileMatrix4, MissileProjection4);	
-#endif
+        }//end tower drawing
 
         // If this is our first time seeing the target, display a tip
         if (!displayedMessage) {
@@ -517,6 +391,10 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         }
 
     }
+
+    //re-render every frame
+    trackedCornerID=-1;
+
 
     glDisable(GL_DEPTH_TEST);
 
@@ -662,73 +540,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_startCamera(JNIEnv *,
 {
     LOG("Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_startCamera");
 
-	//didnt know where to put this....
-	if (initEnemies == 0) {
-//		strcpy("Zergling", enemy_type[0].name);
-		enemy_type[0].type = 1;
-		enemy_type[0].max_HP = 10.0f;
-		enemy_type[0].X = 10000.0f;
-		enemy_type[0].Y = -10000.0f;
-		enemy_type[0].HP = enemy_type[0].max_HP;
-		enemy_type[0].speed = 1.0f;
-		enemy_type[0].defense = 1.0f;
-	
-//		strcpy("Speedy Gonzalez", enemy_type[0].name);
-		enemy_type[1].type = 2;
-		enemy_type[1].max_HP = 12.0f;
-		enemy_type[1].X = 10000.0f;
-		enemy_type[1].Y = -10000.0f;
-		enemy_type[1].HP = enemy_type[1].max_HP;
-		enemy_type[1].speed = 1.3f;
-		enemy_type[1].defense = 1.0f;
-		
-		initEnemies == 1;
-	}
-	
-	if (initMissiles == 0) {
-//		strcpy("The Hulk", missile_type[0].name);
-		missile_type[0].type = 1;
-		missile_type[0].defaultX = 0.0f;
-		missile_type[0].defaultY = 0.0f;
-		missile_type[0].X = missile_type[0].defaultX;
-		missile_type[0].Y = missile_type[0].defaultY;	
-		missile_type[0].speed = 12;
-		missile_type[0].currentTarget = -1;
-		missile_type[0].currentTargetDistance = 0;
-		missile_type[0].cost = 3;
-		missile_type[0].attack = 2.0f;
-		
-//		strcpy("Fast N' Weak", missile_type[1].name);
-		missile_type[0].type = 2;
-		missile_type[1].defaultX = -50.0f;
-		missile_type[1].defaultY = 50.0f;
-		missile_type[1].X = missile_type[1].defaultX;
-		missile_type[1].Y = missile_type[1].defaultY;
-		missile_type[1].speed = 22;
-		missile_type[1].currentTarget = -1;
-		missile_type[1].currentTargetDistance = 0;
-		missile_type[1].cost = 2;
-		missile_type[1].attack = 1.0f;
-		
-		makeMissile (0, 0, 0.0f, 0.0f);
-		makeMissile (1, 1, -50.0f, 50.0f);
-		makeMissile (0, 2, 0.0f, 50.0f);
-		makeMissile (1, 3, 0.0f, 100.0f);
-		initMissiles == 1;
-	}
-	
-	if (initLevels == 0) {
-		level[0].start = 0;
-		level[0].end = 0;
-		level[0].killCount = 0;
-		level[1].start = 0;
-		level[1].end = 0;
-		level[1].killCount = 0;
-		level[2].start = 0;
-		level[2].end = 0;
-		level[2].killCount = 0;
-		initLevels == 1;
-	}
+
 		
     // Initialize the camera:
     if (!QCAR::CameraDevice::getInstance().init())
@@ -833,6 +645,54 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_initRendering(
                                                 "modelViewProjectionMatrix");
 
 #endif
+
+	//Game specific initialization
+
+    //enemy initialization
+//		strcpy("Zergling", enemy_type[0].name);
+		enemy_type[0].type = 1;
+		enemy_type[0].max_HP = 10.0f;
+		enemy_type[0].X = 10000.0f;
+		enemy_type[0].Y = -10000.0f;
+		enemy_type[0].HP = enemy_type[0].max_HP;
+		enemy_type[0].speed = 1.0f;
+		enemy_type[0].defense = 1.0f;
+	
+//		strcpy("Speedy Gonzalez", enemy_type[0].name);
+		enemy_type[1].type = 2;
+		enemy_type[1].max_HP = 12.0f;
+		enemy_type[1].X = 10000.0f;
+		enemy_type[1].Y = -10000.0f;
+		enemy_type[1].HP = enemy_type[1].max_HP;
+		enemy_type[1].speed = 1.3f;
+		enemy_type[1].defense = 1.0f;
+		
+
+    //missile initializations
+//		strcpy("The Hulk", missile_type[0].name);
+		missile_type[0].type = 1;
+		missile_type[0].speed = 12;
+		missile_type[0].cost = 3;
+		missile_type[0].attack = 2.0f;
+		
+//		strcpy("Fast N' Weak", missile_type[1].name);
+		missile_type[1].type = 2;
+		missile_type[1].speed = 22;
+		missile_type[1].cost = 2;
+		missile_type[1].attack = 1.0f;
+        
+        //deinitialize all missiles
+        deinitAllMissiles ();
+		
+		level[0].start = 0;
+		level[0].end = 0;
+		level[0].killCount = 0;
+		level[1].start = 0;
+		level[1].end = 0;
+		level[1].killCount = 0;
+		level[2].start = 0;
+		level[2].end = 0;
+		level[2].killCount = 0;
 
 }
 
@@ -980,13 +840,13 @@ float direction = 0.0f;
 		else if (enemy[enemyNumber].count <= 950 && enemy[enemyNumber].count >= 800 )
 		{
 			enemy[enemyNumber].count = 0;
-			enemy[enemyNumber].X = 75.0f;
-			enemy[enemyNumber].Y = -150.0f;
+			enemy[enemyNumber].X = 75.0f; //arbitrary initial positions
+			enemy[enemyNumber].Y = -350.0f;
 			enemy[enemyNumber].HP = enemy[enemyNumber].max_HP;
 		}
 		else {
 			//enemy[enemyNumber].count += 1;
-			if (enemy[enemyNumber].Y < 150.0f) {
+			if (enemy[enemyNumber].Y < 0.0f) {
 				enemy[enemyNumber].Y += dt4 * 50.0f * enemy[enemyNumber].speed;
 direction = 90.0f;
 			}
@@ -995,7 +855,7 @@ direction = 90.0f;
 				enemy[enemyNumber].X -= dt4 * 50.0f * enemy[enemyNumber].speed;
 direction = 180.0f;
 			}
-			if (enemy[enemyNumber].X < -150.0f) {
+			if (enemy[enemyNumber].X < 0.0f) {
 				lives = lives - 1;
 				level[currentLevel].killCount = level[currentLevel].killCount + 1;
 				enemy[enemyNumber].X = 10000.0f;
@@ -1023,27 +883,39 @@ direction = 180.0f;
 
 }
 
+/********************
+ * Initiate a new missile based on its type and location
+ ********************/
 void makeMissile(int missileType, int missileNumber, float lx, float ly)
 {
+    missile[missileNumber].initialized=true;
 	missile[missileNumber].type = missile_type[missileType].type;
 	missile[missileNumber].defaultX = lx;
 	missile[missileNumber].defaultY = ly;
 	missile[missileNumber].X = lx;
 	missile[missileNumber].Y = ly;	
 	missile[missileNumber].speed = missile_type[missileType].speed;
-	missile[missileNumber].currentTarget = missile_type[missileType].currentTarget;
-	missile[missileNumber].currentTargetDistance = missile_type[missileType].currentTargetDistance;
+	missile[missileNumber].currentTarget = -1;
+	missile[missileNumber].currentTargetDistance = -1;
 	missile[missileNumber].cost = missile_type[missileType].cost;
 	missile[missileNumber].attack = missile_type[missileType].attack;
 	missile[missileNumber].prevTime = getCurrentTime();
 }
+
+void updateMissileDefaultPos(int missileNumber, float lx, float ly)
+{
+	missile[missileNumber].defaultX = lx;
+	missile[missileNumber].defaultY = ly;
+}
+
+
 void makeEnemy(int enemyType, int enemyNumber, int delay)
 {
 	enemy[enemyNumber].type = enemy_type[enemyType].type;
 	enemy[enemyNumber].X = enemy_type[enemyType].X;
 	enemy[enemyNumber].Y = enemy_type[enemyType].Y;
 	enemy[enemyNumber].max_HP = enemy_type[enemyType].max_HP;
-	enemy[enemyNumber].HP = enemy_type[enemyType].HP;
+	enemy[enemyNumber].HP = enemy_type[enemyType].max_HP;
 	enemy[enemyNumber].speed = enemy_type[enemyType].speed;
 	enemy[enemyNumber].defense = enemy_type[enemyType].defense;
 	enemy[enemyNumber].count = delay;
@@ -1069,6 +941,7 @@ if (nextLevel == 0)
 		level[0].start = 1;
 	}
 
+//TODO: loop this lulz
 	if (nextLevel == 1)
 	{
 		makeEnemy (1, 0, 1000);
@@ -1117,10 +990,14 @@ if (nextLevel == 0)
 	}
 }
 
-void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection) {
+void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, int x_offset, int y_offset) {
 	struct graphics_arrays horse_animate_array = get_graphics_stats (counter, 1);
 	const Texture* const thisTexture = textures[1];
-		
+	
+    //offset the object based on corner marker in view
+    SampleUtils::translatePoseMatrix(x_offset, y_offset, 0, &EnemyMatrix.data[0]);			
+
+
 	SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix.data[0]);
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&EnemyMatrix.data[0], &EnemyProjection.data[0]);
     glUseProgram(shaderProgramID);
@@ -1139,7 +1016,11 @@ void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection) {
 
 void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection) {
 	const Texture* const thisTexture = textures[0];
-	//const Texture* const thisTexture = textures[0];
+
+    //FIXME: Model base not at Z=0?
+     SampleUtils::translatePoseMatrix(0 ,0, 50.0, &TowerMatrix.data[0]);
+
+
     SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &TowerMatrix.data[0]);
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &TowerMatrix.data[0], &TowerProjection.data[0]);
     glUseProgram(shaderProgramID);
@@ -1156,9 +1037,10 @@ void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection) {
 	SampleUtils::checkGlError("ImageTargets renderFrame");
 }
 
-void DrawIgloo (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection) {
+void DrawIgloo (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, int x_offset, int y_offset) {
 	const Texture* const thisTexture = textures[3];
-	//const Texture* const thisTexture = textures[0];
+    //FIXME: Model base not at Z=0?
+     SampleUtils::translatePoseMatrix(0 ,0, 50.0, &TowerMatrix.data[0]);
     SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &TowerMatrix.data[0]);
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &TowerMatrix.data[0], &TowerProjection.data[0]);
     glUseProgram(shaderProgramID);
@@ -1175,9 +1057,14 @@ void DrawIgloo (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection) {
 	SampleUtils::checkGlError("ImageTargets renderFrame");
 }
 
-void DrawArrow (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection) {
-	struct graphics_arrays arrow_animate_array = get_graphics_stats ((((counter-1)%24)+1), 0);
+
+void DrawArrow (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection, int x_offset, int y_offset) {
+	struct graphics_arrays arrow_animate_array = get_graphics_stats (counter, 0);
 	const Texture* const thisTexture = textures[2];
+    
+    //offset the object based on corner marker in view
+    SampleUtils::translatePoseMatrix(x_offset, y_offset, 0, &MissileMatrix.data[0]);
+
     SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &MissileMatrix.data[0]);
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &MissileMatrix.data[0], &MissileProjection.data[0]);
     glUseProgram(shaderProgramID);
@@ -1194,9 +1081,14 @@ void DrawArrow (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection
 	SampleUtils::checkGlError("ImageTargets renderFrame");
 }
 
-void DrawSnowball (QCAR::Matrix44F ArrowMatrix, QCAR::Matrix44F ArrowProjection) {
+void DrawSnowball (QCAR::Matrix44F ArrowMatrix, QCAR::Matrix44F ArrowProjection, int x_offset, int y_offset) {
 	const Texture* const thisTexture = textures[4];
-    SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &ArrowMatrix.data[0]);
+    
+
+    //offset the object based on corner marker in view
+    SampleUtils::translatePoseMatrix(x_offset, y_offset, 0, &ArrowMatrix.data[0]);
+
+	SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &ArrowMatrix.data[0]);
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &ArrowMatrix.data[0], &ArrowProjection.data[0]);
     glUseProgram(shaderProgramID);
 	glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, snowballVerts);
@@ -1210,6 +1102,60 @@ void DrawSnowball (QCAR::Matrix44F ArrowMatrix, QCAR::Matrix44F ArrowProjection)
     glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&ArrowProjection.data[0] );
     glDrawArrays(GL_TRIANGLES, 0, snowballNumVerts);
 	SampleUtils::checkGlError("ImageTargets renderFrame");
+}
+
+void getMarkerOffset(int trackedCornerID, int &x_offset, int &y_offset){
+    if (trackedCornerID == 0) //top left marker
+    {
+        x_offset = 0;
+        y_offset = 0;
+    }
+    else if (trackedCornerID ==1) //top right marker
+    {
+        x_offset = (-1) * (MARKER_SIZE * (BOARD_SIZE-1));
+        y_offset = 0;
+    }
+    else if (trackedCornerID==2) //bottom left marker
+    {
+        x_offset = 0;
+        y_offset = (MARKER_SIZE * (BOARD_SIZE-1));
+    }
+    else if (trackedCornerID==3) //bottom right marker
+    {
+        x_offset = (-1) * (MARKER_SIZE * (BOARD_SIZE-1));
+        y_offset = (MARKER_SIZE * (BOARD_SIZE-1));
+    } 
+    else
+    {
+        LOG ("ERROR getMarkerOffset");
+    }
+
+
+/**********************
+ * Find the BOARD x, y coordinates of a marker placed inside the board
+ * Input: corner marker, tower modelviewmatrices, corner ID; output: dx, dy (by reference)
+ **********************/
+void convert2BoardCoord (int cornerID, QCAR::Matrix44F cornerMVM, QCAR::Matrix44F targetMVM, float &x, float &y){
+    //first translate corner markers to top left (0,0) position
+    int x_offset, y_offset;
+    getMarkerOffset(cornerID, x_offset, y_offset);
+    //translate the cornerMVM according to offset
+    SampleUtils::translatePoseMatrix(x_offset, y_offset, 0, &cornerMVM.data[0]);
+    //compute the board coordinates    
+    x = ( cornerMVM.data[5] * targetMVM.data[12] - cornerMVM.data[4] * targetMVM.data[13] 
+            - cornerMVM.data[5] * cornerMVM.data[12] + cornerMVM.data[4] * cornerMVM.data[13] )
+        / ( cornerMVM.data[0] * cornerMVM.data[5] - cornerMVM.data[4] * cornerMVM.data[1] );
+    y = ( cornerMVM.data[1] * targetMVM.data[12] - cornerMVM.data[0] * targetMVM.data[13] 
+            - cornerMVM.data[1] * cornerMVM.data[12] + cornerMVM.data[0] * cornerMVM.data[13] )
+        / ( cornerMVM.data[1] * cornerMVM.data[4] - cornerMVM.data[0] * cornerMVM.data[5] );
+    LOG ("Board (x,y)=(%f, %f)", x, y);
+}
+
+//de-initislize all missiles
+void deinitAllMissiles (){
+    for (int i=0; i<MAX_NUM_TOWERS; i++){
+        missile[i].initialized=false;
+    }
 }
 
 #ifdef __cplusplus
