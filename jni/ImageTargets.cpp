@@ -108,10 +108,12 @@ bool displayedMessage = false;
 //enemy properties
 #define MAX_NUM_ENEMIES 10
 #define NUM_ENEMY_TYPES 2
+#define ENEMY_NUM_FRAMES 48
 
-//tower properties
+//tower/missile properties
 #define NUM_MISSILE_TYPES 2
 #define MAX_NUM_TOWERS 4
+#define MISSILE_NUM_FRAMES 24
 
 //board properties
 #define MARKER_SIZE 50
@@ -125,21 +127,6 @@ static int lives = 5;
 static int startGame = 1;
 static int currentLevel = 0;
 static int numEnemies = MAX_NUM_ENEMIES; //TODO: What's this var for?
-
-//enemy properties
-#define MAX_NUM_ENEMIES 10
-#define NUM_ENEMY_TYPES 2
-
-//tower properties
-#define NUM_MISSILE_TYPES 2
-#define MAX_NUM_TOWERS 4
-
-//board properties
-#define MARKER_SIZE 50
-#define BOARD_SIZE 8  //8x8 markers
-
-//game properties
-#define NUM_LEVELS 3
 
 static class Enemy_unit enemy[MAX_NUM_ENEMIES];
 static class Missile_unit missile[MAX_NUM_TOWERS];
@@ -161,7 +148,8 @@ GLint mvpMatrixHandle           = 0;
 unsigned int screenWidth        = 0;
 unsigned int screenHeight       = 0;
 
-static int counter = 1;
+static int missileFrameCounter = 1;
+static int enemyFrameCounter = 1;
 static double counterprevTime;
 
 
@@ -172,7 +160,9 @@ bool isActivityInPortraitMode   = false;
 QCAR::Matrix44F projectionMatrix;
 
 // Constants:
-static const float kObjectScale = 50.0f;
+static const float towerScale = 75.0f;
+static const float enemyScale = 50.0f;
+static const float missileScale = 75.0f;
 
 void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber);
 void animateTower(QCAR::Matrix44F& towerMatrix);
@@ -413,11 +403,14 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
     QCAR::Renderer::getInstance().end();
 	
+
+    //FIXME: using 24 fps for enemies too. Adjust for speed?
 	//counter++;
 	double time4 = getCurrentTime();  
 	float dt4 = (float)(time4-counterprevTime);          // from frame to frame
 	counterprevTime = time4;
-	counter = ((int)floor(counter - 1 + dt4*25.0f) % 48) + 1;
+	missileFrameCounter = ((int)floor(missileFrameCounter - 1 + dt4*25.0f) % MISSILE_NUM_FRAMES) + 1;
+	enemyFrameCounter = ((int)floor(enemyFrameCounter - 1 + dt4*50.0f) % ENEMY_NUM_FRAMES) + 1;
 }
 
 
@@ -845,28 +838,35 @@ float direction = 0.0f;
 			enemy[enemyNumber].X = 75.0f; //arbitrary initial positions
 			enemy[enemyNumber].Y = -350.0f;
 			enemy[enemyNumber].HP = enemy[enemyNumber].max_HP;
-		}
-		else {
-			//enemy[enemyNumber].count += 1;
-			if (enemy[enemyNumber].Y < 0.0f) {
-				enemy[enemyNumber].Y += dt4 * 50.0f * enemy[enemyNumber].speed;
-direction = 90.0f;
-			}
-			else 
-			{
-				enemy[enemyNumber].X -= dt4 * 50.0f * enemy[enemyNumber].speed;
-direction = 180.0f;
-			}
-			if (enemy[enemyNumber].X < 0.0f) {
-				lives = lives - 1;
-				level[currentLevel].killCount = level[currentLevel].killCount + 1;
-				enemy[enemyNumber].X = 10000.0f;
-				enemy[enemyNumber].Y = -10000.0f;
-				enemy[enemyNumber].HP = 0.0f;
-				enemy[enemyNumber].count = -1;
-			}
-			if (enemy[enemyNumber].HP <= 0.0f) {
-				enemy[enemyNumber].X = 10000.0f;
+        }
+        else {
+            //enemy[enemyNumber].count += 1;
+            if (enemy[enemyNumber].Y < 0.0f) {
+                enemy[enemyNumber].Y += dt4 * 50.0f * enemy[enemyNumber].speed;
+                direction = 90.0f;
+            }
+            else 
+            {
+                enemy[enemyNumber].X -= dt4 * 50.0f * enemy[enemyNumber].speed;
+                direction = 180.0f;
+            }
+            if (enemy[enemyNumber].X < 0.0f) {
+                lives = lives - 1;
+                level[currentLevel].killCount = level[currentLevel].killCount + 1;
+                if (level[currentLevel].killCount >=10)
+                {
+                    level[currentLevel].end = 1;
+                    currentLevel++;
+                    startLevel(currentLevel);
+                }
+
+                enemy[enemyNumber].X = 10000.0f;
+                enemy[enemyNumber].Y = -10000.0f;
+                enemy[enemyNumber].HP = 0.0f;
+                enemy[enemyNumber].count = -1;
+            }
+            if (enemy[enemyNumber].HP <= 0.0f) {
+                enemy[enemyNumber].X = 10000.0f;
 				enemy[enemyNumber].Y = -10000.0f;
 				enemy[enemyNumber].HP = 0.0f;
 				enemy[enemyNumber].count = -1;
@@ -993,14 +993,14 @@ if (nextLevel == 0)
 }
 
 void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, int x_offset, int y_offset) {
-	struct graphics_arrays horse_animate_array = get_graphics_stats (counter, 1);
+	struct graphics_arrays horse_animate_array = get_graphics_stats (enemyFrameCounter, 1);
 	const Texture* const thisTexture = textures[1];
 	
     //offset the object based on corner marker in view
     SampleUtils::translatePoseMatrix(x_offset, y_offset, 0, &EnemyMatrix.data[0]);			
 
 
-	SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &EnemyMatrix.data[0]);
+	SampleUtils::scalePoseMatrix(enemyScale, enemyScale, enemyScale, &EnemyMatrix.data[0]);
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&EnemyMatrix.data[0], &EnemyProjection.data[0]);
     glUseProgram(shaderProgramID);
     glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
@@ -1020,10 +1020,10 @@ void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection) {
 	const Texture* const thisTexture = textures[0];
 
     //FIXME: Model base not at Z=0?
-     SampleUtils::translatePoseMatrix(0 ,0, 50.0, &TowerMatrix.data[0]);
+     SampleUtils::translatePoseMatrix(0 ,0, 50.0f, &TowerMatrix.data[0]);
 
 
-    SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &TowerMatrix.data[0]);
+    SampleUtils::scalePoseMatrix(towerScale, towerScale, towerScale, &TowerMatrix.data[0]);
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &TowerMatrix.data[0], &TowerProjection.data[0]);
     glUseProgram(shaderProgramID);
 	glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, towerVerts);
@@ -1042,8 +1042,8 @@ void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection) {
 void DrawIgloo (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, int x_offset, int y_offset) {
 	const Texture* const thisTexture = textures[3];
     //FIXME: Model base not at Z=0?
-     SampleUtils::translatePoseMatrix(0 ,0, 50.0, &TowerMatrix.data[0]);
-    SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &TowerMatrix.data[0]);
+     SampleUtils::translatePoseMatrix(0 ,0, 50.0f, &TowerMatrix.data[0]);
+    SampleUtils::scalePoseMatrix(towerScale, towerScale, towerScale, &TowerMatrix.data[0]);
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &TowerMatrix.data[0], &TowerProjection.data[0]);
     glUseProgram(shaderProgramID);
 	glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, iglooVerts);
@@ -1061,13 +1061,13 @@ void DrawIgloo (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, in
 
 
 void DrawArrow (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection, int x_offset, int y_offset) {
-	struct graphics_arrays arrow_animate_array = get_graphics_stats (counter, 0);
+	struct graphics_arrays arrow_animate_array = get_graphics_stats (missileFrameCounter, 0);
 	const Texture* const thisTexture = textures[2];
     
     //offset the object based on corner marker in view
     SampleUtils::translatePoseMatrix(x_offset, y_offset, 0, &MissileMatrix.data[0]);
 
-    SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &MissileMatrix.data[0]);
+    SampleUtils::scalePoseMatrix(missileScale, missileScale, missileScale, &MissileMatrix.data[0]);
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &MissileMatrix.data[0], &MissileProjection.data[0]);
     glUseProgram(shaderProgramID);
 	glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.Verts);
@@ -1090,7 +1090,7 @@ void DrawSnowball (QCAR::Matrix44F ArrowMatrix, QCAR::Matrix44F ArrowProjection,
     //offset the object based on corner marker in view
     SampleUtils::translatePoseMatrix(x_offset, y_offset, 0, &ArrowMatrix.data[0]);
 
-	SampleUtils::scalePoseMatrix(kObjectScale, kObjectScale, kObjectScale, &ArrowMatrix.data[0]);
+	SampleUtils::scalePoseMatrix(missileScale, missileScale, missileScale, &ArrowMatrix.data[0]);
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &ArrowMatrix.data[0], &ArrowProjection.data[0]);
     glUseProgram(shaderProgramID);
 	glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, snowballVerts);
