@@ -126,7 +126,7 @@ bool displayedMessage = false;
 static int lives = 5;
 static int startGame = 1;
 static int currentLevel = 0;
-static int numEnemies = MAX_NUM_ENEMIES; //TODO: What's this var for?
+static int numEnemies = MAX_NUM_ENEMIES; //TODO: What's this var for? Nothing, apparently.
 
 static class Enemy_unit enemy[MAX_NUM_ENEMIES];
 static class Missile_unit missile[MAX_NUM_TOWERS];
@@ -173,8 +173,8 @@ void makeEnemy(int enemyType, int enemyNumber, int Delay);
 void startLevel(int leveldone);
 double getCurrentTime();
 void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, int x_offset, int y_offset);
-void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection);
-void DrawArrow (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection, int x_offset, int y_offset);
+void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, int type);
+void DrawArrow (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection, int x_offset, int y_offset, int type);
 //TODO: fix tower/igloo & snowball/arrow into 1 function
 void DrawIgloo (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, int x_offset, int y_offset);
 void DrawSnowball (QCAR::Matrix44F ArrowMatrix, QCAR::Matrix44F ArrowProjection, int x_offset, int y_offset);
@@ -340,7 +340,18 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
             QCAR::Matrix44F towerMatrix = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
             QCAR::Matrix44F towerProjection;
             //draw the tower at the precise location of the marker
-            DrawTower(towerMatrix, towerProjection); 
+            
+			//TODO: uncooment and take out the rest: Alton trying something out
+			//DrawTower(towerMatrix, towerProjection, 0); 
+			static int alternate = 0;
+			DrawTower(towerMatrix, towerProjection, alternate); 
+			if (alternate == 0){
+				alternate = 3;
+			}
+			else {
+				alternate = 0;
+			}
+			//end TODO
             
             //render the missile relative to the corner marker
             //1) find x, y board coordinates of the tower marker
@@ -361,7 +372,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 #ifdef USE_OPENGL_ES_1_1
 #else
             QCAR::Matrix44F missileProjection;
-            DrawArrow(missileMatrix, missileProjection, x_offset, y_offset); 
+            DrawArrow(missileMatrix, missileProjection, x_offset, y_offset, 0); 
 #endif
 
         }//end tower drawing
@@ -666,7 +677,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_initRendering(
     //missile initializations
 //		strcpy("The Hulk", missile_type[0].name);
 		missile_type[0].type = 1;
-		missile_type[0].speed = 12;
+		missile_type[0].speed = 14;
 		missile_type[0].cost = 3;
 		missile_type[0].attack = 2.0f;
 		
@@ -835,49 +846,40 @@ float direction = 0.0f;
 		else if (enemy[enemyNumber].count <= 950 && enemy[enemyNumber].count >= 800 )
 		{
 			enemy[enemyNumber].count = 0;
-			enemy[enemyNumber].X = 75.0f; //arbitrary initial positions
+			enemy[enemyNumber].X = 150.0f; //arbitrary initial positions
 			enemy[enemyNumber].Y = -350.0f;
 			enemy[enemyNumber].HP = enemy[enemyNumber].max_HP;
-        }
-        else {
-            //enemy[enemyNumber].count += 1;
-            if (enemy[enemyNumber].Y < 0.0f) {
-                enemy[enemyNumber].Y += dt4 * 50.0f * enemy[enemyNumber].speed;
-                direction = 90.0f;
-            }
-            else 
-            {
-                enemy[enemyNumber].X -= dt4 * 50.0f * enemy[enemyNumber].speed;
-                direction = 180.0f;
-            }
-            if (enemy[enemyNumber].X < 0.0f) {
-                lives = lives - 1;
-                level[currentLevel].killCount = level[currentLevel].killCount + 1;
-                if (level[currentLevel].killCount >=10)
-                {
-                    level[currentLevel].end = 1;
-                    currentLevel++;
-                    startLevel(currentLevel);
-                }
-
-                enemy[enemyNumber].X = 10000.0f;
-                enemy[enemyNumber].Y = -10000.0f;
-                enemy[enemyNumber].HP = 0.0f;
-                enemy[enemyNumber].count = -1;
-            }
-            if (enemy[enemyNumber].HP <= 0.0f) {
-                enemy[enemyNumber].X = 10000.0f;
-				enemy[enemyNumber].Y = -10000.0f;
-				enemy[enemyNumber].HP = 0.0f;
-				enemy[enemyNumber].count = -1;
+		}
+		else {
+			//enemy[enemyNumber].count += 1;
+			if (enemy[enemyNumber].Y < 0.0f) {
+				enemy[enemyNumber].Y += dt4 * 50.0f * enemy[enemyNumber].speed;
+				direction = 90.0f;
 			}
-			if (lives == 0 ) {
+			else 
+			{
+				enemy[enemyNumber].X -= dt4 * 50.0f * enemy[enemyNumber].speed;
+				direction = 180.0f;
+			}
+			if (enemy[enemyNumber].X < 0.0f) {
+				lives = lives - 1;
+				if (lives == 0 ) {
+					for (int enemyNumber2 = 0; enemyNumber2 < numEnemies; enemyNumber2++) {
+						enemy[enemyNumber2].X = 10000.0f;
+						enemy[enemyNumber2].Y = -10000.0f;
+						enemy[enemyNumber2].HP = 0.0f;
+						enemy[enemyNumber2].count = -1;
+					}
+				}
+				level[currentLevel].killCount = level[currentLevel].killCount + 1;
+				if (level[currentLevel].killCount >=10) {
+					level[currentLevel].end = 1;
+					currentLevel++;
+					startLevel(currentLevel);
+				}
 				enemy[enemyNumber].X = 10000.0f;
-				enemy[enemyNumber].Y = -10000.0f;
-				enemy[enemyNumber].HP = 0.0f;
-				enemy[enemyNumber].count = -1;
 			}
-		}		
+        }
 		enemy[enemyNumber].prevTime = time4;	
 	}	
 	SampleUtils::translatePoseMatrix(enemy[enemyNumber].X, enemy[enemyNumber].Y, 20.0f, &enemyMatrix.data[0]);
@@ -1016,8 +1018,9 @@ void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, in
     SampleUtils::checkGlError("ImageTargets renderFrame");
 }
 
-void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection) {
-	const Texture* const thisTexture = textures[0];
+void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, int type) {
+	const Texture* const thisTexture = textures[type];
+	//Castle = 0, Igloo = 3
 
     //FIXME: Model base not at Z=0?
      SampleUtils::translatePoseMatrix(0 ,0, 50.0f, &TowerMatrix.data[0]);
@@ -1026,19 +1029,31 @@ void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection) {
     SampleUtils::scalePoseMatrix(towerScale, towerScale, towerScale, &TowerMatrix.data[0]);
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &TowerMatrix.data[0], &TowerProjection.data[0]);
     glUseProgram(shaderProgramID);
-	glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, towerVerts);
-    glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, towerNormals);
-    glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, towerTexCoords);
+	if (type == 0) {
+		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, towerVerts);
+		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, towerNormals);
+		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, towerTexCoords);
+	}
+	else if (type == 3) {
+		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, iglooVerts);
+		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, iglooNormals);
+		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, iglooTexCoords);
+	}
     glEnableVertexAttribArray(vertexHandle);
 	glEnableVertexAttribArray(normalHandle);
 	glEnableVertexAttribArray(textureCoordHandle);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
     glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&TowerProjection.data[0] );
-    glDrawArrays(GL_TRIANGLES, 0, towerNumVerts);
+	if (type == 0) {
+		glDrawArrays(GL_TRIANGLES, 0, towerNumVerts);
+	}
+	else if (type == 3) {
+		glDrawArrays(GL_TRIANGLES, 0, iglooNumVerts);
+	}
 	SampleUtils::checkGlError("ImageTargets renderFrame");
 }
-
+/*
 void DrawIgloo (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, int x_offset, int y_offset) {
 	const Texture* const thisTexture = textures[3];
     //FIXME: Model base not at Z=0?
@@ -1058,9 +1073,9 @@ void DrawIgloo (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, in
     glDrawArrays(GL_TRIANGLES, 0, iglooNumVerts);
 	SampleUtils::checkGlError("ImageTargets renderFrame");
 }
+*/
 
-
-void DrawArrow (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection, int x_offset, int y_offset) {
+void DrawArrow (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection, int x_offset, int y_offset, int type) {
 	struct graphics_arrays arrow_animate_array = get_graphics_stats (missileFrameCounter, 0);
 	const Texture* const thisTexture = textures[2];
     
@@ -1070,19 +1085,32 @@ void DrawArrow (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection
     SampleUtils::scalePoseMatrix(missileScale, missileScale, missileScale, &MissileMatrix.data[0]);
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &MissileMatrix.data[0], &MissileProjection.data[0]);
     glUseProgram(shaderProgramID);
-	glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.Verts);
-    glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.Normals);
-    glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.TexCoords);
+	if (type == 0) {
+		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.Verts);
+		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.Normals);
+		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.TexCoords);
+	}
+	else if (type == 1) {
+		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, snowballVerts);
+		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, snowballNormals);
+		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, snowballTexCoords);
+	}
+	
     glEnableVertexAttribArray(vertexHandle);
     glEnableVertexAttribArray(normalHandle);
     glEnableVertexAttribArray(textureCoordHandle);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
     glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&MissileProjection.data[0] );
-    glDrawArrays(GL_TRIANGLES, 0, (int)*arrow_animate_array.NumVerts);
+	if (type == 0) {
+		glDrawArrays(GL_TRIANGLES, 0, (int)*arrow_animate_array.NumVerts);
+	}
+	else if (type == 1) {
+		glDrawArrays(GL_TRIANGLES, 0, snowballNumVerts);
+	}
 	SampleUtils::checkGlError("ImageTargets renderFrame");
 }
-
+/*
 void DrawSnowball (QCAR::Matrix44F ArrowMatrix, QCAR::Matrix44F ArrowProjection, int x_offset, int y_offset) {
 	const Texture* const thisTexture = textures[4];
     
@@ -1105,6 +1133,7 @@ void DrawSnowball (QCAR::Matrix44F ArrowMatrix, QCAR::Matrix44F ArrowProjection,
     glDrawArrays(GL_TRIANGLES, 0, snowballNumVerts);
 	SampleUtils::checkGlError("ImageTargets renderFrame");
 }
+*/
 
 void getMarkerOffset(int trackedCornerID, int &x_offset, int &y_offset){
     if (trackedCornerID == 0) //top left marker
