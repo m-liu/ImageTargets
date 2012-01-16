@@ -163,6 +163,7 @@ QCAR::Matrix44F projectionMatrix;
 static const float towerScale = 75.0f;
 static const float enemyScale = 50.0f;
 static const float missileScale = 75.0f;
+static const float snowballScale = 25.0f;
 
 void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber);
 void animateTower(QCAR::Matrix44F& towerMatrix);
@@ -343,14 +344,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
             
 			//TODO: uncooment and take out the rest: Alton trying something out
 			//DrawTower(towerMatrix, towerProjection, 0); 
-			static int alternate = 0;
-			DrawTower(towerMatrix, towerProjection, alternate); 
-			if (alternate == 0){
-				alternate = 3;
-			}
-			else {
-				alternate = 0;
-			}
+            if (towerID < 2){
+			    DrawTower(towerMatrix, towerProjection, 0); 
+            }
+            else{
+                DrawTower(towerMatrix, towerProjection, 3); 
+            }
 			//end TODO
             
             //render the missile relative to the corner marker
@@ -372,7 +371,13 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 #ifdef USE_OPENGL_ES_1_1
 #else
             QCAR::Matrix44F missileProjection;
-            DrawArrow(missileMatrix, missileProjection, x_offset, y_offset, 0); 
+            if (towerID < 2){
+                DrawArrow(missileMatrix, missileProjection, x_offset, y_offset, 2); 
+            }
+            else{
+                DrawArrow(missileMatrix, missileProjection, x_offset, y_offset, 4); 
+            }
+
 #endif
 
         }//end tower drawing
@@ -1077,20 +1082,24 @@ void DrawIgloo (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, in
 
 void DrawArrow (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection, int x_offset, int y_offset, int type) {
 	struct graphics_arrays arrow_animate_array = get_graphics_stats (missileFrameCounter, 0);
-	const Texture* const thisTexture = textures[2];
+	const Texture* const thisTexture = textures[type];
     
     //offset the object based on corner marker in view
     SampleUtils::translatePoseMatrix(x_offset, y_offset, 0, &MissileMatrix.data[0]);
-
-    SampleUtils::scalePoseMatrix(missileScale, missileScale, missileScale, &MissileMatrix.data[0]);
+	if (type == 2) {
+        SampleUtils::scalePoseMatrix(missileScale, missileScale, missileScale, &MissileMatrix.data[0]);
+	}
+	else if (type == 4) {
+        SampleUtils::scalePoseMatrix(snowballScale, snowballScale, snowballScale, &MissileMatrix.data[0]);
+    }
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &MissileMatrix.data[0], &MissileProjection.data[0]);
     glUseProgram(shaderProgramID);
-	if (type == 0) {
+	if (type == 2) {
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.Verts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.Normals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.TexCoords);
 	}
-	else if (type == 1) {
+	else if (type == 4) {
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, snowballVerts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, snowballNormals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, snowballTexCoords);
@@ -1102,10 +1111,10 @@ void DrawArrow (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
     glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&MissileProjection.data[0] );
-	if (type == 0) {
+	if (type == 2) {
 		glDrawArrays(GL_TRIANGLES, 0, (int)*arrow_animate_array.NumVerts);
 	}
-	else if (type == 1) {
+	else if (type == 4) {
 		glDrawArrays(GL_TRIANGLES, 0, snowballNumVerts);
 	}
 	SampleUtils::checkGlError("ImageTargets renderFrame");
