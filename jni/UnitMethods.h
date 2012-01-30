@@ -59,6 +59,7 @@ void initUnitDB () ;
 void makeMissile(int missileType, int missileNumber, float lx, float ly);
 
 int animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber, int x_offset, int y_offset);
+int checkMissileContact(int missileNumber);
 void animateTower(QCAR::Matrix44F& towerMatrix);
 void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber, int x_offset, int y_offset);
 void updateMissileDefaultPos(int missileNumber, float lx, float ly);

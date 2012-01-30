@@ -373,6 +373,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
             getMarkerOffset(trackedCornerID, x_offset, y_offset);
 			if (startGame == 1 && pauseGame == 0) {
                 animateMissile(missileMatrix, towerID, x_offset, y_offset);
+				checkMissileContact(towerID);
 			}
 #ifdef USE_OPENGL_ES_1_1
 #else

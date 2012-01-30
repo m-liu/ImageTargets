@@ -111,7 +111,7 @@ int animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber, int x_offs
 	float ydiff;
 	float angle;
 	float slope;
-    int enemiesKilled=0;
+
 	int possibleTarget = 0;
 	int possibleTargetDistance = 0;
 	double time4 = getCurrentTime();  
@@ -157,7 +157,27 @@ int animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber, int x_offs
 			missile[missileNumber].Y = missile[missileNumber].Y + ydist;
 		else
 			missile[missileNumber].Y = missile[missileNumber].Y - ydist;
+	
+		//if target is too far away, reset the target
+		if (missile[missileNumber].X-enemy[missile[missileNumber].currentTarget].X > 150 || missile[missileNumber].X-enemy[missile[missileNumber].currentTarget].X < -150 
+		|| missile[missileNumber].Y-enemy[missile[missileNumber].currentTarget].Y > 150 || missile[missileNumber].Y-enemy[missile[missileNumber].currentTarget].Y < -150 ) {
+			missile[missileNumber].X = missile[missileNumber].defaultX;
+			missile[missileNumber].Y = missile[missileNumber].defaultY;
+			missile[missileNumber].currentTarget = -1;
+		}
+	}
+    //offset the object based on corner marker in view and position
+	SampleUtils::translatePoseMatrix(missile[missileNumber].X + x_offset, missile[missileNumber].Y + y_offset, 20.0f, &missileMatrix.data[0]);
+	SampleUtils::rotatePoseMatrix(angle, 0.0f, 0.0f, 1.0f, &missileMatrix.data[0]);
+    SampleUtils::scalePoseMatrix(MISSILE_SCALE, MISSILE_SCALE, MISSILE_SCALE, &missileMatrix.data[0]);
+    return 1;
+}
 
+int checkMissileContact(int missileNumber)
+{
+
+	    int enemiesKilled=0;
+		
 		//if missile is close, there may be a hit and missile is used up
 		if (missile[missileNumber].X-enemy[missile[missileNumber].currentTarget].X < 15 && missile[missileNumber].X-enemy[missile[missileNumber].currentTarget].X > -15 
 		&& missile[missileNumber].Y-enemy[missile[missileNumber].currentTarget].Y < 15 && missile[missileNumber].Y-enemy[missile[missileNumber].currentTarget].Y > -15 ) {
@@ -198,21 +218,9 @@ int animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber, int x_offs
 			// If (always attack nearest), reset the target after hit;
 			//missile[missileNumber].currentTarget = -1;
 		}
-	
-		//if target is too far away, reset the target
-		else if (missile[missileNumber].X-enemy[missile[missileNumber].currentTarget].X > 150 || missile[missileNumber].X-enemy[missile[missileNumber].currentTarget].X < -150 
-		|| missile[missileNumber].Y-enemy[missile[missileNumber].currentTarget].Y > 150 || missile[missileNumber].Y-enemy[missile[missileNumber].currentTarget].Y < -150 ) {
-			missile[missileNumber].X = missile[missileNumber].defaultX;
-			missile[missileNumber].Y = missile[missileNumber].defaultY;
-			missile[missileNumber].currentTarget = -1;
-		}
-	}
-    //offset the object based on corner marker in view and position
-	SampleUtils::translatePoseMatrix(missile[missileNumber].X + x_offset, missile[missileNumber].Y + y_offset, 20.0f, &missileMatrix.data[0]);
-	SampleUtils::rotatePoseMatrix(angle, 0.0f, 0.0f, 1.0f, &missileMatrix.data[0]);
-    SampleUtils::scalePoseMatrix(MISSILE_SCALE, MISSILE_SCALE, MISSILE_SCALE, &missileMatrix.data[0]);
-    return enemiesKilled;
+return enemiesKilled;
 }
+
 
 //animate the tower
 void animateTower(QCAR::Matrix44F& towerMatrix)
