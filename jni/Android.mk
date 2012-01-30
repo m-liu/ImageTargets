@@ -12,6 +12,7 @@
 
 LOCAL_PATH := $(call my-dir)
 
+
 # The following section is used for copying the libQCAR.so prebuilt library
 # into the appropriate folder (libs/armeabi and libs/armeabi-v7a respectively)
 # and setting the include path for library-specific header files
@@ -67,6 +68,7 @@ endif
 # NOTE: flag "-Wno-write-strings" removes warning about deprecated conversion
 #       from string constant to ‘char*’
 
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/../media
 LOCAL_CFLAGS := -Wall -Wno-write-strings $(OPENGLES_DEF)
 
 # The list of additional linker flags to be used when building your

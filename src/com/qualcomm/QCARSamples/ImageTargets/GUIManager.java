@@ -104,7 +104,7 @@ public class GUIManager {
             return;
 
         startButton = (ToggleButton) overlayView.findViewById(R.id.start_button);
-    	startButton.setVisibility(View.INVISIBLE);
+    	//startButton.setVisibility(View.INVISIBLE);
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (((ToggleButton) v).isChecked()) {
