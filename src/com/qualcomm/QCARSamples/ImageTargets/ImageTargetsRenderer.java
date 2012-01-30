@@ -91,15 +91,16 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
     public void showDeleteButton()
     {
         Message message = new Message();
-        message.what = GUIManager.HIDE_DELETE_BUTTON;
+        message.what = GUIManager.SHOW_DELETE_BUTTON;
         mGUIManager.sendThreadSafeGUIMessage(message);
+        
     }
     
     /** Called from native to hide the delete button. */
     public void hideDeleteButton()
     {
         Message message = new Message();
-        message.what = GUIManager.SHOW_DELETE_BUTTON;
+        message.what = GUIManager.HIDE_DELETE_BUTTON;
         mGUIManager.sendThreadSafeGUIMessage(message);
     }
     
@@ -108,6 +109,22 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
     {
         Message message = new Message();
         message.what = GUIManager.TOGGLE_START_BUTTON;
+        mGUIManager.sendThreadSafeGUIMessage(message);
+    }
+    
+    /** Called from native to toggle the start button. */
+    public void showStartButton()
+    {
+        Message message = new Message();
+        message.what = GUIManager.SHOW_START_BUTTON;
+        mGUIManager.sendThreadSafeGUIMessage(message);
+    }
+    
+    /** Called from native to toggle the start button. */
+    public void hideClearButton()
+    {
+        Message message = new Message();
+        message.what = GUIManager.HIDE_CLEAR_BUTTON;
         mGUIManager.sendThreadSafeGUIMessage(message);
     }
     

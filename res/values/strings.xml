@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ImageTargets</string>
-    <string name="app_description">QCAR ImageTargets Sample Application</string>
-    <string name="button_start">Run</string>
-<string name="button_reset">Reset</string>
-<string name="button_clear">Clear</string>
-<string name="button_delete">Delete</string>
+    <string name="app_name">AR Turret Defense</string>
+    <string name="app_description">AR Turret Defense Game</string>
+    <string name="button_start">Pause</string>
+<string name="button_reset">Unpause</string>
+<string name="button_clear">Start</string>
+<string name="button_delete">Deletinate</string>
 </resources>

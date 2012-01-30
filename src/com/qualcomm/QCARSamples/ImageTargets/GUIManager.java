@@ -33,6 +33,8 @@ public class GUIManager {
     public static final int HIDE_DELETE_BUTTON = 1;
     public static final int TOGGLE_START_BUTTON = 2;
     public static final int DISPLAY_INFO_TOAST = 3;
+    public static final int SHOW_START_BUTTON = 4;
+    public static final int HIDE_CLEAR_BUTTON = 5;
     
     // Native methods to handle button clicks
     public native void nativeStart();
@@ -79,6 +81,16 @@ public class GUIManager {
                         Toast toast = Toast.makeText(applicationContext, text, duration);
                         toast.show();
                         break;
+                    case SHOW_START_BUTTON:
+                        if (startButton != null) {
+                            startButton.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                    case HIDE_CLEAR_BUTTON:
+                        if (clearButton != null) {
+                            clearButton.setVisibility(View.INVISIBLE);
+                        }
+                        break;
                 }
             }
         };
@@ -90,8 +102,9 @@ public class GUIManager {
     {
         if (overlayView == null)
             return;
-        
+
         startButton = (ToggleButton) overlayView.findViewById(R.id.start_button);
+    	startButton.setVisibility(View.INVISIBLE);
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (((ToggleButton) v).isChecked()) {
@@ -103,13 +116,19 @@ public class GUIManager {
         });
         
         clearButton = (Button) overlayView.findViewById(R.id.clear_button);
+    	clearButton.setVisibility(View.VISIBLE);
         clearButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                nativeClear();
+            	nativeClear();
+            	//startButton.setVisibility(View.VISIBLE);
+            	//clearButton.setVisibility(View.INVISIBLE);
             }
         });
         
         deleteButton = (Button) overlayView.findViewById(R.id.delete_button);
+    	//deleteButton.setVisibility(View.VISIBLE);
+    	//startButton.setVisibility(View.VISIBLE);
+    	//clearButton.setVisibility(View.VISIBLE);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 nativeDelete();

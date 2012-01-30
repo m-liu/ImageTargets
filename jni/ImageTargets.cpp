@@ -124,7 +124,9 @@ bool displayedMessage = false;
 
 
 static int lives = 5;
-static int startGame = 1;
+static int startGame = 0;
+static int seeTargets = 0;
+static int pauseGame = 0;
 static int currentLevel = 0;
 static int numEnemies = MAX_NUM_ENEMIES; //TODO: What's this var for? Nothing, apparently.
 
@@ -163,7 +165,6 @@ QCAR::Matrix44F projectionMatrix;
 static const float towerScale = 75.0f;
 static const float enemyScale = 50.0f;
 static const float missileScale = 75.0f;
-static const float snowballScale = 25.0f;
 
 void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber);
 void animateTower(QCAR::Matrix44F& towerMatrix);
@@ -182,7 +183,6 @@ void DrawSnowball (QCAR::Matrix44F ArrowMatrix, QCAR::Matrix44F ArrowProjection,
 void deinitAllMissiles ();
 void getMarkerOffset(int trackedCornerID, int &x_offset, int &y_offset);
 void convert2BoardCoord (int cornerID, QCAR::Matrix44F cornerMVM, QCAR::Matrix44F targetMVM, float &x, float &y);
-
 
 
 void
@@ -225,6 +225,77 @@ hideDeleteButton()
     jmethodID method = javaEnv->GetMethodID(javaClass, "hideDeleteButton", "()V");
     javaEnv->CallVoidMethod(javaObj, method);
 }
+
+void
+showStartButton()
+{
+    // For this application, buttons are handled by the Android SDK
+    // Use the environment and class stored in initNativeCallback
+    // to call a Java method that shows the delete button
+    jmethodID method = javaEnv->GetMethodID(javaClass, "showStartButton", "()V");
+    javaEnv->CallVoidMethod(javaObj, method);
+}
+
+
+void
+hideClearButton()
+{
+    // For this application, buttons are handled by the Android SDK
+    // Use the environment and class stored in initNativeCallback
+    // to call a Java method that hides the delete button
+    jmethodID method = javaEnv->GetMethodID(javaClass, "hideClearButton", "()V");
+    javaEnv->CallVoidMethod(javaObj, method);
+}
+
+JNIEXPORT void JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeStart(JNIEnv*, jobject)
+{
+			displayMessage("Game Paused");
+			pauseGame = 1;
+}
+
+
+JNIEXPORT void JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeReset(JNIEnv*, jobject)
+{
+  			displayMessage("Game Unpaused");
+			//update times
+			for (int i=0; i<MAX_NUM_ENEMIES; i++){
+				enemy[i].prevTime = getCurrentTime();  
+            }
+			
+			pauseGame = 0;
+
+}
+
+
+JNIEXPORT void JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeClear(JNIEnv*, jobject)
+{
+			if (seeTargets == 1)
+			{
+			startGame = 1;
+				//displayMessage("AUGMENTED REALITY\nTURRET DEFENSE GAME\nIS FUN!\n\nLEVEL 1 START!");
+				hideClearButton();
+				showStartButton();
+				startLevel(0);
+				for (int enemyNumber = 0; enemyNumber < numEnemies; enemyNumber++) {
+					enemy[enemyNumber].prevTime = getCurrentTime();
+				}	
+			}
+			else
+			{
+				displayMessage("Find the targets first!");
+			}
+			
+}
+JNIEXPORT void JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeDelete(JNIEnv*, jobject)
+{
+ 			displayMessage("D4");
+}
+
+
 
 JNIEXPORT int JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_getOpenGlEsVersionNative(JNIEnv *, jobject)
@@ -323,6 +394,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
     		DrawEnemy(LifeMatrix1, LifeProjection1, x_offset, y_offset);
 		    */
 
+				if (startGame == 1 && pauseGame == 0) {
             //animate and draw the enemy units in reference to the marker position
             for (int i=0; i<MAX_NUM_ENEMIES; i++){
                 QCAR::Matrix44F enemyMatrix = cornerMarkerModelViewMatrix;        
@@ -330,6 +402,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
                 QCAR::Matrix44F enemyProjection;
                 DrawEnemy(enemyMatrix, enemyProjection, x_offset, y_offset);
             }
+			}
         } //end enemy rendering
         
         //render towers and missiles
@@ -344,12 +417,15 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
             
 			//TODO: uncooment and take out the rest: Alton trying something out
 			//DrawTower(towerMatrix, towerProjection, 0); 
-            if (towerID < 2){
-			    DrawTower(towerMatrix, towerProjection, 0); 
-            }
-            else{
-                DrawTower(towerMatrix, towerProjection, 3); 
-            }
+			static int alternate = 0;
+			DrawTower(towerMatrix, towerProjection, alternate); 
+			/*if (alternate == 0){
+				alternate = 3;
+			}
+			else {
+				alternate = 0;
+			}
+			*/
 			//end TODO
             
             //render the missile relative to the corner marker
@@ -367,34 +443,23 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
             //animate missile with respect to corner marker
             QCAR::Matrix44F missileMatrix = cornerMarkerModelViewMatrix;    
             getMarkerOffset(trackedCornerID, x_offset, y_offset);
+			if (startGame == 1 && pauseGame == 0) {
             animateMissile(missileMatrix, towerID);
+			}
 #ifdef USE_OPENGL_ES_1_1
 #else
             QCAR::Matrix44F missileProjection;
-            if (towerID < 2){
-                DrawArrow(missileMatrix, missileProjection, x_offset, y_offset, 2); 
-            }
-            else{
-                DrawArrow(missileMatrix, missileProjection, x_offset, y_offset, 4); 
-            }
-
+            DrawArrow(missileMatrix, missileProjection, x_offset, y_offset, 0); 
 #endif
 
         }//end tower drawing
 
         // If this is our first time seeing the target, display a tip
         if (!displayedMessage) {
-		    //showDeleteButton();
+			displayMessage("Press Start!");
+			seeTargets = 1;
 			counterprevTime = getCurrentTime();
-			//TODO: move this at some point	
-			for (int enemyNumber = 0; enemyNumber < numEnemies; enemyNumber++) {
-			enemy[enemyNumber].prevTime = getCurrentTime();
-			}
-			if (startGame == 1)
-			{
-				startLevel(0);
-			}
-			displayMessage("LEVEL 1 START!");
+			//TODO: move this at some point			
             displayedMessage = true;
         }
 
@@ -742,7 +807,7 @@ void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber)
 	float dt4 = (float)(time4-missile[missileNumber].prevTime);          // from frame to frame
 	missile[missileNumber].prevTime = time4;
 			
-	//find target if there is no target
+	//find target if there is no target by cycling through enemies
 	if (missile[missileNumber].currentTarget == -1 && numEnemies > 0) {
 		missile[missileNumber].currentTarget = 0;
 		xdiff = enemy[0].X-missile[missileNumber].defaultX;
@@ -759,7 +824,7 @@ void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber)
 		}
 	}
 	
-	//if there is a target
+	//if there is a target, calculate distance and angle
 	if (missile[missileNumber].currentTarget != -1) {
 		xdiff = enemy[missile[missileNumber].currentTarget].X-missile[missileNumber].X;
 		ydiff = enemy[missile[missileNumber].currentTarget].Y-missile[missileNumber].Y;
@@ -771,6 +836,8 @@ void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber)
 		float ydist = sqrt(missile[missileNumber].speed*missile[missileNumber].speed-(xdist*xdist));
 		xdist = dt4*10.0f*xdist;
 		ydist = dt4*10.0f*ydist;
+		
+		//move missile towards target
 		if (enemy[missile[missileNumber].currentTarget].X > missile[missileNumber].X)
 			missile[missileNumber].X = missile[missileNumber].X + xdist;
 		else
@@ -780,14 +847,14 @@ void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber)
 		else
 			missile[missileNumber].Y = missile[missileNumber].Y - ydist;
 
-		//if there is a hit
+		//if missile is close, there may be a hit and missile is used up
 		if (missile[missileNumber].X-enemy[missile[missileNumber].currentTarget].X < 15 && missile[missileNumber].X-enemy[missile[missileNumber].currentTarget].X > -15 
 		&& missile[missileNumber].Y-enemy[missile[missileNumber].currentTarget].Y < 15 && missile[missileNumber].Y-enemy[missile[missileNumber].currentTarget].Y > -15 ) {
 			missile[missileNumber].X = missile[missileNumber].defaultX;
 			missile[missileNumber].Y = missile[missileNumber].defaultY;
 			enemy[missile[missileNumber].currentTarget].HP = enemy[missile[missileNumber].currentTarget].HP - ((missile[missileNumber].attack)/(enemy[missile[missileNumber].currentTarget].defense));
 
-			//if hit kills enemy
+			//if hit damages enemy enough, enemy is killed and and kill count is increased
 			if (enemy[missile[missileNumber].currentTarget].HP <= 0.0f) {
 				int temp = missile[missileNumber].currentTarget;
 				enemy[missile[missileNumber].currentTarget].X = 10000.0f;
@@ -795,12 +862,15 @@ void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber)
 				enemy[missile[missileNumber].currentTarget].HP = 0.0f;
 				enemy[missile[missileNumber].currentTarget].count = -1;
 				level[currentLevel].killCount = level[currentLevel].killCount + 1;
+				
+				//if enough enemies are killed, new level is started
 				if (level[currentLevel].killCount >=10) {
 					level[currentLevel].end = 1;
 					currentLevel++;
 					startLevel(currentLevel);
 				}
-				for (int i = 0; i < 2; i++) { //FIXME: why is 2 here?
+				//if other missiles are aiming at this enemy, reset their target
+				for (int i = 0; i < 2; i++) {
 					if (missile[i].currentTarget == temp) {
 						missile[i].X = missile[i].defaultX;
 						missile[i].Y = missile[i].defaultY;
@@ -814,7 +884,7 @@ void animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber)
 			//missile[missileNumber].currentTarget = -1;
 		}
 	
-		//if target is too far away
+		//if target is too far away, reset the target
 		else if (missile[missileNumber].X-enemy[missile[missileNumber].currentTarget].X > 150 || missile[missileNumber].X-enemy[missile[missileNumber].currentTarget].X < -150 
 		|| missile[missileNumber].Y-enemy[missile[missileNumber].currentTarget].Y > 150 || missile[missileNumber].Y-enemy[missile[missileNumber].currentTarget].Y < -150 ) {
 			missile[missileNumber].X = missile[missileNumber].defaultX;
@@ -946,7 +1016,7 @@ if (nextLevel == 0)
 		makeEnemy (0, 8, 1160);
 		makeEnemy (0, 9, 1180);
 		//stuff isnt initiated at this point
-		//displayMessage("LEVEL 1 START!");
+		displayMessage("LEVEL 1 START!");
 		level[0].start = 1;
 	}
 
@@ -1082,24 +1152,20 @@ void DrawIgloo (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, in
 
 void DrawArrow (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection, int x_offset, int y_offset, int type) {
 	struct graphics_arrays arrow_animate_array = get_graphics_stats (missileFrameCounter, 0);
-	const Texture* const thisTexture = textures[type];
+	const Texture* const thisTexture = textures[2];
     
     //offset the object based on corner marker in view
     SampleUtils::translatePoseMatrix(x_offset, y_offset, 0, &MissileMatrix.data[0]);
-	if (type == 2) {
-        SampleUtils::scalePoseMatrix(missileScale, missileScale, missileScale, &MissileMatrix.data[0]);
-	}
-	else if (type == 4) {
-        SampleUtils::scalePoseMatrix(snowballScale, snowballScale, snowballScale, &MissileMatrix.data[0]);
-    }
+
+    SampleUtils::scalePoseMatrix(missileScale, missileScale, missileScale, &MissileMatrix.data[0]);
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &MissileMatrix.data[0], &MissileProjection.data[0]);
     glUseProgram(shaderProgramID);
-	if (type == 2) {
+	if (type == 0) {
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.Verts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.Normals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.TexCoords);
 	}
-	else if (type == 4) {
+	else if (type == 1) {
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, snowballVerts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, snowballNormals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, snowballTexCoords);
@@ -1111,10 +1177,10 @@ void DrawArrow (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
     glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&MissileProjection.data[0] );
-	if (type == 2) {
+	if (type == 0) {
 		glDrawArrays(GL_TRIANGLES, 0, (int)*arrow_animate_array.NumVerts);
 	}
-	else if (type == 4) {
+	else if (type == 1) {
 		glDrawArrays(GL_TRIANGLES, 0, snowballNumVerts);
 	}
 	SampleUtils::checkGlError("ImageTargets renderFrame");

@@ -296,6 +296,10 @@ public class ImageTargets extends Activity {
 			mGlView.setVisibility(View.VISIBLE);
 			mGlView.onResume();
 		}
+        if (mGUIManager != null)
+        {
+            mGUIManager.initButtons();
+        }
 	}
 
 	/** Called when the system is about to start resuming a previous activity. */
@@ -445,7 +449,13 @@ public class ImageTargets extends Activity {
 					// background is configured.
 					addContentView(mGlView, new LayoutParams(
 							LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-
+					
+                    addContentView(mGUIManager.getOverlayView(), new LayoutParams(
+                            LayoutParams.FILL_PARENT,
+                            LayoutParams.FILL_PARENT));
+					
+                    mGUIManager.initButtons();
+                    
 					// Start the camera:
 					updateApplicationStatus(APPSTATUS_CAMERA_RUNNING);
 				}
@@ -557,14 +567,14 @@ public class ImageTargets extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
-		menu.add("Toggle flash");
-		menu.add("Autofocus");
+		menu.add("Toggle flashLOL");
+		menu.add("AutofocusHEH");
 
 		SubMenu focusModes = menu.addSubMenu("Focus Modes");
-		focusModes.add("Auto Focus").setCheckable(true);
-		focusModes.add("Fixed Focus").setCheckable(true);
-		focusModes.add("Infinity").setCheckable(true);
-		focusModes.add("Macro Mode").setCheckable(true);
+		focusModes.add("Auto FocusA").setCheckable(true);
+		focusModes.add("Fixed FocusB").setCheckable(true);
+		focusModes.add("InfinityC").setCheckable(true);
+		focusModes.add("Macro ModeD").setCheckable(true);
 
 		return true;
 	}
