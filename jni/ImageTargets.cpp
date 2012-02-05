@@ -240,7 +240,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeUnpause(JNIEnv*, job
 JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeStore(JNIEnv*, jobject)
 {
-			displayMessage("Game Paused\n\n\nWELCOME TO THE STORE!");
+			//displayMessage("Game Paused\n\n\nWELCOME TO THE STORE!");
 			hidePauseButton();
 			pauseGame = 1;
 }
@@ -249,7 +249,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeStore(JNIEnv*, jobje
 JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeLeave(JNIEnv*, jobject)
 {
-  			displayMessage("Game Unpaused\n\n\n THANKS FOR SHOPPING!");
+  			//displayMessage("Game Unpaused\n\n\n THANKS FOR SHOPPING!");
 			//update times
 			for (int i=0; i<MAX_NUM_ENEMIES; i++){
 				enemy[i].prevTime = getCurrentTime();  

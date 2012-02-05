@@ -40,6 +40,7 @@ public class GUIManager {
     public static final int SHOW_STORE_BUTTON = 7;
     public static final int HIDE_PAUSE_BUTTON = 8;
     public static final int HIDE_STORE_BUTTON = 9;
+    
     // Native methods to handle button clicks
     public native void nativePause();
     public native void nativeStart();
@@ -47,7 +48,6 @@ public class GUIManager {
     public native void nativeLeave();
     public native void nativeUnpause();
     public native void nativeDelete();
-    
     
     /** Initialize the GUIManager. */
     public GUIManager(Context context)
@@ -122,6 +122,8 @@ public class GUIManager {
         };
     }
     
+
+    
     
     /** Button clicks should call corresponding native functions. */
     public void initButtons()
@@ -144,7 +146,7 @@ public class GUIManager {
         
         storeButton = (ToggleButton) overlayView.findViewById(R.id.store_button);
     	storeButton.setVisibility(View.INVISIBLE);
-        
+        /*
     	storeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (((ToggleButton) v).isChecked()) {
@@ -153,7 +155,7 @@ public class GUIManager {
                     nativeLeave();
                 }
             }
-        });
+        });*/
         
         startButton = (Button) overlayView.findViewById(R.id.start_button);
     	startButton.setVisibility(View.VISIBLE);

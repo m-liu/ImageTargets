@@ -17,6 +17,7 @@ import java.util.Vector;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
@@ -30,6 +31,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import android.widget.ToggleButton;
 
 import com.qualcomm.QCAR.QCAR;
 import com.qualcomm.QCARSamples.ImageTargets.GUIManager;
@@ -46,6 +50,8 @@ public class ImageTargets extends Activity {
 	private static final int APPSTATUS_CAMERA_STOPPED = 5;
 	private static final int APPSTATUS_CAMERA_RUNNING = 6;
 
+    private static final int DIALOG_STORE = 100;
+	
 	// Name of the native dynamic libraries to load:
 	private static final String NATIVE_LIB_SAMPLE = "ImageTargets";
 	private static final String NATIVE_LIB_QCAR = "QCAR";
@@ -205,7 +211,27 @@ public class ImageTargets extends Activity {
 			updateApplicationStatus(APPSTATUS_INITED);
 		}
 	}
-
+	
+    public Dialog onCreateDialog(int id) {
+    	AlertDialog dialog = null;
+        switch (id) {
+        case DIALOG_STORE:
+            final CharSequence[] items = {"Castle: 2 ZP", "Igloo: 4 ZP", "Terran Bunker: 6 ZP", "Protoss Cannon: 6 ZP"};
+        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Welcome to the Store! Buy:")
+            .setItems(items, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(getApplicationContext(), "build item #" + item, duration);
+                    toast.show();
+                }
+            });
+            dialog = builder.create();
+            
+        }
+        return dialog;
+    }
+	
 	/**
 	 * Called when the activity first starts or the user navigates back to an
 	 * activity.
@@ -455,6 +481,19 @@ public class ImageTargets extends Activity {
                             LayoutParams.FILL_PARENT));
 					
                     mGUIManager.initButtons();
+                    //TO DO: There can only be one on click listener... but I can't create the showDialog from the GUI Manager, not the activity
+                    ToggleButton storeButton;
+                    storeButton = (ToggleButton) mGUIManager.getOverlayView().findViewById(R.id.store_button);
+                    storeButton.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            if (((ToggleButton) v).isChecked()) {
+                                mGUIManager.nativeStore();
+                                showDialog(DIALOG_STORE);
+                            } else {
+                            	mGUIManager.nativeLeave();
+                            }
+                        }
+                    });
                     
 					// Start the camera:
 					updateApplicationStatus(APPSTATUS_CAMERA_RUNNING);
@@ -569,7 +608,7 @@ public class ImageTargets extends Activity {
 
 		menu.add("Toggle flash");
 		menu.add("Autofocus");
-
+		menu.add("Nothing");
 		SubMenu focusModes = menu.addSubMenu("Focus Modes");
 		focusModes.add("Auto Focus").setCheckable(true);
 		focusModes.add("Fixed Focus").setCheckable(true);
