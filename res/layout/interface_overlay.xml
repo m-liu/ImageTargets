@@ -5,24 +5,24 @@
     android:layout_height="fill_parent"
     android:padding="15dip">
     
-    <ToggleButton android:id="@+id/start_button"
+    <ToggleButton android:id="@+id/pause_button"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="100px"
         android:layout_height="70px"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:textOff="@string/button_start"
-        android:textOn="@string/button_reset"
+        android:textOff="@string/button_pause"
+        android:textOn="@string/button_unpause"
     />
-    
-    <Button android:id="@+id/clear_button"
+        
+    <Button android:id="@+id/start_button"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="100px"
         android:layout_height="70px"
-        android:layout_toLeftOf="@id/start_button"
+        android:layout_toLeftOf="@id/pause_button"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="10dip"
-        android:text="@string/button_clear"
+        android:text="@string/button_start"
     />
     
     <Button android:id="@+id/delete_button"
@@ -33,6 +33,16 @@
         android:layout_alignParentTop="true"
         android:text="@string/button_delete"
         android:visibility="invisible"
+    />
+    
+    <ToggleButton android:id="@+id/store_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="100px"
+        android:layout_height="70px"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:textOff="@string/button_store"
+        android:textOn="@string/button_leave"
     />
     
 </RelativeLayout>

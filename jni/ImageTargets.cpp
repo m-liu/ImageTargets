@@ -119,12 +119,22 @@ void convert2BoardCoord (int cornerID, QCAR::Matrix44F cornerMVM, QCAR::Matrix44
 
 
 void
-toggleStartButton()
+togglePauseButton()
 {
     // For this application, buttons are handled by the Android SDK
     // Use the environment and class stored in initNativeCallback
-    // to call a Java method that toggles the start button
-    jmethodID method = javaEnv->GetMethodID(javaClass, "toggleStartButton", "()V");
+    // to call a Java method that toggles the store button
+    jmethodID method = javaEnv->GetMethodID(javaClass, "togglePauseButton", "()V");
+    javaEnv->CallVoidMethod(javaObj, method);
+}
+
+void
+toggleStoreButton()
+{
+    // For this application, buttons are handled by the Android SDK
+    // Use the environment and class stored in initNativeCallback
+    // to call a Java method that toggles the pause button
+    jmethodID method = javaEnv->GetMethodID(javaClass, "toggleStoreButton", "()V");
     javaEnv->CallVoidMethod(javaObj, method);
 }
 
@@ -150,23 +160,52 @@ hideDeleteButton()
 }
 
 void
-showStartButton()
+showPauseButton()
 {
     // For this application, buttons are handled by the Android SDK
     // Use the environment and class stored in initNativeCallback
-    // to call a Java method that shows the delete button
-    jmethodID method = javaEnv->GetMethodID(javaClass, "showStartButton", "()V");
+    // to call a Java method that shows the pause button
+    jmethodID method = javaEnv->GetMethodID(javaClass, "showPauseButton", "()V");
     javaEnv->CallVoidMethod(javaObj, method);
 }
 
-
 void
-hideClearButton()
+hidePauseButton()
 {
     // For this application, buttons are handled by the Android SDK
     // Use the environment and class stored in initNativeCallback
-    // to call a Java method that hides the delete button
-    jmethodID method = javaEnv->GetMethodID(javaClass, "hideClearButton", "()V");
+    // to call a Java method that hides the start button
+    jmethodID method = javaEnv->GetMethodID(javaClass, "hidePauseButton", "()V");
+    javaEnv->CallVoidMethod(javaObj, method);
+}
+
+void
+showStoreButton()
+{
+    // For this application, buttons are handled by the Android SDK
+    // Use the environment and class stored in initNativeCallback
+    // to call a Java method that shows the store button
+    jmethodID method = javaEnv->GetMethodID(javaClass, "showStoreButton", "()V");
+    javaEnv->CallVoidMethod(javaObj, method);
+}
+
+void
+hideStoreButton()
+{
+    // For this application, buttons are handled by the Android SDK
+    // Use the environment and class stored in initNativeCallback
+    // to call a Java method that hides the start button
+    jmethodID method = javaEnv->GetMethodID(javaClass, "hideStoreButton", "()V");
+    javaEnv->CallVoidMethod(javaObj, method);
+}
+
+void
+hideStartButton()
+{
+    // For this application, buttons are handled by the Android SDK
+    // Use the environment and class stored in initNativeCallback
+    // to call a Java method that hides the start button
+    jmethodID method = javaEnv->GetMethodID(javaClass, "hideStartButton", "()V");
     javaEnv->CallVoidMethod(javaObj, method);
 }
 
@@ -176,36 +215,60 @@ extern "C"
 #endif
 
 JNIEXPORT void JNICALL
-Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeStart(JNIEnv*, jobject)
+Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativePause(JNIEnv*, jobject)
 {
 			displayMessage("Game Paused");
+			hideStoreButton();
 			pauseGame = 1;
 }
 
 
 JNIEXPORT void JNICALL
-Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeReset(JNIEnv*, jobject)
+Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeUnpause(JNIEnv*, jobject)
 {
   			displayMessage("Game Unpaused");
 			//update times
 			for (int i=0; i<MAX_NUM_ENEMIES; i++){
 				enemy[i].prevTime = getCurrentTime();  
             }
-			
+			showStoreButton();
 			pauseGame = 0;
 
 }
 
 
 JNIEXPORT void JNICALL
-Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeClear(JNIEnv*, jobject)
+Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeStore(JNIEnv*, jobject)
+{
+			displayMessage("Game Paused\n\n\nWELCOME TO THE STORE!");
+			hidePauseButton();
+			pauseGame = 1;
+}
+
+
+JNIEXPORT void JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeLeave(JNIEnv*, jobject)
+{
+  			displayMessage("Game Unpaused\n\n\n THANKS FOR SHOPPING!");
+			//update times
+			for (int i=0; i<MAX_NUM_ENEMIES; i++){
+				enemy[i].prevTime = getCurrentTime();  
+            }
+			showPauseButton();
+			pauseGame = 0;
+
+}
+
+JNIEXPORT void JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeStart(JNIEnv*, jobject)
 {
 			if (seeTargets == 1)
 			{
 			startGame = 1;
 				//displayMessage("AUGMENTED REALITY\nTURRET DEFENSE GAME\nIS FUN!\n\nLEVEL 1 START!");
-				hideClearButton();
-				showStartButton();
+				hideStartButton();
+				showPauseButton();
+				showStoreButton();
 				startLevel(0);
 				for (int enemyNumber = 0; enemyNumber < MAX_NUM_ENEMIES; enemyNumber++) {
 					enemy[enemyNumber].prevTime = getCurrentTime();

@@ -18,9 +18,10 @@ public class GUIManager {
 
     // Custom views
     private View overlayView;
-    private ToggleButton startButton;
-    private Button clearButton;
+    private ToggleButton pauseButton;
+    private Button startButton;
     private Button deleteButton;
+    private ToggleButton storeButton;
     
     // The main application context
     private Context applicationContext;
@@ -31,15 +32,20 @@ public class GUIManager {
     // Flags for our Handler
     public static final int SHOW_DELETE_BUTTON = 0;
     public static final int HIDE_DELETE_BUTTON = 1;
-    public static final int TOGGLE_START_BUTTON = 2;
+    public static final int TOGGLE_PAUSE_BUTTON = 2;
     public static final int DISPLAY_INFO_TOAST = 3;
-    public static final int SHOW_START_BUTTON = 4;
-    public static final int HIDE_CLEAR_BUTTON = 5;
-    
+    public static final int SHOW_PAUSE_BUTTON = 4;
+    public static final int HIDE_START_BUTTON = 5;
+    public static final int TOGGLE_STORE_BUTTON = 6;
+    public static final int SHOW_STORE_BUTTON = 7;
+    public static final int HIDE_PAUSE_BUTTON = 8;
+    public static final int HIDE_STORE_BUTTON = 9;
     // Native methods to handle button clicks
+    public native void nativePause();
     public native void nativeStart();
-    public native void nativeClear();
-    public native void nativeReset();
+    public native void nativeStore();
+    public native void nativeLeave();
+    public native void nativeUnpause();
     public native void nativeDelete();
     
     
@@ -70,9 +76,9 @@ public class GUIManager {
                             deleteButton.setVisibility(View.INVISIBLE);
                         }
                         break;
-                    case TOGGLE_START_BUTTON:
-                        if (startButton != null) {
-                            startButton.setChecked(true);
+                    case TOGGLE_PAUSE_BUTTON:
+                        if (pauseButton != null) {
+                            pauseButton.setChecked(true);
                         }
                         break;
                     case DISPLAY_INFO_TOAST:
@@ -81,14 +87,34 @@ public class GUIManager {
                         Toast toast = Toast.makeText(applicationContext, text, duration);
                         toast.show();
                         break;
-                    case SHOW_START_BUTTON:
-                        if (startButton != null) {
-                            startButton.setVisibility(View.VISIBLE);
+                    case SHOW_PAUSE_BUTTON:
+                        if (pauseButton != null) {
+                            pauseButton.setVisibility(View.VISIBLE);
                         }
                         break;
-                    case HIDE_CLEAR_BUTTON:
-                        if (clearButton != null) {
-                            clearButton.setVisibility(View.INVISIBLE);
+                    case HIDE_START_BUTTON:
+                        if (startButton != null) {
+                            startButton.setVisibility(View.INVISIBLE);
+                        }
+                        break;
+                    case TOGGLE_STORE_BUTTON:
+                        if (storeButton != null) {
+                            storeButton.setChecked(true);
+                        }
+                        break;
+                    case SHOW_STORE_BUTTON:
+                        if (storeButton != null) {
+                            storeButton.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                    case HIDE_PAUSE_BUTTON:
+                        if (pauseButton != null) {
+                            pauseButton.setVisibility(View.INVISIBLE);
+                        }
+                        break;
+                    case HIDE_STORE_BUTTON:
+                        if (storeButton != null) {
+                            storeButton.setVisibility(View.INVISIBLE);
                         }
                         break;
                 }
@@ -103,32 +129,41 @@ public class GUIManager {
         if (overlayView == null)
             return;
 
-        startButton = (ToggleButton) overlayView.findViewById(R.id.start_button);
-    	//startButton.setVisibility(View.INVISIBLE);
-        startButton.setOnClickListener(new View.OnClickListener() {
+        pauseButton = (ToggleButton) overlayView.findViewById(R.id.pause_button);
+    	pauseButton.setVisibility(View.INVISIBLE);
+        pauseButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (((ToggleButton) v).isChecked()) {
-                    nativeStart();
+                    nativePause();
                 } else {
-                    nativeReset();
+                    nativeUnpause();
                 }
             }
         });
         
-        clearButton = (Button) overlayView.findViewById(R.id.clear_button);
-    	clearButton.setVisibility(View.VISIBLE);
-        clearButton.setOnClickListener(new View.OnClickListener() {
+        
+        storeButton = (ToggleButton) overlayView.findViewById(R.id.store_button);
+    	storeButton.setVisibility(View.INVISIBLE);
+        
+    	storeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	nativeClear();
-            	//startButton.setVisibility(View.VISIBLE);
-            	//clearButton.setVisibility(View.INVISIBLE);
+                if (((ToggleButton) v).isChecked()) {
+                    nativeStore();
+                } else {
+                    nativeLeave();
+                }
+            }
+        });
+        
+        startButton = (Button) overlayView.findViewById(R.id.start_button);
+    	startButton.setVisibility(View.VISIBLE);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	nativeStart();
             }
         });
         
         deleteButton = (Button) overlayView.findViewById(R.id.delete_button);
-    	//deleteButton.setVisibility(View.VISIBLE);
-    	//startButton.setVisibility(View.VISIBLE);
-    	//clearButton.setVisibility(View.VISIBLE);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 nativeDelete();
@@ -143,13 +178,15 @@ public class GUIManager {
         if (overlayView == null)
             return;
         
+        pauseButton.setOnClickListener(null);
         startButton.setOnClickListener(null);
-        clearButton.setOnClickListener(null);
         deleteButton.setOnClickListener(null);
+        storeButton.setOnClickListener(null);
         
+        pauseButton = null;
         startButton = null;
-        clearButton = null;
         deleteButton = null;
+        storeButton = null;
     }
     
     

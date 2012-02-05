@@ -567,14 +567,14 @@ public class ImageTargets extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
-		menu.add("Toggle flashLOL");
-		menu.add("AutofocusHEH");
+		menu.add("Toggle flash");
+		menu.add("Autofocus");
 
 		SubMenu focusModes = menu.addSubMenu("Focus Modes");
-		focusModes.add("Auto FocusA").setCheckable(true);
-		focusModes.add("Fixed FocusB").setCheckable(true);
-		focusModes.add("InfinityC").setCheckable(true);
-		focusModes.add("Macro ModeD").setCheckable(true);
+		focusModes.add("Auto Focus").setCheckable(true);
+		focusModes.add("Fixed Focus").setCheckable(true);
+		focusModes.add("Infinity").setCheckable(true);
+		focusModes.add("Macro Mode").setCheckable(true);
 
 		return true;
 	}

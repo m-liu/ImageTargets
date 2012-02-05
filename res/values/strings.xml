@@ -2,8 +2,10 @@
 <resources>
     <string name="app_name">AR Turret Defense</string>
     <string name="app_description">AR Turret Defense Game</string>
-    <string name="button_start">Pause</string>
-<string name="button_reset">Unpause</string>
-<string name="button_clear">Start</string>
+    <string name="button_pause">Pause</string>
+<string name="button_unpause">Unpause</string>
+<string name="button_start">Start</string>
+<string name="button_store">Store</string>
+<string name="button_leave">Leave Store</string>
 <string name="button_delete">Deletinate</string>
 </resources>
