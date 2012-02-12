@@ -30,7 +30,8 @@ extern jclass javaClass;
 
 //display a message
 void displayMessage(char* message);
-
+void displayScore(char* score);
+void displayZen(char* zen);
 
 //initislize the levels
 void initLevels ();

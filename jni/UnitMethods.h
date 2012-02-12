@@ -43,7 +43,10 @@ extern MissileUnit missile_type[NUM_MISSILE_TYPES];
 //Global Level struct
 extern Level level[NUM_LEVELS];
 extern int currentLevel;
-extern int lives;
+extern int currentLevel;
+extern int currentScore;
+extern int currentZen;
+extern int currentLives;
 
 
 double getCurrentTime();

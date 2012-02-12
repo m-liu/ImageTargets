@@ -6,15 +6,18 @@
 
 package com.qualcomm.QCARSamples.ImageTargets;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.LightingColorFilter;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-public class GUIManager {
+public class GUIManager extends Activity{
 
     // Custom views
     private View overlayView;
@@ -22,6 +25,11 @@ public class GUIManager {
     private Button startButton;
     private Button deleteButton;
     private ToggleButton storeButton;
+    private Button statsButton;
+    private Button upgradeButton;
+    private Button creditsButton;
+    private TextView currentScore;
+    private TextView currentZen;
     
     // The main application context
     private Context applicationContext;
@@ -40,6 +48,12 @@ public class GUIManager {
     public static final int SHOW_STORE_BUTTON = 7;
     public static final int HIDE_PAUSE_BUTTON = 8;
     public static final int HIDE_STORE_BUTTON = 9;
+    public static final int SHOW_UPGRADE_BUTTON = 10;
+    public static final int HIDE_UPGRADE_BUTTON = 11;
+    public static final int SHOW_STATS_BUTTON = 12;
+    public static final int HIDE_STATS_BUTTON = 13;
+    public static final int SHOW_CREDITS_BUTTON = 14;
+    public static final int HIDE_CREDITS_BUTTON = 15;
     
     // Native methods to handle button clicks
     public native void nativePause();
@@ -48,6 +62,9 @@ public class GUIManager {
     public native void nativeLeave();
     public native void nativeUnpause();
     public native void nativeDelete();
+    public native void nativeUpgrade();
+    public native void nativeStats();
+    public native void nativeCredits();
     
     /** Initialize the GUIManager. */
     public GUIManager(Context context)
@@ -117,6 +134,36 @@ public class GUIManager {
                             storeButton.setVisibility(View.INVISIBLE);
                         }
                         break;
+                    case SHOW_UPGRADE_BUTTON:
+                        if (upgradeButton != null) {
+                        	upgradeButton.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                    case HIDE_UPGRADE_BUTTON:
+                        if (upgradeButton != null) {
+                        	upgradeButton.setVisibility(View.INVISIBLE);
+                        }
+                        break;
+                    case SHOW_STATS_BUTTON:
+                        if (statsButton != null) {
+                            statsButton.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                    case HIDE_STATS_BUTTON:
+                        if (statsButton != null) {
+                            statsButton.setVisibility(View.INVISIBLE);
+                        }
+                        break;
+                    case SHOW_CREDITS_BUTTON:
+                        if (creditsButton != null) {
+                        	creditsButton.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                    case HIDE_CREDITS_BUTTON:
+                        if (creditsButton != null) {
+                        	creditsButton.setVisibility(View.INVISIBLE);
+                        }
+                        break;
                 }
             }
         };
@@ -132,7 +179,7 @@ public class GUIManager {
             return;
 
         pauseButton = (ToggleButton) overlayView.findViewById(R.id.pause_button);
-    	pauseButton.setVisibility(View.INVISIBLE);
+        pauseButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFFAA0000));
         pauseButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (((ToggleButton) v).isChecked()) {
@@ -145,8 +192,8 @@ public class GUIManager {
         
         
         storeButton = (ToggleButton) overlayView.findViewById(R.id.store_button);
-    	storeButton.setVisibility(View.INVISIBLE);
-        /*
+        storeButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF00AA00));
+    	/*
     	storeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (((ToggleButton) v).isChecked()) {
@@ -158,7 +205,7 @@ public class GUIManager {
         });*/
         
         startButton = (Button) overlayView.findViewById(R.id.start_button);
-    	startButton.setVisibility(View.VISIBLE);
+        startButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF00AA00));
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	nativeStart();
@@ -171,6 +218,35 @@ public class GUIManager {
                 nativeDelete();
             }
         });
+        
+        upgradeButton = (Button) overlayView.findViewById(R.id.upgrade_button);
+        upgradeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                nativeUpgrade();
+            }
+        });
+        
+        statsButton = (Button) overlayView.findViewById(R.id.stats_button);
+        statsButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF0000AA));
+        statsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                nativeStats();
+            }
+        });
+        creditsButton = (Button) overlayView.findViewById(R.id.credits_button);
+        creditsButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFFAAAA00));
+        creditsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                nativeCredits();
+            }
+        });
+        
+        currentScore = (TextView) overlayView.findViewById(R.id.current_score);
+    	currentScore.setText(String.valueOf(1));
+    	
+        currentZen = (TextView) overlayView.findViewById(R.id.current_zen);
+    	currentZen.setText(String.valueOf(1));
+
     }
     
     
@@ -198,6 +274,34 @@ public class GUIManager {
         mainActivityHandler.sendMessage(message);
     }
     
+    public void newScore(String score)
+    {
+    	//SCREW YOU FINAL FOR WASTING HOURS
+    	final String temp = score;
+    	//extended activity. Hopefully not too much overhead?
+    	runOnUiThread(new Runnable() {
+    		
+    	     public void run() {
+    	    	 
+             	currentScore.setText(temp);
+
+    	    }
+    	});
+
+    }
+    public void newZen(String zen)
+    {
+    	final String temp = zen;
+    	//extended activity. Hopefully not too much overhead?
+    	runOnUiThread(new Runnable() {
+    		
+    	     public void run() {
+    	    	 
+             	currentZen.setText(temp);
+
+    	    }
+    	});
+    }
     
     /** Getter for the overlay view. */
     public View getOverlayView()

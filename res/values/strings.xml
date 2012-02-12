@@ -7,5 +7,8 @@
 <string name="button_start">Start</string>
 <string name="button_store">Store</string>
 <string name="button_leave">Leave Store</string>
+<string name="button_upgrade">Upgrade</string>
+<string name="button_stats">View Stats</string>
+<string name="button_credits">Credits</string>
 <string name="button_delete">Deletinate</string>
 </resources>

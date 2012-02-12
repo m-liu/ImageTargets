@@ -35,6 +35,7 @@ struct EnemyUnit
 	float max_HP;
 	float speed;
 	float defense;
+	float score;
 	float count;
     double prevTime;
 };

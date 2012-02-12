@@ -161,6 +161,54 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
         mGUIManager.sendThreadSafeGUIMessage(message);
     }
     
+    /** Called from native to toggle the start button. */
+    public void showUpgradeButton()
+    {
+        Message message = new Message();
+        message.what = GUIManager.SHOW_UPGRADE_BUTTON;
+        mGUIManager.sendThreadSafeGUIMessage(message);
+    }
+    
+    /** Called from native to toggle the start button. */
+    public void hideUpgradeButton()
+    {
+        Message message = new Message();
+        message.what = GUIManager.HIDE_UPGRADE_BUTTON;
+        mGUIManager.sendThreadSafeGUIMessage(message);
+    }
+    
+    /** Called from native to toggle the start button. */
+    public void showStatsButton()
+    {
+        Message message = new Message();
+        message.what = GUIManager.SHOW_STATS_BUTTON;
+        mGUIManager.sendThreadSafeGUIMessage(message);
+    }
+    
+    /** Called from native to toggle the start button. */
+    public void hideStatsButton()
+    {
+        Message message = new Message();
+        message.what = GUIManager.HIDE_STATS_BUTTON;
+        mGUIManager.sendThreadSafeGUIMessage(message);
+    }
+    
+    /** Called from native to toggle the start button. */
+    public void showCreditsButton()
+    {
+        Message message = new Message();
+        message.what = GUIManager.SHOW_CREDITS_BUTTON;
+        mGUIManager.sendThreadSafeGUIMessage(message);
+    }
+    
+    /** Called from native to toggle the start button. */
+    public void hideCreditsButton()
+    {
+        Message message = new Message();
+        message.what = GUIManager.HIDE_CREDITS_BUTTON;
+        mGUIManager.sendThreadSafeGUIMessage(message);
+    }	
+    
     /** Called from native to display a message. */
     public void displayMessage(String text)
     {
@@ -168,6 +216,16 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
         message.what = GUIManager.DISPLAY_INFO_TOAST;
         message.obj = text;
         mGUIManager.sendThreadSafeGUIMessage(message);
+    }
+    
+    public void displayScore(String score)
+    {
+        mGUIManager.newScore(score);
+    }
+    
+    public void displayZen(String zen)
+    {
+    	mGUIManager.newZen(zen);
     }
     
     /** Setter for the gui manager. */

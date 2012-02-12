@@ -35,6 +35,7 @@ void makeEnemy(int enemyType, int enemyNumber, int delay)
 	enemy[enemyNumber].HP = enemy_type[enemyType].max_HP;
 	enemy[enemyNumber].speed = enemy_type[enemyType].speed;
 	enemy[enemyNumber].defense = enemy_type[enemyType].defense;
+	enemy[enemyNumber].score = enemy_type[enemyType].score;
 	enemy[enemyNumber].count = delay;
     enemy[enemyNumber].prevTime = getCurrentTime();
 }
@@ -66,7 +67,7 @@ void initUnitDB () {
     //enemy initialization
     //strcpy(enemy_type[0].name, "HeadlessCow");
     enemy_type[0].type = 1;
-    enemy_type[0].max_HP = 10.0f;
+    enemy_type[0].max_HP = 25.0f;
     enemy_type[0].X = 10000.0f;
     enemy_type[0].Y = -10000.0f;
     enemy_type[0].HP = enemy_type[0].max_HP;
@@ -75,7 +76,7 @@ void initUnitDB () {
 
     strcpy(enemy_type[0].name, "Zombie");
     enemy_type[1].type = 2;
-    enemy_type[1].max_HP = 12.0f;
+    enemy_type[1].max_HP = 40.0f;
     enemy_type[1].X = 10000.0f;
     enemy_type[1].Y = -10000.0f;
     enemy_type[1].HP = enemy_type[1].max_HP;
@@ -192,9 +193,12 @@ int checkMissileContact(int missileNumber)
 				enemy[missile[missileNumber].currentTarget].Y = -10000.0f;
 				enemy[missile[missileNumber].currentTarget].HP = 0.0f;
 				enemy[missile[missileNumber].currentTarget].count = -1;
-	
-                level[currentLevel].killCount = level[currentLevel].killCount + 1;
 				
+				currentScore += enemy[missile[missileNumber].currentTarget].score;
+                //TODO: Uncomment
+				//updateScore((int)currentScore);
+				level[currentLevel].killCount = level[currentLevel].killCount + 1;
+
 				//if enough enemies are killed, new level is started
 				if (level[currentLevel].killCount >=10) {
 					level[currentLevel].end = 1;
@@ -264,17 +268,17 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber, int x_offset, i
 		else {
 			//enemy[enemyNumber].count += 1;
 			if (enemy[enemyNumber].Y < 0.0f) {
-				enemy[enemyNumber].Y += dt4 * 50.0f * enemy[enemyNumber].speed;
+				enemy[enemyNumber].Y += dt4 * 10.0f * enemy[enemyNumber].speed;
 				direction = 90.0f;
 			}
             else
 			{
-				enemy[enemyNumber].X -= dt4 * 50.0f * enemy[enemyNumber].speed;
+				enemy[enemyNumber].X -= dt4 * 10.0f * enemy[enemyNumber].speed;
 				direction = 180.0f;
 			}
 			if (enemy[enemyNumber].X < 0.0f) {
-				lives = lives - 1;
-				if (lives == 0 ) {
+				currentLives = currentLives - 1;
+				if (currentLives == 0 ) {
 					for (int enemyNumber2 = 0; enemyNumber2 < MAX_NUM_ENEMIES; enemyNumber2++) {
 						enemy[enemyNumber2].X = 10000.0f;
 						enemy[enemyNumber2].Y = -10000.0f;

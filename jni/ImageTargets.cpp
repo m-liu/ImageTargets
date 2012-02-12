@@ -70,9 +70,10 @@ jclass javaClass;
 //Global Level struct
 Level level[NUM_LEVELS];
 int currentLevel = 0;
-int lives = 5;
+int currentLives = 5;
 
-
+int currentScore = 0;
+int currentZen = 0;
 
 bool displayedMessage = false;
 
@@ -199,6 +200,71 @@ hideStoreButton()
     javaEnv->CallVoidMethod(javaObj, method);
 }
 
+
+void
+showUpgradeButton()
+{
+    // For this application, buttons are handled by the Android SDK
+    // Use the environment and class stored in initNativeCallback
+    // to call a Java method that shows the delete button
+    jmethodID method = javaEnv->GetMethodID(javaClass, "showUpgradeButton", "()V");
+    javaEnv->CallVoidMethod(javaObj, method);
+}
+
+
+void
+hideUpgradeButton()
+{
+    // For this application, buttons are handled by the Android SDK
+    // Use the environment and class stored in initNativeCallback
+    // to call a Java method that hides the delete button
+    jmethodID method = javaEnv->GetMethodID(javaClass, "hideUpgradeButton", "()V");
+    javaEnv->CallVoidMethod(javaObj, method);
+}
+
+
+void
+showStatsButton()
+{
+    // For this application, buttons are handled by the Android SDK
+    // Use the environment and class stored in initNativeCallback
+    // to call a Java method that shows the stats button
+    jmethodID method = javaEnv->GetMethodID(javaClass, "showStatsButton", "()V");
+    javaEnv->CallVoidMethod(javaObj, method);
+}
+
+
+void
+hideStatsButton()
+{
+    // For this application, buttons are handled by the Android SDK
+    // Use the environment and class stored in initNativeCallback
+    // to call a Java method that hides the delete button
+    jmethodID method = javaEnv->GetMethodID(javaClass, "hideStatsButton", "()V");
+    javaEnv->CallVoidMethod(javaObj, method);
+}
+
+void
+showCreditsButton()
+{
+    // For this application, buttons are handled by the Android SDK
+    // Use the environment and class stored in initNativeCallback
+    // to call a Java method that shows the stats button
+    jmethodID method = javaEnv->GetMethodID(javaClass, "showCreditsButton", "()V");
+    javaEnv->CallVoidMethod(javaObj, method);
+}
+
+
+void
+hideCreditsButton()
+{
+    // For this application, buttons are handled by the Android SDK
+    // Use the environment and class stored in initNativeCallback
+    // to call a Java method that hides the delete button
+    jmethodID method = javaEnv->GetMethodID(javaClass, "hideCreditsButton", "()V");
+    javaEnv->CallVoidMethod(javaObj, method);
+}
+
 void
 hideStartButton()
 {
@@ -242,7 +308,20 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeStore(JNIEnv*, jobje
 {
 			//displayMessage("Game Paused\n\n\nWELCOME TO THE STORE!");
 			hidePauseButton();
+			hideStatsButton();
 			pauseGame = 1;
+}
+
+JNIEXPORT void JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeStats(JNIEnv*, jobject)
+{
+			displayMessage("Stats!");
+}
+
+JNIEXPORT void JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeUpgrade(JNIEnv*, jobject)
+{
+			displayMessage("Upgrade!");
 }
 
 
@@ -255,6 +334,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeLeave(JNIEnv*, jobje
 				enemy[i].prevTime = getCurrentTime();  
             }
 			showPauseButton();
+			showStatsButton();
 			pauseGame = 0;
 
 }
@@ -267,7 +347,9 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeStart(JNIEnv*, jobje
 			startGame = 1;
 				//displayMessage("AUGMENTED REALITY\nTURRET DEFENSE GAME\nIS FUN!\n\nLEVEL 1 START!");
 				hideStartButton();
+				hideCreditsButton();
 				showPauseButton();
+				showStatsButton();
 				showStoreButton();
 				startLevel(0);
 				for (int enemyNumber = 0; enemyNumber < MAX_NUM_ENEMIES; enemyNumber++) {
@@ -286,7 +368,20 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeDelete(JNIEnv*, jobj
  			displayMessage("D4");
 }
 
+JNIEXPORT void JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeCredits(JNIEnv*, jobject)
+{
+ 			displayMessage("Credits!\n\n\nTeamRickroll'd\nMing Liu\n David Chou\n  Alton Chiu\n\n\nProfessor Enright Jerger\n\nECE496 2011-2012");
+}
 
+JNIEXPORT void JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeBuy(JNIEnv *env, jobject thiz, jint cost)//type?
+{
+	currentZen = currentZen - (int)cost;
+	char zenString[20];
+	sprintf (zenString, "%d", currentZen);
+	displayZen(zenString);
+}
 
 JNIEXPORT int JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_getOpenGlEsVersionNative(JNIEnv *, jobject)
@@ -484,6 +579,19 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 	counterprevTime = time4;
 	missileFrameCounter = ((int)floor(missileFrameCounter - 1 + dt4*25.0f) % MISSILE_NUM_FRAMES) + 1;
 	enemyFrameCounter = ((int)floor(enemyFrameCounter - 1 + dt4*50.0f) % ENEMY_NUM_FRAMES) + 1;
+	
+	//TODO: Comment these 2 lines
+	if (missileFrameCounter == 5) {
+	currentScore = currentScore + 1;
+	currentZen = currentZen + 1;
+	char scoreString[20];
+	sprintf (scoreString, "%d", currentScore);
+	displayScore(scoreString);
+	char zenString[20];
+	sprintf (zenString, "%d", currentZen);
+	displayZen(zenString);
+	}
+	//
 }
 
 

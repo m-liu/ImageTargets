@@ -21,7 +21,25 @@ void displayMessage(char* message)
     javaEnv->CallVoidMethod(javaObj, method, js);
 }
 
+//display a message    
+void displayScore(char* score)
+{	//RTS: REMEMBER TO CONVERT TO INT IF CHANGING THIS BACK TO INT
+    // Use the environment and class stored in initNativeCallback
+    // to call a Java method that displays a message via a toast
+	jstring js = javaEnv->NewStringUTF(score);
+    jmethodID method = javaEnv->GetMethodID(javaClass, "displayScore", "(Ljava/lang/String;)V");
+    javaEnv->CallVoidMethod(javaObj, method, js);
+}
 
+//display a message    
+void displayZen(char* zen)
+{
+    // Use the environment and class stored in initNativeCallback
+    // to call a Java method that displays a message via a toast
+	jstring js = javaEnv->NewStringUTF(zen);
+    jmethodID method = javaEnv->GetMethodID(javaClass, "displayZen", "(Ljava/lang/String;)V");
+    javaEnv->CallVoidMethod(javaObj, method, js);
+}
 
 //initialize the levels
 void initLevels (){

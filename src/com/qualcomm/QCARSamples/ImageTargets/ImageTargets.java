@@ -97,6 +97,8 @@ public class ImageTargets extends Activity {
 		loadLibrary(NATIVE_LIB_SAMPLE);
 	}
 
+	public static native void nativeBuy(int cost);
+	
 	/** An async task to initialize QCAR asynchronously. */
 	private class InitQCARTask extends AsyncTask<Void, Integer, Boolean> {
 		// Initialize with invalid value
@@ -216,13 +218,14 @@ public class ImageTargets extends Activity {
     	AlertDialog dialog = null;
         switch (id) {
         case DIALOG_STORE:
-            final CharSequence[] items = {"Castle: 2 ZP", "Igloo: 4 ZP", "Terran Bunker: 6 ZP", "Protoss Cannon: 6 ZP"};
+            final CharSequence[] items = {"Castle: 1 ZP", "Igloo: 2 ZP", "Terran Bunker: 3 ZP", "Protoss Cannon: 4 ZP"};
         	AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Welcome to the Store! Buy:")
             .setItems(items, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
-                    int duration = Toast.LENGTH_LONG;
-                    Toast toast = Toast.makeText(getApplicationContext(), "build item #" + item, duration);
+                    nativeBuy((int)(item+1));
+                   	int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(getApplicationContext(), "Spent " + (item+1), duration);
                     toast.show();
                 }
             });
@@ -303,7 +306,7 @@ public class ImageTargets extends Activity {
 	private native void startCamera();
 
 	private native void stopCamera();
-
+	
 	/** Called when the activity will start interacting with the user. */
 	protected void onResume() {
 		DebugLog.LOGD("ImageTargets::onResume");
@@ -487,7 +490,7 @@ public class ImageTargets extends Activity {
                     storeButton.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
                             if (((ToggleButton) v).isChecked()) {
-                                mGUIManager.nativeStore();
+                            	mGUIManager.nativeStore();
                                 showDialog(DIALOG_STORE);
                             } else {
                             	mGUIManager.nativeLeave();
