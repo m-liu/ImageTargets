@@ -50,6 +50,7 @@
 #include "LevelSystem.h"
 #include "UnitMethods.h"
 #include "GlobalDefs.h"
+#include "SampleMath.h"
 
 
 // Textures:
@@ -85,6 +86,13 @@ static int startGame = 0;
 static int seeTargets = 0;
 static int pauseGame = 0;
 
+//screen tap globals
+bool tap=false;
+float tapX = 0;
+float tapY = 0;
+bool tap_in_target = true;
+
+
 
 // OpenGL ES 2.0 specific:
 #ifdef USE_OPENGL_ES_2_0
@@ -110,6 +118,9 @@ bool isActivityInPortraitMode   = false;
 // The projection matrix used for rendering virtual objects:
 QCAR::Matrix44F projectionMatrix;
 
+//the inverse projection matrix for converting screen to world coordinates
+QCAR::Matrix44F inverseProjMatrix;
+
 void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection);
 void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, int type);
 void DrawMissile (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection, int type);
@@ -117,8 +128,20 @@ void DrawMissile (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjecti
 void getMarkerOffset(int trackedCornerID, int &x_offset, int &y_offset);
 void convert2BoardCoord (int cornerID, QCAR::Matrix44F cornerMVM, QCAR::Matrix44F targetMVM, float &x, float &y);
 
+//for tap event computations
+bool
+linePlaneIntersection(QCAR::Vec3F lineStart, QCAR::Vec3F lineEnd,
+                      QCAR::Vec3F pointOnPlane, QCAR::Vec3F planeNormal,
+                      QCAR::Vec3F &intersection);
+void
+projectScreenPointToPlane(QCAR::Vec2F point, QCAR::Vec3F planeCenter, QCAR::Vec3F planeNormal,
+                          QCAR::Vec3F &intersection, QCAR::Vec3F &lineStart, QCAR::Vec3F &lineEnd,
+                          QCAR::Matrix44F modelViewMatrix);
 
 
+//*****************************************************************
+// Button native functions
+// ****************************************************************
 void
 togglePauseButton()
 {
@@ -383,6 +406,22 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeBuy(JNIEnv *env, j
 	displayZen(zenString);
 }
 
+
+//********************************************************
+// Tap event handler (tower selection)
+// *******************************************************
+JNIEXPORT void JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeTapEvent(JNIEnv* , jobject, jfloat x, jfloat y)
+{
+    tapX = x;
+    tapY = y;
+    tap = true;
+}
+
+//********************************************************
+// QCAR Native calls
+// *******************************************************
+
 JNIEXPORT int JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_getOpenGlEsVersionNative(JNIEnv *, jobject)
 {
@@ -479,8 +518,34 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
             SampleUtils::translatePoseMatrix(-100.0f, 100.0f, 60.0f, &LifeMatrix1.data[0]);			
     		DrawEnemy(LifeMatrix1, LifeProjection1, x_offset, y_offset);
 		    */
+            //FIXME: Tap event test
+            if (tap)
+            {
+                QCAR::Vec3F intersection, lineStart, lineEnd;
+                projectScreenPointToPlane(QCAR::Vec2F(tapX, tapY), QCAR::Vec3F(0, 0, 0), QCAR::Vec3F(0, 0, 1), intersection, lineStart, lineEnd, cornerMarkerModelViewMatrix);
 
-				if (startGame == 1 && pauseGame == 0) {
+                QCAR::Vec2F trackableSize = marker->getSize();
+
+                LOG("tap coordinates (screen space): %.2f, %.2f", tapX, tapY);
+                LOG("tap coordinates (target space): %.2f, %.2f", intersection.data[0], intersection.data[1]);
+
+                if (fabs(intersection.data[0]) < (trackableSize.data[0] / 2) &&
+                        fabs(intersection.data[1]) < (trackableSize.data[1] / 2))
+                {
+                    LOG("tapped inside the target!");
+                    //toggle 
+                    tap_in_target = !tap_in_target;
+
+                    // do something here
+                }
+
+                tap = false;
+            }
+            //end tap event test FIXME
+
+
+
+            if (startGame == 1 && pauseGame == 0 && tap_in_target /*FIXME*/) {
             //animate and draw the enemy units in reference to the marker position
             for (int i=0; i<MAX_NUM_ENEMIES; i++){
                 QCAR::Matrix44F enemyMatrix = cornerMarkerModelViewMatrix;        
@@ -489,6 +554,10 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
                 DrawEnemy(enemyMatrix, enemyProjection);
             }
 			}
+
+
+
+
         } //end enemy rendering
         
         //render towers and missiles
@@ -752,6 +821,10 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_startCamera(JNIEnv *,
                                     tracker.getCameraCalibration();
     projectionMatrix = QCAR::Tool::getProjectionGL(cameraCalibration, 2.0f,
                                             2000.0f);
+
+    // Cache the inverse projection matrix:
+    inverseProjMatrix = SampleMath::Matrix44FInverse(projectionMatrix);
+
 }
 
 
@@ -986,6 +1059,78 @@ void convert2BoardCoord (int cornerID, QCAR::Matrix44F cornerMVM, QCAR::Matrix44
         / ( cornerMVM.data[1] * cornerMVM.data[4] - cornerMVM.data[0] * cornerMVM.data[5] );
     //LOG ("Board (x,y)=(%f, %f)", x, y);
 }
+
+
+
+//********************************************************
+// Projection helpers
+// *******************************************************
+
+void
+projectScreenPointToPlane(QCAR::Vec2F point, QCAR::Vec3F planeCenter, QCAR::Vec3F planeNormal,
+                          QCAR::Vec3F &intersection, QCAR::Vec3F &lineStart, QCAR::Vec3F &lineEnd,
+                          QCAR::Matrix44F modelViewMatrix)
+{
+    // Window Coordinates to Normalized Device Coordinates
+    QCAR::VideoBackgroundConfig config = QCAR::Renderer::getInstance().getVideoBackgroundConfig();
+    
+    float halfScreenWidth = screenWidth / 2.0f;
+    float halfScreenHeight = screenHeight / 2.0f;
+    
+    float halfViewportWidth = config.mSize.data[0] / 2.0f;
+    float halfViewportHeight = config.mSize.data[1] / 2.0f;
+    
+    float x = (point.data[0] - halfScreenWidth) / halfViewportWidth;
+    float y = (point.data[1] - halfScreenHeight) / halfViewportHeight * -1;
+    
+    QCAR::Vec4F ndcNear(x, y, -1, 1);
+    QCAR::Vec4F ndcFar(x, y, 1, 1);
+    
+    // Normalized Device Coordinates to Eye Coordinates
+    QCAR::Vec4F pointOnNearPlane = SampleMath::Vec4FTransform(ndcNear, inverseProjMatrix);
+    QCAR::Vec4F pointOnFarPlane = SampleMath::Vec4FTransform(ndcFar, inverseProjMatrix);
+    pointOnNearPlane = SampleMath::Vec3FDiv(pointOnNearPlane, pointOnNearPlane.data[3]);
+    pointOnFarPlane = SampleMath::Vec3FDiv(pointOnFarPlane, pointOnFarPlane.data[3]);
+    
+    // Eye Coordinates to Object Coordinates
+    QCAR::Matrix44F inverseModelViewMatrix = SampleMath::Matrix44FInverse(modelViewMatrix);
+    
+    QCAR::Vec4F nearWorld = SampleMath::Vec4FTransform(pointOnNearPlane, inverseModelViewMatrix);
+    QCAR::Vec4F farWorld = SampleMath::Vec4FTransform(pointOnFarPlane, inverseModelViewMatrix);
+    
+    lineStart = QCAR::Vec3F(nearWorld.data[0], nearWorld.data[1], nearWorld.data[2]);
+    lineEnd = QCAR::Vec3F(farWorld.data[0], farWorld.data[1], farWorld.data[2]);
+    linePlaneIntersection(lineStart, lineEnd, planeCenter, planeNormal, intersection);
+}
+
+
+bool
+linePlaneIntersection(QCAR::Vec3F lineStart, QCAR::Vec3F lineEnd,
+                      QCAR::Vec3F pointOnPlane, QCAR::Vec3F planeNormal,
+                      QCAR::Vec3F &intersection)
+{
+    QCAR::Vec3F lineDir = SampleMath::Vec3FSub(lineEnd, lineStart);
+    lineDir = SampleMath::Vec3FNormalize(lineDir);
+    
+    QCAR::Vec3F planeDir = SampleMath::Vec3FSub(pointOnPlane, lineStart);
+    
+    float n = SampleMath::Vec3FDot(planeNormal, planeDir);
+    float d = SampleMath::Vec3FDot(planeNormal, lineDir);
+    
+    if (fabs(d) < 0.00001) {
+        // Line is parallel to plane
+        return false;
+    }
+    
+    float dist = n / d;
+    
+    QCAR::Vec3F offset = SampleMath::Vec3FScale(lineDir, dist);
+    intersection = SampleMath::Vec3FAdd(lineStart, offset);
+}
+
+
+
+
 
 
 

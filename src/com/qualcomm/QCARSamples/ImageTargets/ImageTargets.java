@@ -24,8 +24,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.WindowManager;
@@ -239,6 +241,8 @@ public class ImageTargets extends Activity {
 	 * Called when the activity first starts or the user navigates back to an
 	 * activity.
 	 */
+    private GestureDetector mGestureDetector;
+    
 	protected void onCreate(Bundle savedInstanceState) {
 		DebugLog.LOGD("ImageTargets::onCreate");
 		super.onCreate(savedInstanceState);
@@ -255,6 +259,7 @@ public class ImageTargets extends Activity {
 
 		// Update the application status to start initializing application
 		updateApplicationStatus(APPSTATUS_INIT_APP);
+		mGestureDetector = new GestureDetector(this, new TapGestureListener());
 	}
 
 	/**
@@ -697,4 +702,29 @@ public class ImageTargets extends Activity {
 
 		return false;
 	}
+	
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event)
+    {
+        if (mGestureDetector.onTouchEvent(event))
+            return true;
+        else
+            return false;
+    }
+    
+    private native boolean nativeTapEvent(float tapX, float tapY);
+    
+    class TapGestureListener extends GestureDetector.SimpleOnGestureListener
+    {
+        @Override
+        public boolean onSingleTapUp(MotionEvent ev)
+        {
+            nativeTapEvent(ev.getX(), ev.getY());
+            return true;
+        }
+    }
+	
+	
 }
