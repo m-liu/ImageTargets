@@ -7,7 +7,7 @@ faces          : 128
 normals        : 24
 texture coords : 104
 
-
+//test
 // include generated arrays
 #import "./arrow_animate2_000001.h"
 
