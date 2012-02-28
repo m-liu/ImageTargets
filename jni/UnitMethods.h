@@ -43,10 +43,10 @@ extern MissileUnit missile_type[NUM_MISSILE_TYPES];
 //Global Level struct
 extern Level level[NUM_LEVELS];
 extern int currentLevel;
-extern int currentLevel;
 extern int currentScore;
 extern int currentZen;
 extern int currentLives;
+extern int stageType;
 
 
 double getCurrentTime();
@@ -66,6 +66,8 @@ int checkMissileContact(int missileNumber);
 void animateTower(QCAR::Matrix44F& towerMatrix);
 void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber, int x_offset, int y_offset);
 void updateMissileDefaultPos(int missileNumber, float lx, float ly);
-
+void removeEnemy (int enemyNumber);
+void gameOver ();
+void moveEnemy (int &x, int &y, int &direction, int speed, float timeDiff);
 
 #endif // _UNITDB_H_

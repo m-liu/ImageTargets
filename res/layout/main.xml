@@ -24,8 +24,59 @@
     To overcome this problem, we just construct the views dynamically upon
     calling onResume to guarantee the correct order and therefore leave the 
     layout empty now.
--->
+
+
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" />
+    android:layout_height="fill_parent" >
+</FrameLayout>
+-->
+
+ 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:orientation="vertical"
+   android:layout_width="fill_parent"
+   android:layout_height="fill_parent"
+   android:background="@drawable/masonry_wall_texture"
+   android:gravity="center_horizontal"
+   >
+    
+    <LinearLayout
+        android:layout_width="250dip"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="100dip"
+   >
+    
+        <Button
+            android:id="@+id/new_game_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_game_label"
+        />
+        
+        <Button
+            android:id="@+id/game_rules_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/game_rules_label"
+        />
+        
+        <Button
+            android:id="@+id/settings_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_label"
+        />
+        
+        <Button
+            android:id="@+id/credits_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/credits_label"
+        />
+    </LinearLayout>
+    
+</LinearLayout>

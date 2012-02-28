@@ -11,4 +11,10 @@
 <string name="button_stats">View Stats</string>
 <string name="button_credits">Credits</string>
 <string name="button_delete">Deletinate</string>
+
+<string name="new_game_label">New Game</string>
+<string name="game_rules_label">Game Rules</string>
+<string name="settings_label">Settings</string>
+<string name="credits_label">Credits</string>
+
 </resources>

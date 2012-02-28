@@ -58,57 +58,104 @@ void startLevel(int nextLevel)
 {
 if (nextLevel == 0)
 	{
-		makeEnemy (0, 0, 1000);
-		makeEnemy (0, 1, 1020);
-		makeEnemy (0, 2, 1040);
-		makeEnemy (0, 3, 1060);
-		makeEnemy (0, 4, 1080);
-		makeEnemy (0, 5, 1100);
-		makeEnemy (0, 6, 1120);
-		makeEnemy (0, 7, 1140);
-		makeEnemy (0, 8, 1160);
-		makeEnemy (0, 9, 1180);
+		for (int i = 0; i < 10; i++) {
+			makeEnemy (0, i, (i+2)*30);
+		}
 		//stuff isnt initiated at this point
 		displayMessage("LEVEL 1 START!");
 		level[0].start = 1;
 	}
 
-//TODO: loop this lulz
 	if (nextLevel == 1)
 	{
-		makeEnemy (1, 0, 1000);
-		makeEnemy (1, 1, 1015);
-		makeEnemy (1, 2, 1030);
-		makeEnemy (1, 3, 1045);
-		makeEnemy (1, 4, 1060);
-		makeEnemy (1, 5, 1075);
-		makeEnemy (1, 6, 1090);
-		makeEnemy (1, 7, 1105);
-		makeEnemy (1, 8, 1120);
-		makeEnemy (1, 9, 1135);
+		for (int i = 0; i < 10; i++) {
+			makeEnemy (1, i, (i+2)*25);
+		}
 		displayMessage("LEVEL 2 START!");
 		level[1].start = 1;
 	}
 	
 	if (nextLevel == 2)
 	{
-		makeEnemy (1, 0, 1000);
-		makeEnemy (1, 1, 1010);
-		makeEnemy (1, 2, 1020);
-		makeEnemy (1, 3, 1030);
-		makeEnemy (1, 4, 1040);
-		makeEnemy (1, 5, 1100);
-		makeEnemy (1, 6, 1105);
-		makeEnemy (1, 7, 1110);
-		makeEnemy (1, 8, 1115);
-		makeEnemy (1, 9, 1120);
+		for (int i = 0; i < 10; i++) {
+			makeEnemy (2, i, (i+2)*20);
+		}
 		displayMessage("LEVEL 3 START!");
 		level[2].start = 1;
 	}
-		if (nextLevel == 3)
+	
+	if (nextLevel == 3)
+	{
+		for (int i = 0; i < 10; i++) {
+			makeEnemy (3, i, (i+2)*15);
+		}
+		displayMessage("LEVEL 4 START!");
+		level[3].start = 1;
+	}
+	
+	if (nextLevel == 4)
+	{
+		for (int i = 0; i < 10; i++) {
+			makeEnemy (4, i, (i+2)*10);
+		}
+		displayMessage("LEVEL 5 START!");
+		level[4].start = 1;
+	}
+	
+	
+	if (nextLevel == 5)
+	{
+		for (int i = 0; i < 10; i++) {
+			makeEnemy (5, i, (i+2)*10);
+		}
+		displayMessage("LEVEL 6 START!");
+		level[5].start = 1;
+	}
+	
+	if (nextLevel == 6)
+	{
+		for (int i = 0; i < 10; i++) {
+			makeEnemy (5, i, (i+2)*5);
+		}
+		displayMessage("LEVEL 7 START!");
+		level[6].start = 1;
+	}
+	
+	if (nextLevel == 7)
+	{
+		for (int i = 0; i < 5; i++) {
+			makeEnemy (i, i, (i+2)*5);
+		}
+		for (int i = 5; i < 10; i++) {
+			makeEnemy (i-5, i, (i+2)*5);
+		}
+		displayMessage("LEVEL 8 START!");
+		level[7].start = 1;
+	}
+	
+	if (nextLevel == 8)
+	{
+		for (int i = 0; i < 10; i++) {
+			makeEnemy (0, i, (i+2)*5);
+		}
+		displayMessage("LEVEL 9 START!");
+		level[8].start = 1;
+	}
+	
+	if (nextLevel == 9)
+	{
+		for (int i = 0; i < 5; i++) {
+			makeEnemy (0, i, (i+2)*5);
+		}
+		displayMessage("LEVEL 10 START!");
+		level[9].start = 1;
+	}
+	
+	if (nextLevel == 10)
 	{
 
-		displayMessage("You beat the game!");
+		displayMessage("You win bro.");
+		
 	}
 }
 

@@ -73,8 +73,10 @@ Level level[NUM_LEVELS];
 int currentLevel = 0;
 int currentLives = 5;
 
-int currentScore = 0;
+int currentScore = 5;
 int currentZen = 0;
+
+int stageType = 1;
 
 bool displayedMessage = false;
 
@@ -121,7 +123,7 @@ QCAR::Matrix44F projectionMatrix;
 //the inverse projection matrix for converting screen to world coordinates
 QCAR::Matrix44F inverseProjMatrix;
 
-void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection);
+void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, int type);
 void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, int type);
 void DrawMissile (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection, int type);
 
@@ -546,12 +548,17 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
 
             if (startGame == 1 && pauseGame == 0 && tap_in_target /*FIXME*/) {
+			
+			
             //animate and draw the enemy units in reference to the marker position
             for (int i=0; i<MAX_NUM_ENEMIES; i++){
                 QCAR::Matrix44F enemyMatrix = cornerMarkerModelViewMatrix;        
                 animateEnemy(enemyMatrix, i, x_offset, y_offset); //animate the i-th enemy
                 QCAR::Matrix44F enemyProjection;
-                DrawEnemy(enemyMatrix, enemyProjection);
+				if (currentLevel == 1)
+                DrawEnemy(enemyMatrix, enemyProjection, 1);
+				if (currentLevel == 2)
+                DrawEnemy(enemyMatrix, enemyProjection, 5);
             }
 			}
 
@@ -649,7 +656,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 	missileFrameCounter = ((int)floor(missileFrameCounter - 1 + dt4*25.0f) % MISSILE_NUM_FRAMES) + 1;
 	enemyFrameCounter = ((int)floor(enemyFrameCounter - 1 + dt4*50.0f) % ENEMY_NUM_FRAMES) + 1;
 	
-	//TODO: Comment these 2 lines
+	/* 
 	if (missileFrameCounter == 5) {
 	currentScore = currentScore + 1;
 	currentZen = currentZen + 1;
@@ -660,7 +667,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 	sprintf (zenString, "%d", currentZen);
 	displayZen(zenString);
 	}
-	//
+	*/
 }
 
 
@@ -924,22 +931,36 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_updateRendering(
 
 
 
-void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection) {
+void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, int type) {
 	struct graphics_arrays horse_animate_array = get_graphics_stats (enemyFrameCounter, 1);
+	//struct graphics_arrays zombie_animate_array = get_graphics_stats (enemyFrameCounter, 1);
+	//Horse = 1, Zombie = 5
 	const Texture* const thisTexture = textures[1];
 
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&EnemyMatrix.data[0], &EnemyProjection.data[0]);
     glUseProgram(shaderProgramID);
-    glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
-    glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
-    glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
+	if (type == 1) {
+		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
+		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
+		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
+	}
+	/*if (type == 5) {
+		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) zombie_animate_array.Verts);
+		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) zombie_animate_array.Normals);
+		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) zombie_animate_array.TexCoords); 
+	}*/
     glEnableVertexAttribArray(vertexHandle);
     glEnableVertexAttribArray(normalHandle);
     glEnableVertexAttribArray(textureCoordHandle);      
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
     glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection.data[0] );
-    glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
+	if (type == 1) {
+		glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
+	}
+	/*if (type == 5) {
+		glDrawArrays(GL_TRIANGLES, 0, (int)*zombie_animate_array.NumVerts);
+	}*/
     SampleUtils::checkGlError("ImageTargets renderFrame");
 }
 
@@ -1126,6 +1147,8 @@ linePlaneIntersection(QCAR::Vec3F lineStart, QCAR::Vec3F lineEnd,
     
     QCAR::Vec3F offset = SampleMath::Vec3FScale(lineDir, dist);
     intersection = SampleMath::Vec3FAdd(lineStart, offset);
+	//TODO NOTE by ALTON: added this don't know if its correct
+	return true;
 }
 
 

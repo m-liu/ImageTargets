@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+android:id="@+id/widget32"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+xmlns:android="http://schemas.android.com/apk/res/android"
+>
+
+<LinearLayout
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:orientation="vertical">
+
+<TextView 
+android:textSize="40sp"
+android:textStyle="bold"
+android:text="TURRET DEFENSE GAME RULES" 
+android:id="@+id/TextView01" 
+android:layout_width="wrap_content" 
+android:layout_height="wrap_content"></TextView>
+
+<TextView 
+android:textSize="30sp"
+android:text="\nThe basic objective of a turret defense game is to defend your castle from a swarm of incoming enemies. Various enemy units travel along a pre-defined path that leads to the defending castle. The player is to strategically place Towers to stop the enemies from reaching their castle. " 
+android:id="@+id/TextView02" 
+android:layout_width="wrap_content" 
+android:layout_height="wrap_content"></TextView>
+
+<TextView 
+android:textSize="30sp"
+android:textStyle="bold"
+android:text="\nTowers" 
+android:id="@+id/TextView01" 
+android:layout_width="wrap_content" 
+android:layout_height="wrap_content"></TextView>
+
+<TextView 
+android:textSize="30sp"
+android:text="The main method of defense is the use of Tower units. Tower units can be bought by the player with Zen Points with varying effects including direct damage, increased firing rate, slash damage (damaging multiple enemies at once) and speed reduction. These Tower units can be placed along any legal position on the game board that is not along the pre-defined path. Towers can be upgraded using additional Zen Points. Upgrading will increase existing Tower statistics. The user can choose to remove an existing tower and gain back the Zen Value of the Tower minus a penalty." 
+android:id="@+id/TextView01" 
+android:layout_width="wrap_content" 
+android:layout_height="wrap_content"></TextView>
+
+<TextView 
+android:textSize="30sp"
+android:textStyle="bold"
+android:text="\nEnemies" 
+android:id="@+id/TextView01" 
+android:layout_width="wrap_content" 
+android:layout_height="wrap_content"></TextView>
+
+<TextView 
+android:textSize="30sp"
+android:text="There are varies enemies that you will encounter, each with varying statistics. The two main statistics for enemies are health points (HP), and speed. As the user enters higher levels, these statistics will increase accordingly, and provide enemies who are more difficult to destroy. When an enemy is destroyed, the player is awarded Zen Points. For higher level enemies, the player is awarded more Zen Points."
+android:id="@+id/TextView01" 
+android:layout_width="wrap_content" 
+android:layout_height="wrap_content"></TextView>
+
+<TextView 
+android:textSize="30sp"
+android:textStyle="bold"
+android:text="\nLosing the Game" 
+android:id="@+id/TextView01" 
+android:layout_width="wrap_content" 
+android:layout_height="wrap_content"></TextView>
+
+<TextView 
+android:textSize="30sp"
+android:text="At the beginning of the game, the player has a total of 10 lives. Each time an enemy successfully travels to the end of the pre-defined path, the player loses 1 life. When the player loses all 10 lives, the game is complete."
+android:id="@+id/TextView01" 
+android:layout_width="wrap_content" 
+android:layout_height="wrap_content"></TextView>
+
+
+</LinearLayout>
+
+</ScrollView>

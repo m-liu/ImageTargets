@@ -8,9 +8,10 @@
 
 //enemy properties
 #define MAX_NUM_ENEMIES 10
-#define NUM_ENEMY_TYPES 2
+#define NUM_ENEMY_TYPES 7
 #define ENEMY_NUM_FRAMES 48
 #define ENEMY_SCALE 50.0f
+#define ENEMY_MOVEMENT_SPEED 50.0f
 
 //tower/missile properties
 #define NUM_MISSILE_TYPES 2
@@ -18,6 +19,10 @@
 #define MISSILE_NUM_FRAMES 24
 #define TOWER_SCALE 75.0f
 #define MISSILE_SCALE 75.0f
+
+#define STARTING_X 350.0f
+#define STARTING_Y -350.0.0f
+
 
 //game properties
 #define NUM_LEVELS 3
@@ -28,15 +33,19 @@
 struct EnemyUnit
 {
     int type;
+	int texture;
 	char name[30];
     float X;
     float Y;
-	float HP;
+	float direction;
 	float max_HP;
+	float HP;
 	float speed;
 	float defense;
 	float score;
-	float count;
+	float deploydelay;
+	bool deployed;
+	bool dead;
     double prevTime;
 };
 

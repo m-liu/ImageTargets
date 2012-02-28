@@ -31,7 +31,9 @@ import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -51,6 +53,7 @@ public class ImageTargets extends Activity {
 	private static final int APPSTATUS_INITED = 4;
 	private static final int APPSTATUS_CAMERA_STOPPED = 5;
 	private static final int APPSTATUS_CAMERA_RUNNING = 6;
+	private static final int APPSTATUS_INIT_MENU = 7;
 
     private static final int DIALOG_STORE = 100;
 	
@@ -246,7 +249,7 @@ public class ImageTargets extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		DebugLog.LOGD("ImageTargets::onCreate");
 		super.onCreate(savedInstanceState);
-
+		//setContentView(R.layout.main);
 		// Set the splash screen image to display during initialization:
 		mSplashScreenImageResource = R.drawable.splash_screen_image_targets;
 
@@ -280,6 +283,8 @@ public class ImageTargets extends Activity {
 		mTextures.add(Texture.loadTextureFromApk("snowball.png",
 				getAssets()));
 		//mTextures.add(Texture.loadTextureFromApk("arrow_bake.png",
+		//		getAssets()));
+		//mTextures.add(Texture.loadTextureFromApk("zombie1.png",
 		//		getAssets()));
 		
 	}
@@ -392,6 +397,15 @@ public class ImageTargets extends Activity {
 	 * NOTE: this method is synchronized because of a potential concurrent
 	 * access by ImageTargets::onResume() and InitQCARTask::onPostExecute().
 	 */
+	
+	
+	//back button will go back to main menu
+	@Override
+	public void onBackPressed() {
+		if (mAppStatus == APPSTATUS_INIT_MENU)
+			updateApplicationStatus(APPSTATUS_INIT_APP);
+	}
+	
 	private synchronized void updateApplicationStatus(int appStatus) {
 		// Exit if there is no change in status
 		if (mAppStatus == appStatus)
@@ -406,11 +420,55 @@ public class ImageTargets extends Activity {
 			// Initialize application elements that do not rely on QCAR
 			// initialization
 			initApplication();
-
+		
+	        updateApplicationStatus(APPSTATUS_INIT_MENU);
+			
 			// Proceed to next application initialization status
-			updateApplicationStatus(APPSTATUS_INIT_QCAR);
+			//updateApplicationStatus(APPSTATUS_INIT_QCAR);
 			break;
-
+			
+		case APPSTATUS_INIT_MENU:
+			
+			setContentView(R.layout.main);
+			
+			//New Game Button
+			Button StartGameButton = (Button)findViewById(R.id.new_game_button);
+	        StartGameButton.setOnClickListener(new OnClickListener() {
+	        	
+	        	public void onClick(View v) {
+	        		updateApplicationStatus(APPSTATUS_INIT_QCAR);
+	        	}
+	        });
+			
+	      //Game Rules Button
+	        Button GameRulesButton = (Button)findViewById(R.id.game_rules_button);
+	        GameRulesButton.setOnClickListener(new OnClickListener() {
+	        	
+	        	public void onClick(View v) {
+	        		setContentView(R.layout.game_rules);
+	        	}
+	        });
+	        
+	      //Settings Button
+	        Button SettingsButton = (Button)findViewById(R.id.settings_button);
+	        SettingsButton.setOnClickListener(new OnClickListener() {
+	        	
+	        	public void onClick(View v) {
+	        		
+	        	}
+	        });
+	        
+	      //New Game Button
+	        Button CreditsButton = (Button)findViewById(R.id.credits_button);
+	        CreditsButton.setOnClickListener(new OnClickListener() {
+	        	
+	        	public void onClick(View v) {
+	        		setContentView(R.layout.credits);
+	        	}
+	        });
+			
+			break;
+		
 		case APPSTATUS_INIT_QCAR:
 			// Initialize QCAR SDK asynchronously to avoid blocking the
 			// main (UI) thread.
@@ -576,7 +634,7 @@ public class ImageTargets extends Activity {
 		mSplashScreenView = new ImageView(this);
 		mSplashScreenView.setImageResource(mSplashScreenImageResource);
 		addContentView(mSplashScreenView, new LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+		LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 
 		mSplashScreenStartTime = System.currentTimeMillis();
 
