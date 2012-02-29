@@ -34,7 +34,8 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.TextView;
+//import android.widget.ImageView;
 import android.widget.Toast;
 
 import android.widget.ToggleButton;
@@ -54,24 +55,25 @@ public class ImageTargets extends Activity {
 	private static final int APPSTATUS_CAMERA_STOPPED = 5;
 	private static final int APPSTATUS_CAMERA_RUNNING = 6;
 	private static final int APPSTATUS_INIT_MENU = 7;
+	private static final int APPSTATUS_INIT_EOL = 8;
 
     private static final int DIALOG_STORE = 100;
 	
 	// Name of the native dynamic libraries to load:
 	private static final String NATIVE_LIB_SAMPLE = "ImageTargets";
 	private static final String NATIVE_LIB_QCAR = "QCAR";
-
+    private TextView currentLevel;
 	// Our OpenGL view:
 	private QCARSampleGLView mGlView;
 
 	// The view to display the sample splash screen:
-	private ImageView mSplashScreenView;
+	//private ImageView mSplashScreenView;
 
 	// The minimum time the splash screen should be visible:
-	private static final long MIN_SPLASH_SCREEN_TIME = 2000;
+	//private static final long MIN_SPLASH_SCREEN_TIME = 2000;
 
 	// The time when the splash screen has become visible:
-	long mSplashScreenStartTime = 0;
+	//long mSplashScreenStartTime = 0;
 
 	// Our renderer:
 	private ImageTargetsRenderer mRenderer;
@@ -94,7 +96,7 @@ public class ImageTargets extends Activity {
 
 	// The textures we will use for rendering:
 	private Vector<Texture> mTextures;
-	private int mSplashScreenImageResource = 0;
+	//private int mSplashScreenImageResource = 0;
 
 	/** Static initializer block to load native libraries on start-up. */
 	static {
@@ -103,6 +105,7 @@ public class ImageTargets extends Activity {
 	}
 
 	public static native void nativeBuy(int cost);
+	public static native void nativeNext();
 	
 	/** An async task to initialize QCAR asynchronously. */
 	private class InitQCARTask extends AsyncTask<Void, Integer, Boolean> {
@@ -249,9 +252,9 @@ public class ImageTargets extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		DebugLog.LOGD("ImageTargets::onCreate");
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.main);
+		
 		// Set the splash screen image to display during initialization:
-		mSplashScreenImageResource = R.drawable.splash_screen_image_targets;
+		//mSplashScreenImageResource = R.drawable.splash_screen_image_targets;
 
 		// Load any sample specific textures:
 		mTextures = new Vector<Texture>();
@@ -393,10 +396,6 @@ public class ImageTargets extends Activity {
 		System.gc();
 	}
 
-	/**
-	 * NOTE: this method is synchronized because of a potential concurrent
-	 * access by ImageTargets::onResume() and InitQCARTask::onPostExecute().
-	 */
 	
 	
 	//back button will go back to main menu
@@ -405,6 +404,13 @@ public class ImageTargets extends Activity {
 		if (mAppStatus == APPSTATUS_INIT_MENU)
 			updateApplicationStatus(APPSTATUS_INIT_APP);
 	}
+	
+	/**
+	 * NOTE: this method is synchronized because of a potential concurrent
+	 * access by ImageTargets::onResume() and InitQCARTask::onPostExecute().
+	 */
+	
+
 	
 	private synchronized void updateApplicationStatus(int appStatus) {
 		// Exit if there is no change in status
@@ -421,10 +427,9 @@ public class ImageTargets extends Activity {
 			// initialization
 			initApplication();
 		
+			//Show main menu
 	        updateApplicationStatus(APPSTATUS_INIT_MENU);
 			
-			// Proceed to next application initialization status
-			//updateApplicationStatus(APPSTATUS_INIT_QCAR);
 			break;
 			
 		case APPSTATUS_INIT_MENU:
@@ -468,6 +473,43 @@ public class ImageTargets extends Activity {
 	        });
 			
 			break;
+			
+		case APPSTATUS_INIT_EOL:
+			
+			setContentView(R.layout.levelend);
+			
+			//Next Level Button
+			Button EOLLevelButton = (Button)findViewById(R.id.eol_level_button);
+			EOLLevelButton.setOnClickListener(new OnClickListener() {
+	        	
+	        	public void onClick(View v) {
+	        		//TODO: Close the screen
+	        		//unsetcontentView?
+	        	}
+	        });
+			
+	      //Enter Store Button
+	        Button EOLStoreButton = (Button)findViewById(R.id.eol_store_button);
+	        EOLStoreButton.setOnClickListener(new OnClickListener() {
+	        	
+	        	public void onClick(View v) {
+	        		//TODO: Store here
+	        		setContentView(R.layout.game_rules);
+	        	}
+	        });
+	        
+	      //Quit Game Button
+	        Button EOLQuitButton = (Button)findViewById(R.id.eol_quit_button);
+	        EOLQuitButton.setOnClickListener(new OnClickListener() {
+	        	
+	        	public void onClick(View v) {
+	        		//TODO: Quit here
+	        		setContentView(R.layout.game_rules);	
+	        	}
+	        });
+			
+			break;
+			
 		
 		case APPSTATUS_INIT_QCAR:
 			// Initialize QCAR SDK asynchronously to avoid blocking the
@@ -517,12 +559,13 @@ public class ImageTargets extends Activity {
 			onQCARInitializedNative();
 
 			// The elapsed time since the splash screen was visible:
-			long splashScreenTime = System.currentTimeMillis()
+			/*long splashScreenTime = System.currentTimeMillis()
 					- mSplashScreenStartTime;
 			long newSplashScreenTime = 0;
 			if (splashScreenTime < MIN_SPLASH_SCREEN_TIME) {
 				newSplashScreenTime = MIN_SPLASH_SCREEN_TIME - splashScreenTime;
 			}
+			*/
 
 			// Request a callback function after a given timeout to dismiss
 			// the splash screen:
@@ -530,7 +573,7 @@ public class ImageTargets extends Activity {
 			handler.postDelayed(new Runnable() {
 				public void run() {
 					// Hide the splash screen
-					mSplashScreenView.setVisibility(View.INVISIBLE);
+					//mSplashScreenView.setVisibility(View.INVISIBLE);
 
 					// Activate the renderer
 					mRenderer.mIsActive = true;
@@ -547,7 +590,7 @@ public class ImageTargets extends Activity {
                             LayoutParams.FILL_PARENT));
 					
                     mGUIManager.initButtons();
-                    //TO DO: There can only be one on click listener... but I can't create the showDialog from the GUI Manager, not the activity
+                    //TODO: There can only be one on click listener... but I can't create the showDialog from the GUI Manager, not the activity
                     ToggleButton storeButton;
                     storeButton = (ToggleButton) mGUIManager.getOverlayView().findViewById(R.id.store_button);
                     storeButton.setOnClickListener(new View.OnClickListener() {
@@ -564,7 +607,7 @@ public class ImageTargets extends Activity {
 					// Start the camera:
 					updateApplicationStatus(APPSTATUS_CAMERA_RUNNING);
 				}
-			}, newSplashScreenTime);
+			}, 0); //newSplashScreenTime);
 
 			break;
 
@@ -630,6 +673,8 @@ public class ImageTargets extends Activity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+		//TODO: Can this be completely removed?
+		/*
 		// Create and add the splash screen view
 		mSplashScreenView = new ImageView(this);
 		mSplashScreenView.setImageResource(mSplashScreenImageResource);
@@ -637,7 +682,7 @@ public class ImageTargets extends Activity {
 		LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 
 		mSplashScreenStartTime = System.currentTimeMillis();
-
+		*/
 	}
 
 	/** Native function to initialize the application. */
@@ -734,6 +779,22 @@ public class ImageTargets extends Activity {
 
 	private native boolean setFocusMode(int mode);
 
+	
+	//TODO: let's hope this works
+	public void updateApplicationStatusEOL(String level) {
+		updateApplicationStatus(APPSTATUS_INIT_EOL);
+		
+    	final String temp = level;
+    	//extended activity. Hopefully not too much overhead?
+    	runOnUiThread(new Runnable() {
+    		
+    	     public void run() {
+    	        currentLevel = (TextView) mGUIManager.getOverlayView().findViewById(R.id.current_level);
+             	currentLevel.setText(temp);
+    	     }
+    	});
+	}
+	
 	/** Returns the number of registered textures. */
 	public int getTextureCount() {
 		return mTextures.size();

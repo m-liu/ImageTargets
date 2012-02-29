@@ -71,7 +71,7 @@ jclass javaClass;
 //Global Level struct
 Level level[NUM_LEVELS];
 int currentLevel = 0;
-int currentLives = 5;
+int currentLives = 20;
 
 int currentScore = 5;
 int currentZen = 0;
@@ -304,6 +304,12 @@ hideStartButton()
 extern "C"
 {
 #endif
+
+JNIEXPORT void JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeNext(JNIEnv*, jobject)
+{
+	startLevel(currentLevel);
+}
 
 JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativePause(JNIEnv*, jobject)

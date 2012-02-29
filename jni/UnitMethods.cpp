@@ -11,6 +11,15 @@
 
 #include "UnitMethods.h"
 
+
+void
+updateApplicationStatusEOL(char* level)
+{
+	jstring js = javaEnv->NewStringUTF(level);
+    jmethodID method = javaEnv->GetMethodID(javaClass, "updateApplicationStatusEOL", "(Ljava/lang/String;)V");
+    javaEnv->CallVoidMethod(javaObj, method, js);
+}
+
 /******************
  * Get current time
  ******************/
@@ -242,8 +251,13 @@ int checkMissileContact(int missileNumber)
 				//if enough enemies are killed, new level is started
 				if (level[currentLevel].killCount >=10) {
 					level[currentLevel].end = 1;
+					char levelString[20];
+					sprintf (levelString, "%d", currentLevel);
+					updateApplicationStatusEOL(levelString);
 					currentLevel++;
-					startLevel(currentLevel);
+
+					//TODO: valid?
+					//startLevel(currentLevel);
 				}
 
                 enemiesKilled++;

@@ -17,4 +17,8 @@
 <string name="settings_label">Settings</string>
 <string name="credits_label">Credits</string>
 
+<string name="eol_level_label">Next Level</string>
+<string name="eol_store_label">Enter Store</string>
+<string name="eol_quit_label">Quit Game</string>
+
 </resources>
