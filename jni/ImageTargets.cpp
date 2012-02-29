@@ -554,17 +554,15 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
 
             if (startGame == 1 && pauseGame == 0 && tap_in_target /*FIXME*/) {
-			
+			      
+
 			
             //animate and draw the enemy units in reference to the marker position
             for (int i=0; i<MAX_NUM_ENEMIES; i++){
                 QCAR::Matrix44F enemyMatrix = cornerMarkerModelViewMatrix;        
                 animateEnemy(enemyMatrix, i, x_offset, y_offset); //animate the i-th enemy
                 QCAR::Matrix44F enemyProjection;
-				if (currentLevel == 1)
                 DrawEnemy(enemyMatrix, enemyProjection, 1);
-				if (currentLevel == 2)
-                DrawEnemy(enemyMatrix, enemyProjection, 5);
             }
 			}
 
@@ -576,7 +574,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         //render towers and missiles
         //Note: do not draw the towers if a corner marker is not seen
         else if (trackedCornerID>=0 && marker->getMarkerId() >= 4 && marker->getMarkerId() < 4+MAX_NUM_TOWERS) {
-
+		displayMessage("See Tower");
             //get the tower number from the markers;
             int towerID = (marker->getMarkerId()) - 4;
             QCAR::Matrix44F towerMatrix = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
@@ -587,14 +585,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
             animateTower(towerMatrix);
 			static int alternate = 0;
 			DrawTower(towerMatrix, towerProjection, alternate); 
-			/*if (alternate == 0){
-				alternate = 3;
-			}
-			else {
-				alternate = 0;
-			}
-			*/
-			//end TODO
             
             //render the missile relative to the corner marker
             //1) find x, y board coordinates of the tower marker
@@ -659,8 +649,8 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 	double time4 = getCurrentTime();  
 	float dt4 = (float)(time4-counterprevTime);          // from frame to frame
 	counterprevTime = time4;
-	missileFrameCounter = ((int)floor(missileFrameCounter - 1 + dt4*25.0f) % MISSILE_NUM_FRAMES) + 1;
-	enemyFrameCounter = ((int)floor(enemyFrameCounter - 1 + dt4*50.0f) % ENEMY_NUM_FRAMES) + 1;
+	//missileFrameCounter = ((int)floor(missileFrameCounter - 1 + dt4*25.0f) % MISSILE_NUM_FRAMES) + 1;
+	//enemyFrameCounter = ((int)floor(enemyFrameCounter - 1 + dt4*50.0f) % ENEMY_NUM_FRAMES) + 1;
 	
 	/* 
 	if (missileFrameCounter == 5) {

@@ -16,7 +16,7 @@ void
 updateApplicationStatusEOL(char* level)
 {
 	jstring js = javaEnv->NewStringUTF(level);
-    jmethodID method = javaEnv->GetMethodID(javaClass, "updateApplicationStatusEOL", "(Ljava/lang/String;)V");
+    jmethodID method = javaEnv->GetMethodID(javaClass, /*"updateApplicationStatusEOL"*/"displayMessage", "(Ljava/lang/String;)V");
     javaEnv->CallVoidMethod(javaObj, method, js);
 }
 
@@ -340,6 +340,10 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber, int x_offset, i
 				level[currentLevel].killCount = level[currentLevel].killCount + 1;
 				if (level[currentLevel].killCount >=10) {
 					level[currentLevel].end = 1;
+					
+					char levelString[20];
+					sprintf (levelString, "%d", currentLevel);
+					updateApplicationStatusEOL(levelString);
 					currentLevel++;
 					startLevel(currentLevel);
 				}
