@@ -11,15 +11,6 @@
 
 #include "UnitMethods.h"
 
-
-void
-updateApplicationStatusEOL(char* level)
-{
-	jstring js = javaEnv->NewStringUTF(level);
-    jmethodID method = javaEnv->GetMethodID(javaClass, /*"updateApplicationStatusEOL"*/"displayMessage", "(Ljava/lang/String;)V");
-    javaEnv->CallVoidMethod(javaObj, method, js);
-}
-
 /******************
  * Get current time
  ******************/
@@ -249,7 +240,7 @@ int checkMissileContact(int missileNumber)
 				level[currentLevel].killCount = level[currentLevel].killCount + 1;
 
 				//if enough enemies are killed, new level is started
-				if (level[currentLevel].killCount >=10) {
+				if (level[currentLevel].killCount >=NUM_ENEMY_PER_ROUND) {
 					level[currentLevel].end = 1;
 					char levelString[20];
 					sprintf (levelString, "%d", currentLevel);
@@ -321,24 +312,15 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber, int x_offset, i
 			enemy[enemyNumber].deployed = true;
 		}
 		else {
-			//moveEnemy(enemy[enemyNumber].X, enemy[enemyNumber].Y, enemy[enemyNumber].direction, enemy[enemyNumber].speed, timeDiff);
+			moveEnemy(enemy[enemyNumber].X, enemy[enemyNumber].Y, enemy[enemyNumber].direction, enemy[enemyNumber].speed, timeDiff);
 			
-			if (enemy[enemyNumber].Y < 0.0f) {
-				enemy[enemyNumber].Y += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
-				enemy[enemyNumber].direction = 90.0f; //up
-			}
-            else
-			{
-				enemy[enemyNumber].X -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
-				enemy[enemyNumber].direction = 180.0f; //left
-			}
 			if (enemy[enemyNumber].X < 0.0f) {
 				currentLives = currentLives - 1;
 				if (currentLives == 0 ) {
 					gameOver();
 				}
 				level[currentLevel].killCount = level[currentLevel].killCount + 1;
-				if (level[currentLevel].killCount >=10) {
+				if (level[currentLevel].killCount >=NUM_ENEMY_PER_ROUND) {
 					level[currentLevel].end = 1;
 					
 					char levelString[20];
@@ -385,7 +367,7 @@ void gameOver ()
 	}
 }
 
-void moveEnemy (int &x, int &y, int &direction, int speed, float timeDiff)
+void moveEnemy (float &x, float &y, float &direction, float speed, float timeDiff)
 {
 	//basic
 	if (stageType == 1) {

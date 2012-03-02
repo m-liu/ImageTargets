@@ -11,6 +11,14 @@
 
 #include "LevelSystem.h"
 
+void
+updateApplicationStatusEOL(char* level)
+{
+	jstring js = javaEnv2->NewStringUTF(level);
+    jmethodID method = javaEnv2->GetMethodID(javaClass2, "updateEOL", "(Ljava/lang/String;)V");
+    javaEnv2->CallVoidMethod(javaObj2, method, js);
+}
+
 //display a message    
 void displayMessage(char* message)
 {
@@ -58,7 +66,7 @@ void startLevel(int nextLevel)
 {
 if (nextLevel == 0)
 	{
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < NUM_ENEMY_PER_ROUND; i++) {
 			makeEnemy (0, i, (i+2)*30);
 		}
 		//stuff isnt initiated at this point
@@ -68,7 +76,7 @@ if (nextLevel == 0)
 
 	if (nextLevel == 1)
 	{
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < NUM_ENEMY_PER_ROUND; i++) {
 			makeEnemy (1, i, (i+2)*25);
 		}
 		displayMessage("LEVEL 2 START!");
@@ -77,7 +85,7 @@ if (nextLevel == 0)
 	
 	if (nextLevel == 2)
 	{
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < NUM_ENEMY_PER_ROUND; i++) {
 			makeEnemy (2, i, (i+2)*20);
 		}
 		displayMessage("LEVEL 3 START!");
@@ -86,7 +94,7 @@ if (nextLevel == 0)
 	
 	if (nextLevel == 3)
 	{
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < NUM_ENEMY_PER_ROUND; i++) {
 			makeEnemy (3, i, (i+2)*15);
 		}
 		displayMessage("LEVEL 4 START!");
@@ -95,7 +103,7 @@ if (nextLevel == 0)
 	
 	if (nextLevel == 4)
 	{
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < NUM_ENEMY_PER_ROUND; i++) {
 			makeEnemy (4, i, (i+2)*10);
 		}
 		displayMessage("LEVEL 5 START!");
@@ -105,7 +113,7 @@ if (nextLevel == 0)
 	
 	if (nextLevel == 5)
 	{
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < NUM_ENEMY_PER_ROUND; i++) {
 			makeEnemy (5, i, (i+2)*10);
 		}
 		displayMessage("LEVEL 6 START!");
@@ -114,7 +122,7 @@ if (nextLevel == 0)
 	
 	if (nextLevel == 6)
 	{
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < NUM_ENEMY_PER_ROUND; i++) {
 			makeEnemy (5, i, (i+2)*5);
 		}
 		displayMessage("LEVEL 7 START!");
@@ -135,7 +143,7 @@ if (nextLevel == 0)
 	
 	if (nextLevel == 8)
 	{
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < NUM_ENEMY_PER_ROUND; i++) {
 			makeEnemy (0, i, (i+2)*5);
 		}
 		displayMessage("LEVEL 9 START!");

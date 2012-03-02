@@ -25,13 +25,17 @@ extern JNIEnv* javaEnv;
 extern jobject javaObj;
 extern jclass javaClass;
 
-
+extern JNIEnv* javaEnv2;
+extern jobject javaObj2;
+extern jclass javaClass2;
 
 
 //display a message
 void displayMessage(char* message);
 void displayScore(char* score);
 void displayZen(char* zen);
+
+void updateApplicationStatusEOL(char* level);
 
 //initislize the levels
 void initLevels ();

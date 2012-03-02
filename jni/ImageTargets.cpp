@@ -68,6 +68,10 @@ JNIEnv* javaEnv;
 jobject javaObj;
 jclass javaClass;
 
+JNIEnv* javaEnv2;
+jobject javaObj2;
+jclass javaClass2;
+
 //Global Level struct
 Level level[NUM_LEVELS];
 int currentLevel = 0;
@@ -470,6 +474,22 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_initNativeCallba
 }
 
 JNIEXPORT void JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_initNativeCallback(JNIEnv* env, jobject obj)
+{
+    // Store the java environment for later use
+    // Note that this environment is only safe for use in this thread
+    javaEnv2 = env;
+    
+    // Store the calling object for later use
+    // Make a global reference to keep it valid beyond the scope of this function
+    javaObj2 = env->NewGlobalRef(obj);
+    
+    // Store the class of the calling object for later use
+    jclass objClass2 = env->GetObjectClass(obj);
+    javaClass2 = (jclass) env->NewGlobalRef(objClass2);
+}
+
+JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIEnv *, jobject)
 {
     //LOG("Java_com_qualcomm_QCARSamples_ImageTargets_GLRenderer_renderFrame");
@@ -615,6 +635,11 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
         // If this is our first time seeing the target, display a tip
         if (!displayedMessage) {
+			
+			char levelString[20];
+			sprintf (levelString, "%d", currentLevel);
+			//TODO: Use this to test menu
+			//updateApplicationStatusEOL(levelString);
 			displayMessage("Press Start!");
 			seeTargets = 1;
 			counterprevTime = getCurrentTime();

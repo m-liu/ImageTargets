@@ -303,6 +303,20 @@ public class GUIManager extends Activity{
     	});
     }
     
+	public void updateEOL(String level) {
+		//updateApplicationStatus(APPSTATUS_INIT_EOL);
+		/*
+    	final String temp = level;
+    	//extended activity. Hopefully not too much overhead?
+    	runOnUiThread(new Runnable() {
+    		
+    	     public void run() {
+    	        //currentLevel = (TextView) mGUIManager.getOverlayView().findViewById(R.id.current_level);
+             	//currentLevel.setText(temp);
+    	     }
+    	});*/
+	}
+    
     /** Getter for the overlay view. */
     public View getOverlayView()
     {

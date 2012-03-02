@@ -107,6 +107,9 @@ public class ImageTargets extends Activity {
 	public static native void nativeBuy(int cost);
 	public static native void nativeNext();
 	
+    /** Native function to store Java environment information for callbacks. */
+    public native void initNativeCallback();
+	
 	/** An async task to initialize QCAR asynchronously. */
 	private class InitQCARTask extends AsyncTask<Void, Integer, Boolean> {
 		// Initialize with invalid value
@@ -426,7 +429,7 @@ public class ImageTargets extends Activity {
 			// Initialize application elements that do not rely on QCAR
 			// initialization
 			initApplication();
-		
+		    initNativeCallback();
 			//Show main menu
 	        updateApplicationStatus(APPSTATUS_INIT_MENU);
 			
@@ -476,37 +479,46 @@ public class ImageTargets extends Activity {
 			
 		case APPSTATUS_INIT_EOL:
 			
-			setContentView(R.layout.levelend);
+	    	runOnUiThread(new Runnable() {
+	    		
+	    	     public void run() {
+	    	    	 
+	    	    	 setContentView(R.layout.levelend);
+	    				
+	    				//Next Level Button
+	    				Button EOLLevelButton = (Button)findViewById(R.id.eol_level_button);
+	    				EOLLevelButton.setOnClickListener(new OnClickListener() {
+	    		        	
+	    		        	public void onClick(View v) {
+	    		        		//TODO: Close the screen and get back to the game
+	    		        		//updateApplicationStatus(APPSTATUS_CAMERA_RUNNING);
+	    		        		//next level
+	    		        	}
+	    		        });
+	    				
+	    		      //Enter Store Button
+	    		        Button EOLStoreButton = (Button)findViewById(R.id.eol_store_button);
+	    		        EOLStoreButton.setOnClickListener(new OnClickListener() {
+	    		        	
+	    		        	public void onClick(View v) {
+	    		        		//TODO: Store here
+	    		        		setContentView(R.layout.game_rules);
+	    		        	}
+	    		        });
+	    		        
+	    		      //Quit Game Button
+	    		        Button EOLQuitButton = (Button)findViewById(R.id.eol_quit_button);
+	    		        EOLQuitButton.setOnClickListener(new OnClickListener() {
+	    		        	
+	    		        	public void onClick(View v) {
+	    		        		//TODO: Quit here
+	    		        		setContentView(R.layout.game_rules);	
+	    		        	}
+	    		        });
+	    				
+	    	     }
+	    	});
 			
-			//Next Level Button
-			Button EOLLevelButton = (Button)findViewById(R.id.eol_level_button);
-			EOLLevelButton.setOnClickListener(new OnClickListener() {
-	        	
-	        	public void onClick(View v) {
-	        		//TODO: Close the screen
-	        		//unsetcontentView?
-	        	}
-	        });
-			
-	      //Enter Store Button
-	        Button EOLStoreButton = (Button)findViewById(R.id.eol_store_button);
-	        EOLStoreButton.setOnClickListener(new OnClickListener() {
-	        	
-	        	public void onClick(View v) {
-	        		//TODO: Store here
-	        		setContentView(R.layout.game_rules);
-	        	}
-	        });
-	        
-	      //Quit Game Button
-	        Button EOLQuitButton = (Button)findViewById(R.id.eol_quit_button);
-	        EOLQuitButton.setOnClickListener(new OnClickListener() {
-	        	
-	        	public void onClick(View v) {
-	        		//TODO: Quit here
-	        		setContentView(R.layout.game_rules);	
-	        	}
-	        });
 			
 			break;
 			
@@ -781,20 +793,22 @@ public class ImageTargets extends Activity {
 
 	
 	//TODO: let's hope this works
-	public void updateApplicationStatusEOL(String level) {
+	public void updateEOL(String level) {
+		//updateApplicationStatus(APPSTATUS_CAMERA_STOPPED);
 		updateApplicationStatus(APPSTATUS_INIT_EOL);
 		
     	final String temp = level;
+        currentLevel = (TextView) mGUIManager.getOverlayView().findViewById(R.id.current_level);
     	//extended activity. Hopefully not too much overhead?
     	runOnUiThread(new Runnable() {
     		
     	     public void run() {
-    	        currentLevel = (TextView) mGUIManager.getOverlayView().findViewById(R.id.current_level);
-             	currentLevel.setText(temp);
+    	    	 //TODO: Figure out why this doesnt work
+             	//currentLevel.setText("2");
     	     }
     	});
 	}
-	
+
 	/** Returns the number of registered textures. */
 	public int getTextureCount() {
 		return mTextures.size();

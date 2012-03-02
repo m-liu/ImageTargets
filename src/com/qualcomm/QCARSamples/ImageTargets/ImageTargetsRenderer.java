@@ -233,4 +233,5 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
     {
         mGUIManager = guiManager;
     }
+    
 }

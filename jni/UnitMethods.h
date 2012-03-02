@@ -68,6 +68,6 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber, int x_offset, i
 void updateMissileDefaultPos(int missileNumber, float lx, float ly);
 void removeEnemy (int enemyNumber);
 void gameOver ();
-void moveEnemy (int &x, int &y, int &direction, int speed, float timeDiff);
+void moveEnemy (float &x, float &y, float &direction, float speed, float timeDiff);
 
 #endif // _UNITDB_H_
