@@ -455,6 +455,9 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_setActivityPortraitMode(
 JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_onQCARInitializedNative(JNIEnv *, jobject)
 {
+
+    QCAR::setHint(QCAR::HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 100);
+    QCAR::setHint(QCAR::HINT_IMAGE_TARGET_MULTI_FRAME_ENABLED, 1);
 }
 
 JNIEXPORT void JNICALL
@@ -554,8 +557,8 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
                 QCAR::Vec2F trackableSize = marker->getSize();
 
-                LOG("tap coordinates (screen space): %.2f, %.2f", tapX, tapY);
-                LOG("tap coordinates (target space): %.2f, %.2f", intersection.data[0], intersection.data[1]);
+                //LOG("tap coordinates (screen space): %.2f, %.2f", tapX, tapY);
+                //LOG("tap coordinates (target space): %.2f, %.2f", intersection.data[0], intersection.data[1]);
 
                 if (fabs(intersection.data[0]) < (trackableSize.data[0] / 2) &&
                         fabs(intersection.data[1]) < (trackableSize.data[1] / 2))
@@ -594,7 +597,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         //render towers and missiles
         //Note: do not draw the towers if a corner marker is not seen
         else if (trackedCornerID>=0 && marker->getMarkerId() >= 4 && marker->getMarkerId() < 4+MAX_NUM_TOWERS) {
-		displayMessage("See Tower");
+		    //displayMessage("See Tower");
             //get the tower number from the markers;
             int towerID = (marker->getMarkerId()) - 4;
             QCAR::Matrix44F towerMatrix = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
