@@ -34,8 +34,6 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.TextView;
-//import android.widget.ImageView;
 import android.widget.Toast;
 
 import android.widget.ToggleButton;
@@ -58,11 +56,13 @@ public class ImageTargets extends Activity {
 	private static final int APPSTATUS_INIT_EOL = 8;
 
     private static final int DIALOG_STORE = 100;
+    private static final int DIALOG_EOL = 101;
+    private static final int DIALOG_STORE_CONT = 102;
 	
 	// Name of the native dynamic libraries to load:
 	private static final String NATIVE_LIB_SAMPLE = "ImageTargets";
 	private static final String NATIVE_LIB_QCAR = "QCAR";
-    private TextView currentLevel;
+    private int currentLevel;
 	// Our OpenGL view:
 	private QCARSampleGLView mGlView;
 
@@ -229,7 +229,7 @@ public class ImageTargets extends Activity {
     	AlertDialog dialog = null;
         switch (id) {
         case DIALOG_STORE:
-            final CharSequence[] items = {"Castle: 1 ZP", "Igloo: 2 ZP", "Terran Bunker: 3 ZP", "Protoss Cannon: 4 ZP"};
+            final CharSequence[] items = {"Castle: 1 ZP", "Igloo: 2 ZP", "Terran Bunker: 3 ZP", "Protoss Cannon: 4 ZP", "Protoss Cannon: 5 ZP", "Protoss Cannon: 6 ZP"};
         	AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Welcome to the Store! Buy:")
             .setItems(items, new DialogInterface.OnClickListener() {
@@ -238,12 +238,68 @@ public class ImageTargets extends Activity {
                    	int duration = Toast.LENGTH_LONG;
                     Toast toast = Toast.makeText(getApplicationContext(), "Spent " + (item+1), duration);
                     toast.show();
+                	showDialog(DIALOG_STORE_CONT);
                 }
             });
             dialog = builder.create();
+            break;
+            
+        case DIALOG_EOL:
+            final CharSequence[] items2 = {"Next Level", "Enter Store", "Quit Game"};
+        	AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+            builder2.setTitle("COMPLETE LEVEL " + currentLevel)
+            .setItems(items2, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                    
+                	
+                	if (item == 0) {
+                		//TODO: Test if need to run on UIThread
+                    	mGUIManager.nativeLeave();
+                	}
+                    else if (item == 1) {
+                    	runOnUiThread(new Runnable() {
+                    		
+                      	     public void run() {
+                             	showDialog(DIALOG_STORE);
+                      	     }
+                      	});
+
+                    }
+                    else if (item == 2) {
+                    	//end game
+                    	updateApplicationStatus(APPSTATUS_CAMERA_STOPPED);
+                    }
+                }
+            });
+            dialog = builder2.create();
+            break;
+            
+        case DIALOG_STORE_CONT:
+            final CharSequence[] items3 = {"Continue Buying", "Return to Game"};
+        	AlertDialog.Builder builder3 = new AlertDialog.Builder(this);
+            builder3.setTitle("Continue Buying?")
+            .setItems(items3, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                 	if (item == 0) {
+                    	runOnUiThread(new Runnable() {
+                    		
+                     	     public void run() {
+                            	showDialog(DIALOG_STORE);
+                     	     }
+                     	});
+                	}
+                    else if (item == 1) {
+                     	mGUIManager.nativeLeave();
+                    }
+                }
+            });
+            dialog = builder3.create();
+            break;
+            
             
         }
         return dialog;
+        
     }
 	
 	/**
@@ -476,7 +532,7 @@ public class ImageTargets extends Activity {
 	        });
 			
 			break;
-			
+			/*
 		case APPSTATUS_INIT_EOL:
 			
 	    	runOnUiThread(new Runnable() {
@@ -521,7 +577,7 @@ public class ImageTargets extends Activity {
 			
 			
 			break;
-			
+			*/
 		
 		case APPSTATUS_INIT_QCAR:
 			// Initialize QCAR SDK asynchronously to avoid blocking the
@@ -603,16 +659,12 @@ public class ImageTargets extends Activity {
 					
                     mGUIManager.initButtons();
                     //TODO: There can only be one on click listener... but I can't create the showDialog from the GUI Manager, not the activity
-                    ToggleButton storeButton;
-                    storeButton = (ToggleButton) mGUIManager.getOverlayView().findViewById(R.id.store_button);
+                    Button storeButton;
+                    storeButton = (Button) mGUIManager.getOverlayView().findViewById(R.id.store_button);
                     storeButton.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
-                            if (((ToggleButton) v).isChecked()) {
-                            	mGUIManager.nativeStore();
-                                showDialog(DIALOG_STORE);
-                            } else {
-                            	mGUIManager.nativeLeave();
-                            }
+                            mGUIManager.nativeStore();
+                            showDialog(DIALOG_STORE);
                         }
                     });
                     
@@ -794,19 +846,24 @@ public class ImageTargets extends Activity {
 	
 	//TODO: let's hope this works
 	public void updateEOL(String level) {
+		currentLevel = Integer.parseInt(level);
+
+
 		//updateApplicationStatus(APPSTATUS_CAMERA_STOPPED);
-		updateApplicationStatus(APPSTATUS_INIT_EOL);
+		//Changing from "xml" style EOL menu to "store" style menu
+		/*updateApplicationStatus(APPSTATUS_INIT_EOL);
 		
     	final String temp = level;
         currentLevel = (TextView) mGUIManager.getOverlayView().findViewById(R.id.current_level);
-    	//extended activity. Hopefully not too much overhead?
+    	*///extended activity. Hopefully not too much overhead?
     	runOnUiThread(new Runnable() {
     		
     	     public void run() {
-    	    	 //TODO: Figure out why this doesnt work
-             	//currentLevel.setText("2");
+             	mGUIManager.nativeStore();
+    	     	showDialog(DIALOG_EOL);
     	     }
     	});
+		
 	}
 
 	/** Returns the number of registered textures. */

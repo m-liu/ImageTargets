@@ -24,7 +24,7 @@ public class GUIManager extends Activity{
     private ToggleButton pauseButton;
     private Button startButton;
     private Button deleteButton;
-    private ToggleButton storeButton;
+    private Button storeButton;
     private Button statsButton;
     private Button upgradeButton;
     private Button creditsButton;
@@ -116,7 +116,7 @@ public class GUIManager extends Activity{
                         break;
                     case TOGGLE_STORE_BUTTON:
                         if (storeButton != null) {
-                            storeButton.setChecked(true);
+                            //storeButton.setChecked(true);
                         }
                         break;
                     case SHOW_STORE_BUTTON:
@@ -191,7 +191,7 @@ public class GUIManager extends Activity{
         });
         
         
-        storeButton = (ToggleButton) overlayView.findViewById(R.id.store_button);
+        storeButton = (Button) overlayView.findViewById(R.id.store_button);
         storeButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF00AA00));
     	/*
     	storeButton.setOnClickListener(new View.OnClickListener() {

@@ -87,14 +87,13 @@
         android:visibility="invisible"
     />
        
-    <ToggleButton android:id="@+id/store_button"
+    <Button android:id="@+id/store_button"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="100px"
         android:layout_height="70px"
         android:layout_toRightOf="@id/stats_button"
         android:layout_alignParentBottom="true"
-        android:textOff="@string/button_store"
-        android:textOn="@string/button_leave"
+        android:text="@string/button_store"
         android:visibility="invisible"
     />
     

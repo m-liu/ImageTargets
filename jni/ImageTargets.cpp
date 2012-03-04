@@ -77,8 +77,8 @@ Level level[NUM_LEVELS];
 int currentLevel = 0;
 int currentLives = 20;
 
-int currentScore = 5;
-int currentZen = 0;
+int currentScore = 0;
+int currentZen = 5;
 
 int stageType = 1;
 
@@ -638,7 +638,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 			
 			char levelString[20];
 			sprintf (levelString, "%d", currentLevel);
-			//TODO: Use this to test menu
+			//TODO: Uncomment this to test menu
 			//updateApplicationStatusEOL(levelString);
 			displayMessage("Press Start!");
 			seeTargets = 1;
