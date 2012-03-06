@@ -98,7 +98,7 @@ bool tap=false;
 float tapX = 0;
 float tapY = 0;
 bool tap_in_target = true;
-
+int selMarkerID = -1;
 
 
 // OpenGL ES 2.0 specific:
@@ -131,6 +131,8 @@ QCAR::Matrix44F inverseProjMatrix;
 void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, int type);
 void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, int type);
 void DrawMissile (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection, int type);
+void DrawSelRing (QCAR::Matrix44F selMatrix, QCAR::Matrix44F selProjection);
+
 
 void getMarkerOffset(int trackedCornerID, int &x_offset, int &y_offset);
 void convert2BoardCoord (int cornerID, QCAR::Matrix44F cornerMVM, QCAR::Matrix44F targetMVM, float &x, float &y);
@@ -335,7 +337,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeUnpause(JNIEnv*, job
 			for (int i=0; i<MAX_NUM_ENEMIES; i++){
 				enemy[i].prevTime = getCurrentTime();  
             }
-			showStoreButton();
+			//showStoreButton();
 			pauseGame = 0;
 
 }
@@ -388,7 +390,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeStart(JNIEnv*, jobje
 				hideCreditsButton();
 				showPauseButton();
 				showStatsButton();
-				showStoreButton();
+				hideStoreButton();
 				startLevel(0);
 				for (int enemyNumber = 0; enemyNumber < MAX_NUM_ENEMIES; enemyNumber++) {
 					enemy[enemyNumber].prevTime = getCurrentTime();
@@ -415,6 +417,24 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeCredits(JNIEnv*, job
 JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeBuy(JNIEnv *env, jobject thiz, jint cost)//type?
 {
+    //a purchase was made. Initialize the tower and deduct the cost
+    LOG("nativeBuy called");
+    //FIXME tower type is cost-1
+    int towerType = (int)cost -1;
+    
+    //check that we have a selection
+    if (selMarkerID < 0){
+        LOG("ERROR nativeBuy: selMarkerID < 0");
+        return;
+    }
+    
+    LOG("nativeBuy: selMarkerID=%d", selMarkerID);
+    //initialize the tower
+    tower[selMarkerID].initialized = true;
+    tower[selMarkerID].upgradeLevel = 1;
+    tower[selMarkerID].type = towerType;
+
+    //deduct cost
 	currentZen = currentZen - (int)cost;
 	char zenString[20];
 	sprintf (zenString, "%d", currentZen);
@@ -576,13 +596,11 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
             if ( checkTapMarker(marker, towerMatrix) ){
                 showStoreButton();
                 showUpgradeButton();
-                //TODO remove
-                tower[mID].initialized=1;
-                tower[mID].type=0;
+                selMarkerID = mID;
+                //tower[mID].initialized=1;
+                //tower[mID].type=0;
                 //end remove
             }
-
-
 
 
             //draw the tower at the precise location of the marker if it's initialized
@@ -596,7 +614,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
                 //initialize the missile if not init
                 if (!missile[mID].initialized){
-                    makeMissile (0, mID, tower[mID].boardX, tower[mID].boardY);
+                    makeMissile (tower[mID].type, mID, tower[mID].boardX, tower[mID].boardY);
                 }
                 //always update the original missile position (in case of glitches)
                 updateMissileDefaultPos (mID, tower[mID].boardX, tower[mID].boardY);
@@ -615,6 +633,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 #endif
 
             }
+
+            else { //if tower is uninitialized, display a ring to indicate marker is recognized
+                //TODO
+                DrawSelRing(towerMatrix, towerProjection); 
+            }
+
         }//end tower drawing
 
         // If this is our first time seeing the target, display a tip
@@ -635,6 +659,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
     //re-render every frame
     trackedCornerID=-1;
+    //if tap outside markers, unselect tower
+    if (tap) { 
+        hideStoreButton();
+        hideUpgradeButton();
+        selMarkerID = -1;
+    }
     //reset tap
     tap = false;
 
@@ -1035,6 +1065,27 @@ void DrawMissile (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjecti
 		glDrawArrays(GL_TRIANGLES, 0, snowballNumVerts);
 	}
 	SampleUtils::checkGlError("ImageTargets renderFrame");
+}
+
+
+//draws a selection ring around recognized markers without towers
+void DrawSelRing (QCAR::Matrix44F selMatrix, QCAR::Matrix44F selProjection) {
+    //TODO: no textures here or real model yet
+    //const Texture* const thisTexture = textures[0];
+    //Castle = 0, Igloo = 3
+
+    SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &selMatrix.data[0], &selProjection.data[0]);
+    glUseProgram(shaderProgramID);
+    glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, towerVerts);
+    glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, towerNormals);
+    glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, towerTexCoords);
+    glEnableVertexAttribArray(vertexHandle);
+    glEnableVertexAttribArray(normalHandle);
+    glEnableVertexAttribArray(textureCoordHandle);
+    glActiveTexture(GL_TEXTURE0);
+    //glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+    glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&selProjection.data[0] );
+    glDrawArrays(GL_TRIANGLES, 0, iglooNumVerts);
 }
 
 
