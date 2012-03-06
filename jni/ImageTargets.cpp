@@ -527,6 +527,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
     // Did we find any trackables this frame?
     for(int tIdx = 0; tIdx < state.getNumActiveTrackables(); tIdx++)
     {
+        LOG("num tracked: %d", state.getNumActiveTrackables());
         // Get the trackable
         const QCAR::Trackable* trackable = state.getActiveTrackable(tIdx);
 
@@ -542,36 +543,8 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
             getMarkerOffset(trackedCornerID, x_offset, y_offset);
 
-            //1 Life Teapot
-            /*
-            QCAR::Matrix44F LifeMatrix1 = markerModelViewMatrix;
-            QCAR::Matrix44F LifeProjection1;
-            SampleUtils::translatePoseMatrix(-100.0f, 100.0f, 60.0f, &LifeMatrix1.data[0]);			
-    		DrawEnemy(LifeMatrix1, LifeProjection1, x_offset, y_offset);
-		    */
             //FIXME: Tap event test
-            if (tap)
-            {
-                QCAR::Vec3F intersection, lineStart, lineEnd;
-                projectScreenPointToPlane(QCAR::Vec2F(tapX, tapY), QCAR::Vec3F(0, 0, 0), QCAR::Vec3F(0, 0, 1), intersection, lineStart, lineEnd, cornerMarkerModelViewMatrix);
-
-                QCAR::Vec2F trackableSize = marker->getSize();
-
-                //LOG("tap coordinates (screen space): %.2f, %.2f", tapX, tapY);
-                //LOG("tap coordinates (target space): %.2f, %.2f", intersection.data[0], intersection.data[1]);
-
-                if (fabs(intersection.data[0]) < (trackableSize.data[0] / 2) &&
-                        fabs(intersection.data[1]) < (trackableSize.data[1] / 2))
-                {
-                    LOG("tapped inside the target!");
-                    //toggle 
-                    tap_in_target = !tap_in_target;
-
-                    // do something here
-                }
-
-                tap = false;
-            }
+            bool tap_in_target = checkTapMarker(marker, cornerMarkerModelViewMatrix);
             //end tap event test FIXME
 
 
@@ -857,7 +830,10 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_startCamera(JNIEnv *,
     inverseProjMatrix = SampleMath::Matrix44FInverse(projectionMatrix);
 
 }
-
+Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeUpgrade(JNIEnv*, jobject)
+{
+			displayMessage("Upgrade!");
+}
 
 JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_stopCamera(JNIEnv *,
@@ -1108,7 +1084,7 @@ void convert2BoardCoord (int cornerID, QCAR::Matrix44F cornerMVM, QCAR::Matrix44
 
 
 //********************************************************
-// Projection helpers
+// Tap event helpers
 // *******************************************************
 
 void
@@ -1176,8 +1152,28 @@ linePlaneIntersection(QCAR::Vec3F lineStart, QCAR::Vec3F lineEnd,
 }
 
 
+//given a marker, check if the tap is inside the marker
+bool checkTapMarker (QCAR::Marker* marker, QCAR::Matrix44F markerMVM){
 
+    if(tap){
+        tap = false; //reset tap
 
+        QCAR::Vec3F intersection, lineStart, lineEnd;
+        projectScreenPointToPlane(QCAR::Vec2F(tapX, tapY), QCAR::Vec3F(0, 0, 0), QCAR::Vec3F(0, 0, 1), intersection, lineStart, lineEnd, markerMVM);
 
+        QCAR::Vec2F trackableSize = marker->getSize();
+
+        //LOG("tap coordinates (screen space): %.2f, %.2f", tapX, tapY);
+        //LOG("tap coordinates (target space): %.2f, %.2f", intersection.data[0], intersection.data[1]);
+
+        if (fabs(intersection.data[0]) < (trackableSize.data[0] / 2) &&
+                fabs(intersection.data[1]) < (trackableSize.data[1] / 2))
+        {
+            LOG("tapped inside the target!");
+            return true;
+        }
+    }
+    return false;
+}
 
 
