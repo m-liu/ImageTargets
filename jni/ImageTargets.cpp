@@ -62,6 +62,7 @@ EnemyUnit enemy[MAX_NUM_ENEMIES];
 EnemyUnit enemy_type[NUM_ENEMY_TYPES];
 MissileUnit missile[MAX_NUM_TOWERS];
 MissileUnit missile_type[NUM_MISSILE_TYPES];
+TowerUnit tower[MAX_NUM_TOWERS];
 
 //java objects
 JNIEnv* javaEnv;
@@ -135,6 +136,8 @@ void getMarkerOffset(int trackedCornerID, int &x_offset, int &y_offset);
 void convert2BoardCoord (int cornerID, QCAR::Matrix44F cornerMVM, QCAR::Matrix44F targetMVM, float &x, float &y);
 
 //for tap event computations
+
+bool checkTapMarker (const QCAR::Marker* marker, QCAR::Matrix44F markerMVM);
 bool
 linePlaneIntersection(QCAR::Vec3F lineStart, QCAR::Vec3F lineEnd,
                       QCAR::Vec3F pointOnPlane, QCAR::Vec3F planeNormal,
@@ -527,7 +530,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
     // Did we find any trackables this frame?
     for(int tIdx = 0; tIdx < state.getNumActiveTrackables(); tIdx++)
     {
-        LOG("num tracked: %d", state.getNumActiveTrackables());
+        //LOG("num tracked: %d", state.getNumActiveTrackables());
         // Get the trackable
         const QCAR::Trackable* trackable = state.getActiveTrackable(tIdx);
 
@@ -543,24 +546,16 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
             getMarkerOffset(trackedCornerID, x_offset, y_offset);
 
-            //FIXME: Tap event test
-            bool tap_in_target = checkTapMarker(marker, cornerMarkerModelViewMatrix);
-            //end tap event test FIXME
 
-
-
-            if (startGame == 1 && pauseGame == 0 && tap_in_target /*FIXME*/) {
-			      
-
-			
-            //animate and draw the enemy units in reference to the marker position
-            for (int i=0; i<MAX_NUM_ENEMIES; i++){
-                QCAR::Matrix44F enemyMatrix = cornerMarkerModelViewMatrix;        
-                animateEnemy(enemyMatrix, i, x_offset, y_offset); //animate the i-th enemy
-                QCAR::Matrix44F enemyProjection;
-                DrawEnemy(enemyMatrix, enemyProjection, 1);
+            if (startGame == 1 && pauseGame == 0) {
+                //animate and draw the enemy units in reference to the marker position
+                for (int i=0; i<MAX_NUM_ENEMIES; i++){
+                    QCAR::Matrix44F enemyMatrix = cornerMarkerModelViewMatrix;        
+                    animateEnemy(enemyMatrix, i, x_offset, y_offset); //animate the i-th enemy
+                    QCAR::Matrix44F enemyProjection;
+                    DrawEnemy(enemyMatrix, enemyProjection, 1);
+                }
             }
-			}
 
 
 
@@ -570,43 +565,56 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         //render towers and missiles
         //Note: do not draw the towers if a corner marker is not seen
         else if (trackedCornerID>=0 && marker->getMarkerId() >= 4 && marker->getMarkerId() < 4+MAX_NUM_TOWERS) {
-		    //displayMessage("See Tower");
-            //get the tower number from the markers;
-            int towerID = (marker->getMarkerId()) - 4;
+
+            //get the marker id
+            int mID = (marker->getMarkerId()) - 4;
             QCAR::Matrix44F towerMatrix = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
             QCAR::Matrix44F towerProjection;
-            //draw the tower at the precise location of the marker
-            
-			//DrawTower(towerMatrix, towerProjection, 0); 
-            animateTower(towerMatrix);
-			static int alternate = 0;
-			DrawTower(towerMatrix, towerProjection, alternate); 
-            
-            //render the missile relative to the corner marker
-            //1) find x, y board coordinates of the tower marker
-            float x_board, y_board;
-            convert2BoardCoord (trackedCornerID, cornerMarkerModelViewMatrix, towerMatrix, x_board,  y_board);
-
-		    //initialize the missile if not init
-            if (!missile[towerID].initialized){
-    		    makeMissile (0, towerID, x_board, y_board);
+ 
+ 
+            //if marker is tapped, show store and upgrade buttons
+            if ( checkTapMarker(marker, towerMatrix) ){
+                showStoreButton();
+                showUpgradeButton();
+                //TODO remove
+                tower[mID].initialized=1;
+                tower[mID].type=0;
+                //end remove
             }
-            //always update the original missile position (in case of glitches)
-            updateMissileDefaultPos (towerID, x_board, y_board);
 
-            //animate missile with respect to corner marker
-            QCAR::Matrix44F missileMatrix = cornerMarkerModelViewMatrix;    
-            getMarkerOffset(trackedCornerID, x_offset, y_offset);
-			if (startGame == 1 && pauseGame == 0) {
-                animateMissile(missileMatrix, towerID, x_offset, y_offset);
-				checkMissileContact(towerID);
-			}
+
+
+
+            //draw the tower at the precise location of the marker if it's initialized
+            if (tower[mID].initialized){
+                animateTower(towerMatrix);
+                DrawTower(towerMatrix, towerProjection, tower[mID].type); 
+
+                //render the missile relative to the corner marker
+                //1) find x, y board coordinates of the tower marker
+                convert2BoardCoord (trackedCornerID, cornerMarkerModelViewMatrix, towerMatrix, tower[mID].boardX, tower[mID].boardY);
+
+                //initialize the missile if not init
+                if (!missile[mID].initialized){
+                    makeMissile (0, mID, tower[mID].boardX, tower[mID].boardY);
+                }
+                //always update the original missile position (in case of glitches)
+                updateMissileDefaultPos (mID, tower[mID].boardX, tower[mID].boardY);
+
+                //animate missile with respect to corner marker
+                QCAR::Matrix44F missileMatrix = cornerMarkerModelViewMatrix;    
+                getMarkerOffset(trackedCornerID, x_offset, y_offset);
+                if (startGame == 1 && pauseGame == 0) {
+                    animateMissile(missileMatrix, mID, x_offset, y_offset);
+                    checkMissileContact(mID);
+                }
 #ifdef USE_OPENGL_ES_1_1
 #else
-            QCAR::Matrix44F missileProjection;
-            DrawMissile(missileMatrix, missileProjection, 0); 
+                QCAR::Matrix44F missileProjection;
+                DrawMissile(missileMatrix, missileProjection, 0); 
 #endif
 
+            }
         }//end tower drawing
 
         // If this is our first time seeing the target, display a tip
@@ -830,10 +838,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_startCamera(JNIEnv *,
     inverseProjMatrix = SampleMath::Matrix44FInverse(projectionMatrix);
 
 }
-Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeUpgrade(JNIEnv*, jobject)
-{
-			displayMessage("Upgrade!");
-}
+
 
 JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_stopCamera(JNIEnv *,
@@ -1153,7 +1158,7 @@ linePlaneIntersection(QCAR::Vec3F lineStart, QCAR::Vec3F lineEnd,
 
 
 //given a marker, check if the tap is inside the marker
-bool checkTapMarker (QCAR::Marker* marker, QCAR::Matrix44F markerMVM){
+bool checkTapMarker (const QCAR::Marker* marker, QCAR::Matrix44F markerMVM){
 
     if(tap){
         tap = false; //reset tap

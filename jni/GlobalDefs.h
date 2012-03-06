@@ -67,6 +67,16 @@ struct MissileUnit
 	double prevTime;
 };
 
+//tower struct
+struct TowerUnit
+{
+    int initialized;
+    int upgradeLevel; //tower level
+    int type;
+    float boardX;   //position of tower in board coordinates
+    float boardY;
+};
+
 //Level struct
 struct Level
 {
