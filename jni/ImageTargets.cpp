@@ -635,7 +635,8 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
     //re-render every frame
     trackedCornerID=-1;
-
+    //reset tap
+    tap = false;
 
     glDisable(GL_DEPTH_TEST);
 
@@ -1152,8 +1153,6 @@ linePlaneIntersection(QCAR::Vec3F lineStart, QCAR::Vec3F lineEnd,
     
     QCAR::Vec3F offset = SampleMath::Vec3FScale(lineDir, dist);
     intersection = SampleMath::Vec3FAdd(lineStart, offset);
-	//TODO NOTE by ALTON: added this don't know if its correct
-	return true;
 }
 
 
@@ -1161,20 +1160,22 @@ linePlaneIntersection(QCAR::Vec3F lineStart, QCAR::Vec3F lineEnd,
 bool checkTapMarker (const QCAR::Marker* marker, QCAR::Matrix44F markerMVM){
 
     if(tap){
-        tap = false; //reset tap
+        LOG("tap true");
+
 
         QCAR::Vec3F intersection, lineStart, lineEnd;
         projectScreenPointToPlane(QCAR::Vec2F(tapX, tapY), QCAR::Vec3F(0, 0, 0), QCAR::Vec3F(0, 0, 1), intersection, lineStart, lineEnd, markerMVM);
 
         QCAR::Vec2F trackableSize = marker->getSize();
 
-        //LOG("tap coordinates (screen space): %.2f, %.2f", tapX, tapY);
-        //LOG("tap coordinates (target space): %.2f, %.2f", intersection.data[0], intersection.data[1]);
+        LOG("tap coordinates (screen space): %.2f, %.2f", tapX, tapY);
+        LOG("tap coordinates (target space): %.2f, %.2f", intersection.data[0], intersection.data[1]);
 
         if (fabs(intersection.data[0]) < (trackableSize.data[0] / 2) &&
                 fabs(intersection.data[1]) < (trackableSize.data[1] / 2))
         {
             LOG("tapped inside the target!");
+            tap = false;
             return true;
         }
     }

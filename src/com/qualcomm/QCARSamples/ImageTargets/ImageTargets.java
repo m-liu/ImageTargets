@@ -650,7 +650,7 @@ public class ImageTargets extends Activity {
 					// that the OpenGL ES surface view gets added
 					// BEFORE the camera is started and video
 					// background is configured.
-					addContentView(mGlView, new LayoutParams(
+					setContentView(mGlView, new LayoutParams(
 							LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 					
                     addContentView(mGUIManager.getOverlayView(), new LayoutParams(
