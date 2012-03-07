@@ -573,7 +573,11 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
                     QCAR::Matrix44F enemyMatrix = cornerMarkerModelViewMatrix;        
                     animateEnemy(enemyMatrix, i, x_offset, y_offset); //animate the i-th enemy
                     QCAR::Matrix44F enemyProjection;
-                    DrawEnemy(enemyMatrix, enemyProjection, 1);
+                    DrawEnemy(enemyMatrix, enemyProjection,enemy[i].texture);
+					
+					//char scoreString[20];
+					//sprintf (scoreString, "%d", enemy[i].texture);
+					//displayMessage(scoreString);
                 }
             }
 
@@ -689,8 +693,8 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 	double time4 = getCurrentTime();  
 	float dt4 = (float)(time4-counterprevTime);          // from frame to frame
 	counterprevTime = time4;
-	//missileFrameCounter = ((int)floor(missileFrameCounter - 1 + dt4*25.0f) % MISSILE_NUM_FRAMES) + 1;
-	//enemyFrameCounter = ((int)floor(enemyFrameCounter - 1 + dt4*50.0f) % ENEMY_NUM_FRAMES) + 1;
+	missileFrameCounter = ((int)floor(missileFrameCounter - 1 + dt4*25.0f) % MISSILE_NUM_FRAMES) + 1;
+	enemyFrameCounter = ((int)floor(enemyFrameCounter - 1 + dt4*50.0f) % ENEMY_NUM_FRAMES) + 1;
 	
 	/* 
 	if (missileFrameCounter == 5) {
@@ -968,23 +972,29 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_updateRendering(
 
 
 void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, int type) {
-	struct graphics_arrays horse_animate_array = get_graphics_stats (enemyFrameCounter, 1);
+	
 	//struct graphics_arrays zombie_animate_array = get_graphics_stats (enemyFrameCounter, 1);
 	//Horse = 1, Zombie = 5
-	const Texture* const thisTexture = textures[1];
-
-    SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&EnemyMatrix.data[0], &EnemyProjection.data[0]);
-    glUseProgram(shaderProgramID);
+	struct graphics_arrays horse_animate_array = get_graphics_stats (enemyFrameCounter, 1);
+	struct graphics_arrays zombie_animate_array = get_graphics_stats (enemyFrameCounter, 1);
 	if (type == 1) {
+		
+		SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&EnemyMatrix.data[0], &EnemyProjection.data[0]);
+		glUseProgram(shaderProgramID);
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Verts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.Normals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) horse_animate_array.TexCoords); 
 	}
-	/*if (type == 5) {
+	else if (type == 5) {
+
+		SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&EnemyMatrix.data[0], &EnemyProjection.data[0]);
+		glUseProgram(shaderProgramID);
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) zombie_animate_array.Verts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) zombie_animate_array.Normals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) zombie_animate_array.TexCoords); 
-	}*/
+	}
+	const Texture* const thisTexture = textures[type];
+	
     glEnableVertexAttribArray(vertexHandle);
     glEnableVertexAttribArray(normalHandle);
     glEnableVertexAttribArray(textureCoordHandle);      
@@ -994,9 +1004,9 @@ void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, in
 	if (type == 1) {
 		glDrawArrays(GL_TRIANGLES, 0, (int)*horse_animate_array.NumVerts);
 	}
-	/*if (type == 5) {
+	if (type == 5) {
 		glDrawArrays(GL_TRIANGLES, 0, (int)*zombie_animate_array.NumVerts);
-	}*/
+	}
     SampleUtils::checkGlError("ImageTargets renderFrame");
 }
 

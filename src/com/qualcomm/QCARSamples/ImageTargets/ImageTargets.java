@@ -334,7 +334,7 @@ public class ImageTargets extends Activity {
 	private void loadTextures() {
 		mTextures.add(Texture.loadTextureFromApk("tower_bake.png",
 				getAssets()));
-		mTextures.add(Texture.loadTextureFromApk("horse_cow.png",
+		mTextures.add(Texture.loadTextureFromApk("cow.png",
 				getAssets()));
 		mTextures.add(Texture.loadTextureFromApk("arrow_bake.png",
 				getAssets()));
@@ -346,8 +346,8 @@ public class ImageTargets extends Activity {
 				getAssets()));
 		//mTextures.add(Texture.loadTextureFromApk("arrow_bake.png",
 		//		getAssets()));
-		//mTextures.add(Texture.loadTextureFromApk("zombie1.png",
-		//		getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("zombie1.png",
+				getAssets()));
 		
 	}
 
