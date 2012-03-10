@@ -88,10 +88,11 @@ Texture::create(JNIEnv* env, jobject textureObject)
 
     newTexture->mData = new unsigned char[newTexture->mWidth * newTexture->mHeight * newTexture->mChannelCount];
 
-    unsigned char* textureData = (unsigned char*) pixels;
+	//TO DO: IS THIS EVEN NEEDED?
+    //unsigned char* textureData = (unsigned char*) pixels;
 
     int rowSize = newTexture->mWidth * newTexture->mChannelCount;
-    for (int r = 0; r < newTexture->mHeight; ++r)
+    for (unsigned int r = 0; r < newTexture->mHeight; ++r)
     {
         memcpy(newTexture->mData + rowSize * r, pixels + rowSize * (newTexture->mHeight - 1 - r), newTexture->mWidth * 4);
     }

@@ -1,6 +1,6 @@
-/cygdrive/c/Users/David/git/ImageTargets/obj/local/armeabi/objs-debug/ImageTargets/SampleUtils.o: \
- /cygdrive/c/Users/David/git/ImageTargets/jni/SampleUtils.cpp \
- /cygdrive/c/Users/David/git/ImageTargets/jni/SampleUtils.h \
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/obj/local/armeabi/objs-debug/ImageTargets/SampleUtils.o: \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/SampleUtils.cpp \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/SampleUtils.h \
  /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/stdio.h \
  /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/sys/cdefs.h \
  /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/sys/cdefs_elf.h \
@@ -35,7 +35,7 @@
  /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/KHR/khrplatform.h \
  /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/GLES2/gl2ext.h
 
-/cygdrive/c/Users/David/git/ImageTargets/jni/SampleUtils.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/SampleUtils.h:
 
 /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/stdio.h:
 

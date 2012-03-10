@@ -337,7 +337,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeUnpause(JNIEnv*, job
 			for (int i=0; i<MAX_NUM_ENEMIES; i++){
 				enemy[i].prevTime = getCurrentTime();  
             }
-			//showStoreButton();
+			showStoreButton();
 			pauseGame = 0;
 
 }
@@ -368,7 +368,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeUpgrade(JNIEnv*, job
 JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeLeave(JNIEnv*, jobject)
 {
-  			//displayMessage("Game Unpaused\n\n\n THANKS FOR SHOPPING!");
 			//update times
 			for (int i=0; i<MAX_NUM_ENEMIES; i++){
 				enemy[i].prevTime = getCurrentTime();  
@@ -976,7 +975,7 @@ void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, in
 	//struct graphics_arrays zombie_animate_array = get_graphics_stats (enemyFrameCounter, 1);
 	//Horse = 1, Zombie = 5
 	struct graphics_arrays horse_animate_array = get_graphics_stats (enemyFrameCounter, 1);
-	struct graphics_arrays zombie_animate_array = get_graphics_stats (enemyFrameCounter, 1);
+	struct graphics_arrays zombie_animate_array = get_graphics_stats (enemyFrameCounter, 2);
 	if (type == 1) {
 		
 		SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&EnemyMatrix.data[0], &EnemyProjection.data[0]);
@@ -1214,6 +1213,8 @@ linePlaneIntersection(QCAR::Vec3F lineStart, QCAR::Vec3F lineEnd,
     
     QCAR::Vec3F offset = SampleMath::Vec3FScale(lineDir, dist);
     intersection = SampleMath::Vec3FAdd(lineStart, offset);
+	//TODO NOTE by ALTON: added this don't know if its correct
+	return true;
 }
 
 

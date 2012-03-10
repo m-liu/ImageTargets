@@ -235,20 +235,24 @@ int checkMissileContact(int missileNumber)
 				enemy[missile[missileNumber].currentTarget].dead = true;
 				
 				currentScore += enemy[missile[missileNumber].currentTarget].score;
+				currentZen += enemy[missile[missileNumber].currentTarget].score;
                 //TODO: Uncomment
-				//updateScore((int)currentScore);
+				char scoreString[20];
+				sprintf (scoreString, "%d", currentScore);
+				displayScore(scoreString);
+				char zenString[20];
+				sprintf (zenString, "%d", currentZen);
+				displayZen(zenString);
 				level[currentLevel].killCount = level[currentLevel].killCount + 1;
 
 				//if enough enemies are killed, new level is started
 				if (level[currentLevel].killCount >=NUM_ENEMY_PER_ROUND) {
 					level[currentLevel].end = 1;
+					currentLevel++;
 					char levelString[20];
 					sprintf (levelString, "%d", currentLevel);
-					updateApplicationStatusEOL(levelString);
-					currentLevel++;
 
-					//TODO: valid?
-					//startLevel(currentLevel);
+					updateApplicationStatusEOL(levelString);
 				}
 
                 enemiesKilled++;
@@ -323,11 +327,10 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber, int x_offset, i
 				if (level[currentLevel].killCount >=NUM_ENEMY_PER_ROUND) {
 					level[currentLevel].end = 1;
 					
+					currentLevel++;
 					char levelString[20];
 					sprintf (levelString, "%d", currentLevel);
 					updateApplicationStatusEOL(levelString);
-					currentLevel++;
-					startLevel(currentLevel);
 				}
 				removeEnemy(enemyNumber);
 			}

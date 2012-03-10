@@ -255,6 +255,10 @@ public class ImageTargets extends Activity {
                 	if (item == 0) {
                 		//TODO: Test if need to run on UIThread
                     	mGUIManager.nativeLeave();
+         
+                     	    	 nativeNext();
+              
+                    	
                 	}
                     else if (item == 1) {
                     	runOnUiThread(new Runnable() {
@@ -267,7 +271,7 @@ public class ImageTargets extends Activity {
                     }
                     else if (item == 2) {
                     	//end game
-                    	updateApplicationStatus(APPSTATUS_CAMERA_STOPPED);
+                    	updateApplicationStatus(APPSTATUS_INIT_APP);
                     }
                 }
             });
@@ -338,8 +342,6 @@ public class ImageTargets extends Activity {
 				getAssets()));
 		mTextures.add(Texture.loadTextureFromApk("arrow_bake.png",
 				getAssets()));
-		//mTextures.add(Texture.loadTextureFromApk("dwight_as_jim.gif",
-		//		getAssets()));
 		mTextures.add(Texture.loadTextureFromApk("igloo.png",
 				getAssets()));
 		mTextures.add(Texture.loadTextureFromApk("snowball.png",
