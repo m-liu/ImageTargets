@@ -45,14 +45,23 @@
   </LinearLayout>
     	  </LinearLayout>
     
-    <ToggleButton android:id="@+id/pause_button"
+    <Button android:id="@+id/pause_button"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="100px"
         android:layout_height="70px"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:textOff="@string/button_pause"
-        android:textOn="@string/button_unpause"
+        android:text="@string/button_pause"
+        android:visibility="invisible"
+    />
+    
+    <Button android:id="@+id/unpause_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="100px"
+        android:layout_height="70px"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/button_unpause"
         android:visibility="invisible"
     />
         

@@ -15,13 +15,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 public class GUIManager extends Activity{
 
     // Custom views
     private View overlayView;
-    private ToggleButton pauseButton;
+    private Button pauseButton;
+    private Button unpauseButton;
     private Button startButton;
     private Button deleteButton;
     private Button storeButton;
@@ -40,20 +40,30 @@ public class GUIManager extends Activity{
     // Flags for our Handler
     public static final int SHOW_DELETE_BUTTON = 0;
     public static final int HIDE_DELETE_BUTTON = 1;
+    
     public static final int TOGGLE_PAUSE_BUTTON = 2;
-    public static final int DISPLAY_INFO_TOAST = 3;
-    public static final int SHOW_PAUSE_BUTTON = 4;
-    public static final int HIDE_START_BUTTON = 5;
-    public static final int TOGGLE_STORE_BUTTON = 6;
-    public static final int SHOW_STORE_BUTTON = 7;
-    public static final int HIDE_PAUSE_BUTTON = 8;
+    public static final int SHOW_PAUSE_BUTTON = 3;
+    public static final int HIDE_PAUSE_BUTTON = 4;
+    
+    public static final int SHOW_UNPAUSE_BUTTON = 5;
+    public static final int HIDE_UNPAUSE_BUTTON = 6;
+    
+    public static final int TOGGLE_STORE_BUTTON = 7;
+    public static final int SHOW_STORE_BUTTON = 8;
     public static final int HIDE_STORE_BUTTON = 9;
+
     public static final int SHOW_UPGRADE_BUTTON = 10;
     public static final int HIDE_UPGRADE_BUTTON = 11;
+    
     public static final int SHOW_STATS_BUTTON = 12;
     public static final int HIDE_STATS_BUTTON = 13;
+    
     public static final int SHOW_CREDITS_BUTTON = 14;
     public static final int HIDE_CREDITS_BUTTON = 15;
+    
+    public static final int HIDE_START_BUTTON = 16;
+    
+    public static final int DISPLAY_INFO_TOAST = 100;
     
     // Native methods to handle button clicks
     public native void nativePause();
@@ -95,9 +105,22 @@ public class GUIManager extends Activity{
                         break;
                     case TOGGLE_PAUSE_BUTTON:
                         if (pauseButton != null) {
-                            pauseButton.setChecked(true);
+                            //pauseButton.setChecked(true);
                         }
                         break;
+                        
+                    case SHOW_UNPAUSE_BUTTON:
+                        if (unpauseButton != null) {
+                            unpauseButton.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                    case HIDE_UNPAUSE_BUTTON:
+                        if (unpauseButton != null) {
+                            unpauseButton.setVisibility(View.INVISIBLE);
+                        }
+                        break;
+                        
+                        
                     case DISPLAY_INFO_TOAST:
                         String text = (String) msg.obj;
                         int duration = Toast.LENGTH_LONG;
@@ -146,7 +169,7 @@ public class GUIManager extends Activity{
                         break;
                     case SHOW_STATS_BUTTON:
                         if (statsButton != null) {
-                            statsButton.setVisibility(View.VISIBLE);
+                            //statsButton.setVisibility(View.VISIBLE);
                         }
                         break;
                     case HIDE_STATS_BUTTON:
@@ -178,31 +201,19 @@ public class GUIManager extends Activity{
         if (overlayView == null)
             return;
 
-        pauseButton = (ToggleButton) overlayView.findViewById(R.id.pause_button);
+        pauseButton = (Button) overlayView.findViewById(R.id.pause_button);
         pauseButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFFAA0000));
-        pauseButton.setOnClickListener(new View.OnClickListener() {
+        
+        unpauseButton = (Button) overlayView.findViewById(R.id.unpause_button);
+        unpauseButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFFAA0000));
+        unpauseButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (((ToggleButton) v).isChecked()) {
-                    nativePause();
-                } else {
                     nativeUnpause();
-                }
             }
         });
         
-        
         storeButton = (Button) overlayView.findViewById(R.id.store_button);
         storeButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF00AA00));
-    	/*
-    	storeButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (((ToggleButton) v).isChecked()) {
-                    nativeStore();
-                } else {
-                    nativeLeave();
-                }
-            }
-        });*/
         
         startButton = (Button) overlayView.findViewById(R.id.start_button);
         startButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF00AA00));

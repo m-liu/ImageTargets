@@ -36,8 +36,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.Toast;
 
-import android.widget.ToggleButton;
-
 import com.qualcomm.QCAR.QCAR;
 import com.qualcomm.QCARSamples.ImageTargets.GUIManager;
 
@@ -54,10 +52,13 @@ public class ImageTargets extends Activity {
 	private static final int APPSTATUS_CAMERA_RUNNING = 6;
 	private static final int APPSTATUS_INIT_MENU = 7;
 	private static final int APPSTATUS_INIT_EOL = 8;
-
+	
+	private static final int DIALOG_PAUSE = 99;
     private static final int DIALOG_STORE = 100;
     private static final int DIALOG_EOL = 101;
     private static final int DIALOG_STORE_CONT = 102;
+    private static final int DIALOG_STORE_CASTLE = 103;
+    private static final int DIALOG_STORE_IGLOO = 104;
 	
 	// Name of the native dynamic libraries to load:
 	private static final String NATIVE_LIB_SAMPLE = "ImageTargets";
@@ -65,15 +66,8 @@ public class ImageTargets extends Activity {
     private int currentLevel;
 	// Our OpenGL view:
 	private QCARSampleGLView mGlView;
-
-	// The view to display the sample splash screen:
-	//private ImageView mSplashScreenView;
-
-	// The minimum time the splash screen should be visible:
-	//private static final long MIN_SPLASH_SCREEN_TIME = 2000;
-
-	// The time when the splash screen has become visible:
-	//long mSplashScreenStartTime = 0;
+	
+	AlertDialog.Builder levelBuilder = null;
 
 	// Our renderer:
 	private ImageTargetsRenderer mRenderer;
@@ -96,7 +90,6 @@ public class ImageTargets extends Activity {
 
 	// The textures we will use for rendering:
 	private Vector<Texture> mTextures;
-	//private int mSplashScreenImageResource = 0;
 
 	/** Static initializer block to load native libraries on start-up. */
 	static {
@@ -235,25 +228,31 @@ public class ImageTargets extends Activity {
             .setItems(items, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
                     nativeBuy((int)(item+1));
-                   	int duration = Toast.LENGTH_LONG;
-                    Toast toast = Toast.makeText(getApplicationContext(), "Spent " + (item+1), duration);
-                    toast.show();
-                	showDialog(DIALOG_STORE_CONT);
+
+                    if (item == 0) {
+                    	showDialog(DIALOG_STORE_CASTLE);
+                    }
+                    else if (item == 1) {
+                    	showDialog(DIALOG_STORE_IGLOO);
+                    }
+                    else {
+                    	showDialog(DIALOG_STORE_CONT);
+                    }
                 }
             });
             dialog = builder.create();
             break;
             
         case DIALOG_EOL:
-            final CharSequence[] items2 = {"Next Level", "Enter Store", "Quit Game"};
+            final CharSequence[] items2 = {"Next Level", "Buy/Upgrade Towers", "Quit Game"};
         	AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+        	levelBuilder = builder2;
             builder2.setTitle("COMPLETE LEVEL " + currentLevel)
             .setItems(items2, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
                     
                 	
                 	if (item == 0) {
-                		//TODO: Test if need to run on UIThread
                     	mGUIManager.nativeLeave();
          
                      	    	 nativeNext();
@@ -261,13 +260,8 @@ public class ImageTargets extends Activity {
                     	
                 	}
                     else if (item == 1) {
-                    	runOnUiThread(new Runnable() {
-                    		
-                      	     public void run() {
-                             	showDialog(DIALOG_STORE);
-                      	     }
-                      	});
-
+                    	//TODO: add button to continue game
+                    	
                     }
                     else if (item == 2) {
                     	//end game
@@ -278,28 +272,66 @@ public class ImageTargets extends Activity {
             dialog = builder2.create();
             break;
             
-        case DIALOG_STORE_CONT:
-            final CharSequence[] items3 = {"Continue Buying", "Return to Game"};
-        	AlertDialog.Builder builder3 = new AlertDialog.Builder(this);
-            builder3.setTitle("Continue Buying?")
-            .setItems(items3, new DialogInterface.OnClickListener() {
+        case DIALOG_PAUSE:
+            final CharSequence[] itemsp = {"Return to Game", "Buy/Upgrade Towers", "Quit Game"};
+        	AlertDialog.Builder builderp = new AlertDialog.Builder(this);
+            builderp.setTitle("GAME PAUSED")
+            .setItems(itemsp, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
-                 	if (item == 0) {
-                    	runOnUiThread(new Runnable() {
-                    		
-                     	     public void run() {
-                            	showDialog(DIALOG_STORE);
-                     	     }
-                     	});
+                    
+                	
+                	if (item == 0) {
+ 
+                    	mGUIManager.nativeLeave();              
+                    	
                 	}
                     else if (item == 1) {
-                     	mGUIManager.nativeLeave();
+                    	//add button to continue game
                     }
+                    else if (item == 2) {
+                    	//end game
+                    	updateApplicationStatus(APPSTATUS_INIT_APP);
+                    }
+                }
+            });
+            dialog = builderp.create();
+            break;
+            
+        case DIALOG_STORE_CONT:
+            final CharSequence[] items3 = {"Return to Game"};
+        	AlertDialog.Builder builder3 = new AlertDialog.Builder(this);
+            builder3.setTitle("Bought another building! ")
+            .setItems(items3, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                     mGUIManager.nativeLeave();
                 }
             });
             dialog = builder3.create();
             break;
             
+        case DIALOG_STORE_CASTLE:
+            final CharSequence[] items4 = {"Return to Game"};
+        	AlertDialog.Builder builder4 = new AlertDialog.Builder(this);
+            builder4.setTitle("Bought a castle!")
+            .setItems(items4, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                	mGUIManager.nativeLeave();
+                }
+            });
+            dialog = builder4.create();
+            break;
+            
+        case DIALOG_STORE_IGLOO:
+            final CharSequence[] items5 = {"Return to Game"};
+        	AlertDialog.Builder builder5 = new AlertDialog.Builder(this);
+            builder5.setTitle("Bought an igloo!")
+            .setItems(items5, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                  	mGUIManager.nativeLeave();
+                }
+            });
+            dialog = builder5.create();
+            break;
             
         }
         return dialog;
@@ -534,52 +566,6 @@ public class ImageTargets extends Activity {
 	        });
 			
 			break;
-			/*
-		case APPSTATUS_INIT_EOL:
-			
-	    	runOnUiThread(new Runnable() {
-	    		
-	    	     public void run() {
-	    	    	 
-	    	    	 setContentView(R.layout.levelend);
-	    				
-	    				//Next Level Button
-	    				Button EOLLevelButton = (Button)findViewById(R.id.eol_level_button);
-	    				EOLLevelButton.setOnClickListener(new OnClickListener() {
-	    		        	
-	    		        	public void onClick(View v) {
-	    		        		//TODO: Close the screen and get back to the game
-	    		        		//updateApplicationStatus(APPSTATUS_CAMERA_RUNNING);
-	    		        		//next level
-	    		        	}
-	    		        });
-	    				
-	    		      //Enter Store Button
-	    		        Button EOLStoreButton = (Button)findViewById(R.id.eol_store_button);
-	    		        EOLStoreButton.setOnClickListener(new OnClickListener() {
-	    		        	
-	    		        	public void onClick(View v) {
-	    		        		//TODO: Store here
-	    		        		setContentView(R.layout.game_rules);
-	    		        	}
-	    		        });
-	    		        
-	    		      //Quit Game Button
-	    		        Button EOLQuitButton = (Button)findViewById(R.id.eol_quit_button);
-	    		        EOLQuitButton.setOnClickListener(new OnClickListener() {
-	    		        	
-	    		        	public void onClick(View v) {
-	    		        		//TODO: Quit here
-	    		        		setContentView(R.layout.game_rules);	
-	    		        	}
-	    		        });
-	    				
-	    	     }
-	    	});
-			
-			
-			break;
-			*/
 		
 		case APPSTATUS_INIT_QCAR:
 			// Initialize QCAR SDK asynchronously to avoid blocking the
@@ -660,13 +646,22 @@ public class ImageTargets extends Activity {
                             LayoutParams.FILL_PARENT));
 					
                     mGUIManager.initButtons();
-                    //TODO: There can only be one on click listener... but I can't create the showDialog from the GUI Manager, not the activity
+
                     Button storeButton;
                     storeButton = (Button) mGUIManager.getOverlayView().findViewById(R.id.store_button);
                     storeButton.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
                             mGUIManager.nativeStore();
                             showDialog(DIALOG_STORE);
+                        }
+                    });
+                    
+                    Button pauseButton;
+                    pauseButton = (Button) mGUIManager.getOverlayView().findViewById(R.id.pause_button);
+                    pauseButton.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                        	mGUIManager.nativePause();
+                        	showDialog(DIALOG_PAUSE);   
                         }
                     });
                     
@@ -739,16 +734,6 @@ public class ImageTargets extends Activity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-		//TODO: Can this be completely removed?
-		/*
-		// Create and add the splash screen view
-		mSplashScreenView = new ImageView(this);
-		mSplashScreenView.setImageResource(mSplashScreenImageResource);
-		addContentView(mSplashScreenView, new LayoutParams(
-		LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-
-		mSplashScreenStartTime = System.currentTimeMillis();
-		*/
 	}
 
 	/** Native function to initialize the application. */
@@ -845,22 +830,19 @@ public class ImageTargets extends Activity {
 
 	private native boolean setFocusMode(int mode);
 
-	
-	//TODO: let's hope this works
 	public void updateEOL(String level) {
 		currentLevel = Integer.parseInt(level);
 
 
-		//updateApplicationStatus(APPSTATUS_CAMERA_STOPPED);
-		//Changing from "xml" style EOL menu to "store" style menu
-		/*updateApplicationStatus(APPSTATUS_INIT_EOL);
-		
-    	final String temp = level;
-        currentLevel = (TextView) mGUIManager.getOverlayView().findViewById(R.id.current_level);
-    	*///extended activity. Hopefully not too much overhead?
     	runOnUiThread(new Runnable() {
     		
     	     public void run() {
+    	    	 
+    	 		if (levelBuilder != null) {
+    	 			//TODO: figure out how to update level number on dialog
+    				//levelBuilder.setTitle("COMPLETEdf LEVEL " + currentLevel);
+    			}
+
              	mGUIManager.nativeStore();
     	     	showDialog(DIALOG_EOL);
     	     }

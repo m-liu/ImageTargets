@@ -3,22 +3,18 @@
     <string name="app_name">AR Turret Defense</string>
     <string name="app_description">AR Turret Defense Game</string>
     <string name="button_pause">Pause</string>
-<string name="button_unpause">Unpause</string>
-<string name="button_start">Start</string>
-<string name="button_store">Store</string>
-<string name="button_leave">Leave Store</string>
-<string name="button_upgrade">Upgrade</string>
-<string name="button_stats">View Stats</string>
-<string name="button_credits">Credits</string>
-<string name="button_delete">Deletinate</string>
+	<string name="button_unpause">Unpause</string>
+	<string name="button_start">Start</string>
+	<string name="button_store">Place Tower</string>
+	<string name="button_leave">Leave Store</string>
+	<string name="button_upgrade">Upgrade</string>
+	<string name="button_stats">View Stats</string>
+	<string name="button_credits">Credits</string>
+	<string name="button_delete">Deletinate</string>
 
-<string name="new_game_label">New Game</string>
-<string name="game_rules_label">Game Rules</string>
-<string name="settings_label">Settings</string>
-<string name="credits_label">Credits</string>
-
-<string name="eol_level_label">Next Level</string>
-<string name="eol_store_label">Enter Store</string>
-<string name="eol_quit_label">Quit Game</string>
+	<string name="new_game_label">New Game</string>
+	<string name="game_rules_label">Game Rules</string>
+	<string name="settings_label">Settings</string>
+	<string name="credits_label">Credits</string>
 
 </resources>
