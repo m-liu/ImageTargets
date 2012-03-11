@@ -25,7 +25,7 @@
 
 
 //game properties
-#define NUM_LEVELS 3
+#define NUM_LEVELS 10
 #define NUM_ENEMY_PER_ROUND 10
 
 
