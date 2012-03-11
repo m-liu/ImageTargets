@@ -444,7 +444,7 @@ public class ImageTargets extends Activity {
 		}
         if (mGUIManager != null)
         {
-            mGUIManager.initButtons();
+            //mGUIManager.initButtons();
         }
 	}
 

@@ -101,7 +101,7 @@ public class GUIManager extends Activity{
                         break;
                     case HIDE_DELETE_BUTTON:
                         if (deleteButton != null) {
-                            deleteButton.setVisibility(View.INVISIBLE);
+                            //deleteButton.setVisibility(View.INVISIBLE);
                         }
                         break;
                     case TOGGLE_PAUSE_BUTTON:
@@ -116,7 +116,7 @@ public class GUIManager extends Activity{
                         break;
                     case HIDE_PAUSE_BUTTON:
                         if (pauseButton != null) {
-                            pauseButton.setVisibility(View.INVISIBLE);
+                            //pauseButton.setVisibility(View.INVISIBLE);
                         }
                         break;
                     case SHOW_UNPAUSE_BUTTON:
@@ -126,7 +126,7 @@ public class GUIManager extends Activity{
                         break;
                     case HIDE_UNPAUSE_BUTTON:
                         if (unpauseButton != null) {
-                            unpauseButton.setVisibility(View.INVISIBLE);
+                            //unpauseButton.setVisibility(View.INVISIBLE);
                         }
                         break;             
                     case TOGGLE_STORE_BUTTON:
@@ -141,7 +141,7 @@ public class GUIManager extends Activity{
                         break;
                     case HIDE_STORE_BUTTON:
                         if (storeButton != null) {
-                            storeButton.setVisibility(View.INVISIBLE);
+                            //storeButton.setVisibility(View.INVISIBLE);
                         }
                         break;
                     case SHOW_UPGRADE_BUTTON:
@@ -151,7 +151,7 @@ public class GUIManager extends Activity{
                         break;
                     case HIDE_UPGRADE_BUTTON:
                         if (upgradeButton != null) {
-                        	upgradeButton.setVisibility(View.INVISIBLE);
+                        	//upgradeButton.setVisibility(View.INVISIBLE);
                         }
                         break;
                     case SHOW_STATS_BUTTON:
@@ -161,7 +161,7 @@ public class GUIManager extends Activity{
                         break;
                     case HIDE_STATS_BUTTON:
                         if (statsButton != null) {
-                            statsButton.setVisibility(View.INVISIBLE);
+                            //statsButton.setVisibility(View.INVISIBLE);
                         }
                         break;
                     case SHOW_CREDITS_BUTTON:
@@ -171,12 +171,12 @@ public class GUIManager extends Activity{
                         break;
                     case HIDE_CREDITS_BUTTON:
                         if (creditsButton != null) {
-                        	creditsButton.setVisibility(View.INVISIBLE);
+                        	//creditsButton.setVisibility(View.INVISIBLE);
                         }
                         break;
                     case HIDE_START_BUTTON:
                         if (startButton != null) {
-                            startButton.setVisibility(View.INVISIBLE);
+                            //startButton.setVisibility(View.INVISIBLE);
                         }
                         break;
                     case DISPLAY_INFO_TOAST:
@@ -209,7 +209,7 @@ public class GUIManager extends Activity{
                     nativeUnpause();
             }
         });
-        
+
         storeButton = (Button) overlayView.findViewById(R.id.store_button);
         storeButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF00AA00));
         
@@ -236,13 +236,14 @@ public class GUIManager extends Activity{
             }
         });
         
-        statsButton = (Button) overlayView.findViewById(R.id.stats_button);
+        /*statsButton = (Button) overlayView.findViewById(R.id.stats_button);
         statsButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF0000AA));
         statsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 nativeStats();
             }
-        });
+        });*/
+        
         creditsButton = (Button) overlayView.findViewById(R.id.credits_button);
         creditsButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFFAAAA00));
         creditsButton.setOnClickListener(new View.OnClickListener() {
