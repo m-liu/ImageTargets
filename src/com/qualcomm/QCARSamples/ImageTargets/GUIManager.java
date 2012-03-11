@@ -28,6 +28,7 @@ public class GUIManager extends Activity{
     private Button statsButton;
     private Button upgradeButton;
     private Button creditsButton;
+    private TextView currentLevel;
     private TextView currentScore;
     private TextView currentZen;
     
@@ -108,7 +109,16 @@ public class GUIManager extends Activity{
                             //pauseButton.setChecked(true);
                         }
                         break;
-                        
+                    case SHOW_PAUSE_BUTTON:
+                        if (pauseButton != null) {
+                            pauseButton.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                    case HIDE_PAUSE_BUTTON:
+                        if (pauseButton != null) {
+                            pauseButton.setVisibility(View.INVISIBLE);
+                        }
+                        break;
                     case SHOW_UNPAUSE_BUTTON:
                         if (unpauseButton != null) {
                             unpauseButton.setVisibility(View.VISIBLE);
@@ -118,38 +128,15 @@ public class GUIManager extends Activity{
                         if (unpauseButton != null) {
                             unpauseButton.setVisibility(View.INVISIBLE);
                         }
-                        break;
-                        
-                        
-                    case DISPLAY_INFO_TOAST:
-                        String text = (String) msg.obj;
-                        int duration = Toast.LENGTH_LONG;
-                        Toast toast = Toast.makeText(applicationContext, text, duration);
-                        toast.show();
-                        break;
-                    case SHOW_PAUSE_BUTTON:
-                        if (pauseButton != null) {
-                            pauseButton.setVisibility(View.VISIBLE);
-                        }
-                        break;
-                    case HIDE_START_BUTTON:
-                        if (startButton != null) {
-                            startButton.setVisibility(View.INVISIBLE);
-                        }
-                        break;
+                        break;             
                     case TOGGLE_STORE_BUTTON:
                         if (storeButton != null) {
                             //storeButton.setChecked(true);
                         }
-                        break;
+                        break; 
                     case SHOW_STORE_BUTTON:
                         if (storeButton != null) {
                             storeButton.setVisibility(View.VISIBLE);
-                        }
-                        break;
-                    case HIDE_PAUSE_BUTTON:
-                        if (pauseButton != null) {
-                            pauseButton.setVisibility(View.INVISIBLE);
                         }
                         break;
                     case HIDE_STORE_BUTTON:
@@ -187,6 +174,17 @@ public class GUIManager extends Activity{
                         	creditsButton.setVisibility(View.INVISIBLE);
                         }
                         break;
+                    case HIDE_START_BUTTON:
+                        if (startButton != null) {
+                            startButton.setVisibility(View.INVISIBLE);
+                        }
+                        break;
+                    case DISPLAY_INFO_TOAST:
+                        String text = (String) msg.obj;
+                        int duration = Toast.LENGTH_LONG;
+                        Toast toast = Toast.makeText(applicationContext, text, duration);
+                        toast.show();
+                        break;
                 }
             }
         };
@@ -220,6 +218,7 @@ public class GUIManager extends Activity{
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	nativeStart();
+            	newLevel(String.valueOf(1)); 
             }
         });
         
@@ -251,6 +250,9 @@ public class GUIManager extends Activity{
                 nativeCredits();
             }
         });
+        
+        currentLevel = (TextView) overlayView.findViewById(R.id.current_level);
+    	currentLevel.setText("Game Setup!");
         
         currentScore = (TextView) overlayView.findViewById(R.id.current_score);
     	currentScore.setText(String.valueOf(0));
@@ -309,6 +311,20 @@ public class GUIManager extends Activity{
     	     public void run() {
     	    	 
              	currentZen.setText(temp);
+
+    	    }
+    	});
+    }
+    
+    public void newLevel(String level)
+    {
+    	final String temp = level;
+    	//extended activity. Hopefully not too much overhead?
+    	runOnUiThread(new Runnable() {
+    		
+    	     public void run() {
+    	    	 
+             	currentLevel.setText(temp);
 
     	    }
     	});

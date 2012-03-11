@@ -120,6 +120,31 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
         mGUIManager.sendThreadSafeGUIMessage(message);
     }
     
+    /** Called from native to toggle the start button. */
+    public void hidePauseButton()
+    {
+        Message message = new Message();
+        message.what = GUIManager.HIDE_PAUSE_BUTTON;
+        mGUIManager.sendThreadSafeGUIMessage(message);
+    }
+    
+    /** Called from native to toggle the start button. */
+    public void showUnpauseButton()
+    {
+        Message message = new Message();
+        message.what = GUIManager.SHOW_UNPAUSE_BUTTON;
+        mGUIManager.sendThreadSafeGUIMessage(message);
+    }
+    
+    /** Called from native to toggle the start button. */
+    public void hideUnpauseButton()
+    {
+        Message message = new Message();
+        message.what = GUIManager.HIDE_UNPAUSE_BUTTON;
+        mGUIManager.sendThreadSafeGUIMessage(message);
+    }
+    
+    
     /** Called from native to toggle the pause button. */
     public void toggleStoreButton()
     {
@@ -133,23 +158,6 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
     {
         Message message = new Message();
         message.what = GUIManager.SHOW_STORE_BUTTON;
-        mGUIManager.sendThreadSafeGUIMessage(message);
-    }
-    
-    
-    /** Called from native to toggle the start button. */
-    public void hideStartButton()
-    {
-        Message message = new Message();
-        message.what = GUIManager.HIDE_START_BUTTON;
-        mGUIManager.sendThreadSafeGUIMessage(message);
-    }
-    
-    /** Called from native to toggle the start button. */
-    public void hidePauseButton()
-    {
-        Message message = new Message();
-        message.what = GUIManager.HIDE_PAUSE_BUTTON;
         mGUIManager.sendThreadSafeGUIMessage(message);
     }
     
@@ -208,6 +216,14 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
         message.what = GUIManager.HIDE_CREDITS_BUTTON;
         mGUIManager.sendThreadSafeGUIMessage(message);
     }	
+    
+    /** Called from native to toggle the start button. */
+    public void hideStartButton()
+    {
+        Message message = new Message();
+        message.what = GUIManager.HIDE_START_BUTTON;
+        mGUIManager.sendThreadSafeGUIMessage(message);
+    }
     
     /** Called from native to display a message. */
     public void displayMessage(String text)

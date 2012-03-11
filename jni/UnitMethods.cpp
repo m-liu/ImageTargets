@@ -52,6 +52,7 @@ void makeMissile(int missileType, int missileNumber, float lx, float ly)
 {
     missile[missileNumber].initialized=true;
 	missile[missileNumber].type = missile_type[missileType].type;
+	missile[missileNumber].texture = missile_type[missileType].texture;
 	missile[missileNumber].defaultX = lx;
 	missile[missileNumber].defaultY = ly;
 	missile[missileNumber].X = lx;
@@ -75,6 +76,14 @@ void initEnemy (int type, int texture, float max_HP, float speed, float defense,
     enemy_type[type].speed = speed;
     enemy_type[type].defense = defense;
 	enemy_type[type].score = score;
+}
+
+void initMissile (int type, int texture, float speed, float cost, float attack) {
+	missile_type[type].type = type;
+	missile_type[type].texture = texture;
+    missile_type[type].speed = speed;
+    missile_type[type].cost = cost;
+    missile_type[type].attack = attack;
 }
  
 void initUnitDB () {
@@ -123,20 +132,32 @@ void initUnitDB () {
 		enemy_type[i].deployed = false;
 		enemy_type[i].dead = false;
 	}
-
+	
+		
     //missile initializations
-    strcpy(missile_type[0].name, "Arrow");
-    missile_type[0].type = 1;
-    missile_type[0].speed = 14;
-    missile_type[0].cost = 3;
-    missile_type[0].attack = 20.0f;
-
-    strcpy(missile_type[1].name, "Snowball");
-    missile_type[1].type = 2;
-    missile_type[1].speed = 22;
-    missile_type[1].cost = 2;
-    missile_type[1].attack = 10.0f;
-
+	strcpy(missile_type[0].name, "Arrow");
+	initMissile (0, 2, 14, 3, 20.0f);
+	strcpy(missile_type[1].name, "Snowball");
+	initMissile (1, 4, 22, 2, 10.0f);
+	strcpy(missile_type[2].name, "Arrow2");
+	initMissile (2, 2, 20, 3, 20.0f);
+	strcpy(missile_type[3].name, "Snowball2");
+	initMissile (3, 4, 30, 2, 10.0f);
+	strcpy(missile_type[4].name, "Arrow3");
+	initMissile (4, 2, 30, 3, 50.0f);
+	strcpy(missile_type[5].name, "Snowball3");
+	initMissile (5, 4, 30, 2, 50.0f);
+	
+	for (int i = 0; i < NUM_MISSILE_TYPES; i++) {
+		missile_type[i].initialized = false;
+		missile_type[i].X = -10000.0f;
+		missile_type[i].Y = -10000.0f;
+		missile_type[i].defaultX = -10000.0f;
+		missile_type[i].defaultY = -10000.0f;
+		missile_type[i].currentTarget = -1;
+		missile_type[i].currentTargetDistance = -1;
+		missile_type[i].prevTime = -1;
+	}
 
     //Set all missiles to deinitialized state
     for (int i=0; i<MAX_NUM_TOWERS; i++){

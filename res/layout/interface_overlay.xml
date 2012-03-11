@@ -18,6 +18,23 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:textSize="20dip"
+      android:text="Level: " />
+    <TextView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:text="None"
+      android:textSize="20dip"
+      android:id="@+id/current_level" />
+    </LinearLayout>
+    <LinearLayout 
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dip">
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textSize="20dip"
       android:text="Score: " />
     <TextView
       android:layout_width="fill_parent"
@@ -25,7 +42,7 @@
       android:text="None"
       android:textSize="20dip"
       android:id="@+id/current_score" />
-        </LinearLayout>
+    </LinearLayout>
     <LinearLayout 
     android:orientation="horizontal"
     android:layout_width="fill_parent"

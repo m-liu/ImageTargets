@@ -14,7 +14,7 @@
 #define ENEMY_MOVEMENT_SPEED 50.0f
 
 //tower/missile properties
-#define NUM_MISSILE_TYPES 2
+#define NUM_MISSILE_TYPES 6
 #define MAX_NUM_TOWERS 4
 #define MISSILE_NUM_FRAMES 24
 #define TOWER_SCALE 75.0f
@@ -54,6 +54,7 @@ struct MissileUnit
 {
 	bool initialized;
     int type;
+	int texture;
 	char name[20];
     float X;
     float Y;
@@ -73,6 +74,7 @@ struct TowerUnit
     int initialized;
     int upgradeLevel; //tower level
     int type;
+	int texture;
     float boardX;   //position of tower in board coordinates
     float boardY;
 };

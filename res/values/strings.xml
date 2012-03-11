@@ -3,7 +3,7 @@
     <string name="app_name">AR Turret Defense</string>
     <string name="app_description">AR Turret Defense Game</string>
     <string name="button_pause">Pause</string>
-	<string name="button_unpause">Unpause</string>
+	<string name="button_unpause">Continue Game</string>
 	<string name="button_start">Start</string>
 	<string name="button_store">Place Tower</string>
 	<string name="button_leave">Leave Store</string>

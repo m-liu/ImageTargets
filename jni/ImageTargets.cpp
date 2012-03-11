@@ -323,7 +323,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeNext(JNIEnv*, jobj
 JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativePause(JNIEnv*, jobject)
 {
-			//displayMessage("Game Paused");
 			hideStoreButton();
 			pauseGame = 1;
 }
@@ -332,8 +331,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativePause(JNIEnv*, jobje
 JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeUnpause(JNIEnv*, jobject)
 {
-  			//displayMessage("Game Unpaused");
-			//update times
 			for (int i=0; i<MAX_NUM_ENEMIES; i++){
 				enemy[i].prevTime = getCurrentTime();  
             }
@@ -346,7 +343,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeUnpause(JNIEnv*, job
 JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeStore(JNIEnv*, jobject)
 {
-			//displayMessage("Game Paused\n\n\nWELCOME TO THE STORE!");
 			hidePauseButton();
 			hideStatsButton();
 			pauseGame = 1;
@@ -383,8 +379,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeStart(JNIEnv*, jobje
 {
 			if (seeTargets == 1)
 			{
-			startGame = 1;
-				//displayMessage("AUGMENTED REALITY\nTURRET DEFENSE GAME\nIS FUN!\n\nLEVEL 1 START!");
+				startGame = 1;
 				hideStartButton();
 				hideCreditsButton();
 				showPauseButton();
@@ -432,6 +427,14 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeBuy(JNIEnv *env, j
     tower[selMarkerID].initialized = true;
     tower[selMarkerID].upgradeLevel = 1;
     tower[selMarkerID].type = towerType;
+	//TODO: Fix this, this is good for now
+	if (towerType % 2 == 0) {
+		tower[selMarkerID].texture = 0;
+	}
+	else {
+		tower[selMarkerID].texture = 3;
+	}
+	
 
     //deduct cost
 	currentZen = currentZen - (int)cost;
@@ -609,7 +612,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
             //draw the tower at the precise location of the marker if it's initialized
             if (tower[mID].initialized){
                 animateTower(towerMatrix);
-                DrawTower(towerMatrix, towerProjection, tower[mID].type); 
+                DrawTower(towerMatrix, towerProjection, tower[mID].texture); 
 
                 //render the missile relative to the corner marker
                 //1) find x, y board coordinates of the tower marker
@@ -632,7 +635,8 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 #ifdef USE_OPENGL_ES_1_1
 #else
                 QCAR::Matrix44F missileProjection;
-                DrawMissile(missileMatrix, missileProjection, 0); 
+				//TODO: should technically use the texture from the missile database
+                DrawMissile(missileMatrix, missileProjection, missile[mID].texture); 
 #endif
 
             }
@@ -971,8 +975,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_updateRendering(
 
 
 void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, int type) {
-	
-	//struct graphics_arrays zombie_animate_array = get_graphics_stats (enemyFrameCounter, 1);
 	//Horse = 1, Zombie = 5
 	struct graphics_arrays horse_animate_array = get_graphics_stats (enemyFrameCounter, 1);
 	struct graphics_arrays zombie_animate_array = get_graphics_stats (enemyFrameCounter, 2);
@@ -1044,18 +1046,19 @@ void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, in
 
 
 void DrawMissile (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection, int type) {
+	//Arrow = 2, Snowball =  4
+	
 	struct graphics_arrays arrow_animate_array = get_graphics_stats (missileFrameCounter, 0);
-	const Texture* const thisTexture = textures[2];
-    
+	const Texture* const thisTexture = textures[type];
 
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &MissileMatrix.data[0], &MissileProjection.data[0]);
     glUseProgram(shaderProgramID);
-	if (type == 0) {
+	if (type == 2) {
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.Verts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.Normals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.TexCoords);
 	}
-	else if (type == 1) {
+	else if (type == 4) {
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, snowballVerts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, snowballNormals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, snowballTexCoords);
@@ -1067,10 +1070,10 @@ void DrawMissile (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjecti
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
     glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&MissileProjection.data[0] );
-	if (type == 0) {
+	if (type == 2) {
 		glDrawArrays(GL_TRIANGLES, 0, (int)*arrow_animate_array.NumVerts);
 	}
-	else if (type == 1) {
+	else if (type == 4) {
 		glDrawArrays(GL_TRIANGLES, 0, snowballNumVerts);
 	}
 	SampleUtils::checkGlError("ImageTargets renderFrame");
