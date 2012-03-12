@@ -397,6 +397,8 @@ public class ImageTargets extends Activity {
 				getAssets()));
 		mTextures.add(Texture.loadTextureFromApk("spaceship.png",
 				getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("grid_sample1_shrunk.jpg",
+				getAssets()));
 		
 	}
 
