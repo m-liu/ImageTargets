@@ -4,6 +4,7 @@
 #include "igloo.h"
 #include "spaceship.h"
 #include "tank.h"
+#include "cannon.h"
 
 #include "arrow_new_000001.h"
 #include "arrow_new_000002.h"

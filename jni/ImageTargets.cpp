@@ -423,11 +423,14 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeBuy(JNIEnv *env, j
     tower[selMarkerID].upgradeLevel = 1;
     tower[selMarkerID].type = towerType;
 	//TODO: Fix this, this is good for now
-	if (towerType % 2 == 0) {
+	if (towerType % 3 == 0) {
 		tower[selMarkerID].texture = 0;
 	}
-	else {
+	if (towerType % 3 == 1) {
 		tower[selMarkerID].texture = 3;
+	}
+	else {
+		tower[selMarkerID].texture = 9;
 	}
 	
 
@@ -1029,20 +1032,29 @@ void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, in
 }
 
 void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, int type) {
+
+
 	const Texture* const thisTexture = textures[type];
 	//Castle = 0, Igloo = 3
 
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &TowerMatrix.data[0], &TowerProjection.data[0]);
     glUseProgram(shaderProgramID);
 	if (type == 0) {
+	 LOG("type0");
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, towerVerts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, towerNormals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, towerTexCoords);
 	}
 	else if (type == 3) {
+	LOG("type3");
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, iglooVerts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, iglooNormals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, iglooTexCoords);
+	}
+	else if (type == 9) {
+		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, cannonVerts);
+		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, cannonNormals);
+		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, cannonTexCoords);
 	}
     glEnableVertexAttribArray(vertexHandle);
 	glEnableVertexAttribArray(normalHandle);
@@ -1055,6 +1067,9 @@ void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, in
 	}
 	else if (type == 3) {
 		glDrawArrays(GL_TRIANGLES, 0, iglooNumVerts);
+	}
+	else if (type == 9) {
+		glDrawArrays(GL_TRIANGLES, 0, cannonNumVerts);
 	}
 	SampleUtils::checkGlError("ImageTargets renderFrame");
 }

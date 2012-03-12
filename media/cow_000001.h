@@ -1,5 +1,5 @@
 /*
-created with obj2opengl.pl
+created with obj2opengl.pl 
 
 source file    : ./cow_000001.obj
 vertices       : 214

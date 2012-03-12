@@ -399,6 +399,10 @@ public class ImageTargets extends Activity {
 				getAssets()));
 		mTextures.add(Texture.loadTextureFromApk("grid_sample1_shrunk.jpg",
 				getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("cannon.jpg",
+				getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("snowball.png",
+				getAssets()));
 		
 	}
 
