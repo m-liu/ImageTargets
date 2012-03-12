@@ -103,6 +103,9 @@ void initUnitDB () {
  * | 4 |    1    | Headless Cow3      |   350  |    1.0    |    2.0    |    5    |
  * | 5 |    5    | Zombie3            |   400  |    1.0    |    1.0    |    6    |
  * | 6 |    1    | Headless Cow4      |   500  |    2.0    |    1.0    |    7    |
+ * | 7 |    1    | Headless Cow3      |   350  |    1.0    |    2.0    |    5    |
+ * | 8 |    5    | Zombie3            |   400  |    1.0    |    1.0    |    6    |
+ * | 9 |    1    | Headless Cow4      |   500  |    2.0    |    1.0    |    7    |
  * |___|_________|____________________|________|___________|___________|_________|
  *
  *********************************************************************************/
@@ -121,7 +124,13 @@ void initUnitDB () {
 	strcpy(enemy_type[5].name, "Zombie3");
 	initEnemy(5, 5, 400.0f, 1.0f, 1.0f, 6.0f);
 	strcpy(enemy_type[6].name, "HeadlessCow4");
-	initEnemy(6, 1, 500.0f, 2.0f, 1.0f, 7.0f);
+	initEnemy(6, 6, 500.0f, 2.0f, 1.0f, 7.0f);
+	strcpy(enemy_type[7].name, "HeadlessCow3");
+	initEnemy(7, 7, 600.0f, 1.0f, 2.0f, 8.0f);
+	strcpy(enemy_type[8].name, "Zombie3");
+	initEnemy(8, 1, 700.0f, 1.0f, 1.0f, 9.0f);
+	strcpy(enemy_type[9].name, "HeadlessCow4");
+	initEnemy(9, 5, 1000.0f, 2.0f, 1.0f, 10.0f);
 
 	for (int i = 0; i < NUM_ENEMY_TYPES; i++) {
 		enemy_type[i].X = 10000.0f;

@@ -8,7 +8,7 @@
 
 //enemy properties
 #define MAX_NUM_ENEMIES 10
-#define NUM_ENEMY_TYPES 7
+#define NUM_ENEMY_TYPES 10
 #define ENEMY_NUM_FRAMES 48
 #define ENEMY_SCALE 50.0f
 #define ENEMY_MOVEMENT_SPEED 50.0f

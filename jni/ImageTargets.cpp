@@ -424,12 +424,15 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeBuy(JNIEnv *env, j
     tower[selMarkerID].type = towerType;
 	//TODO: Fix this, this is good for now
 	if (towerType % 3 == 0) {
+		LOG("castle");
 		tower[selMarkerID].texture = 0;
 	}
-	if (towerType % 3 == 1) {
+	else if (towerType % 3 == 1) {
+			LOG("igloo");
 		tower[selMarkerID].texture = 3;
 	}
 	else {
+			LOG("cannon");
 		tower[selMarkerID].texture = 9;
 	}
 	
@@ -1052,6 +1055,7 @@ void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, in
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, iglooTexCoords);
 	}
 	else if (type == 9) {
+		LOG("type9");
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, cannonVerts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, cannonNormals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, cannonTexCoords);
