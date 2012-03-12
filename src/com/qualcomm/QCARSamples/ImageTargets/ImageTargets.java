@@ -393,6 +393,10 @@ public class ImageTargets extends Activity {
 		//		getAssets()));
 		mTextures.add(Texture.loadTextureFromApk("zombie1.png",
 				getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("tank.png",
+				getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("spaceship.png",
+				getAssets()));
 		
 	}
 
@@ -647,6 +651,8 @@ public class ImageTargets extends Activity {
 					
                     mGUIManager.initButtons();
 
+                    
+                    
                     Button storeButton;
                     storeButton = (Button) mGUIManager.getOverlayView().findViewById(R.id.store_button);
                     storeButton.setOnClickListener(new View.OnClickListener() {

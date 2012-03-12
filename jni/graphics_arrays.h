@@ -1,3 +1,10 @@
+
+#include "tower.h"
+#include "snowball.h"
+#include "igloo.h"
+#include "spaceship.h"
+#include "tank.h"
+
 #include "arrow_new_000001.h"
 #include "arrow_new_000002.h"
 #include "arrow_new_000003.h"

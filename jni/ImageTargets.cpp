@@ -39,11 +39,6 @@
 
 #include "Texture.h"
 #include "CubeShaders.h"
-//#include "Teapot.h"
-#include "tower.h"
-#include "snowball.h"
-//#include "Arrow.h"
-#include "igloo.h"
 #include "graphics_arrays.h"
 
 #include "SampleUtils.h"
@@ -994,6 +989,22 @@ void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, in
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) zombie_animate_array.Normals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) zombie_animate_array.TexCoords); 
 	}
+	
+	else if (type == 6) {
+		SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&EnemyMatrix.data[0], &EnemyProjection.data[0]);
+		glUseProgram(shaderProgramID);
+		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) tankVerts);
+		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) tankNormals);
+		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) tankTexCoords); 
+	}
+	else if (type == 7) {
+		SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&EnemyMatrix.data[0], &EnemyProjection.data[0]);
+		glUseProgram(shaderProgramID);
+		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) spaceshipVerts);
+		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) spaceshipNormals);
+		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) spaceshipTexCoords); 
+	}
+	
 	const Texture* const thisTexture = textures[type];
 	
     glEnableVertexAttribArray(vertexHandle);
@@ -1007,6 +1018,12 @@ void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, in
 	}
 	if (type == 5) {
 		glDrawArrays(GL_TRIANGLES, 0, (int)*zombie_animate_array.NumVerts);
+	}
+	if (type == 6) {
+		glDrawArrays(GL_TRIANGLES, 0, tankNumVerts);
+	}
+	if (type == 7) {
+		glDrawArrays(GL_TRIANGLES, 0, spaceshipNumVerts);
 	}
     SampleUtils::checkGlError("ImageTargets renderFrame");
 }

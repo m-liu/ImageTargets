@@ -96,12 +96,14 @@ public class GUIManager extends Activity{
                 switch (msg.what) {
                     case SHOW_DELETE_BUTTON:
                         if (deleteButton != null) {
-                            deleteButton.setVisibility(View.VISIBLE);
+                            //deleteButton.setVisibility(View.VISIBLE);
+                            deleteButton.setEnabled(true);
                         }
                         break;
                     case HIDE_DELETE_BUTTON:
                         if (deleteButton != null) {
-                            //deleteButton.setVisibility(View.INVISIBLE);
+                            deleteButton.setVisibility(View.INVISIBLE);
+                            deleteButton.setEnabled(false);
                         }
                         break;
                     case TOGGLE_PAUSE_BUTTON:
@@ -111,22 +113,26 @@ public class GUIManager extends Activity{
                         break;
                     case SHOW_PAUSE_BUTTON:
                         if (pauseButton != null) {
-                            pauseButton.setVisibility(View.VISIBLE);
+                            //pauseButton.setVisibility(View.VISIBLE);
+                        	pauseButton.setEnabled(false);
                         }
                         break;
                     case HIDE_PAUSE_BUTTON:
                         if (pauseButton != null) {
                             //pauseButton.setVisibility(View.INVISIBLE);
+                        	pauseButton.setEnabled(false);
                         }
                         break;
                     case SHOW_UNPAUSE_BUTTON:
                         if (unpauseButton != null) {
-                            unpauseButton.setVisibility(View.VISIBLE);
+                            //unpauseButton.setVisibility(View.VISIBLE);
+                        	unpauseButton.setEnabled(true);
                         }
                         break;
                     case HIDE_UNPAUSE_BUTTON:
                         if (unpauseButton != null) {
                             //unpauseButton.setVisibility(View.INVISIBLE);
+                        	unpauseButton.setEnabled(false);
                         }
                         break;             
                     case TOGGLE_STORE_BUTTON:
@@ -136,22 +142,26 @@ public class GUIManager extends Activity{
                         break; 
                     case SHOW_STORE_BUTTON:
                         if (storeButton != null) {
-                            storeButton.setVisibility(View.VISIBLE);
+                            //storeButton.setVisibility(View.VISIBLE);
+                        	storeButton.setEnabled(true);
                         }
                         break;
                     case HIDE_STORE_BUTTON:
                         if (storeButton != null) {
                             //storeButton.setVisibility(View.INVISIBLE);
+                        	storeButton.setEnabled(false);
                         }
                         break;
                     case SHOW_UPGRADE_BUTTON:
                         if (upgradeButton != null) {
-                        	upgradeButton.setVisibility(View.VISIBLE);
+                        	//upgradeButton.setVisibility(View.VISIBLE);
+                        	upgradeButton.setEnabled(true);
                         }
                         break;
                     case HIDE_UPGRADE_BUTTON:
                         if (upgradeButton != null) {
                         	//upgradeButton.setVisibility(View.INVISIBLE);
+                        	upgradeButton.setEnabled(false);
                         }
                         break;
                     case SHOW_STATS_BUTTON:
@@ -166,17 +176,20 @@ public class GUIManager extends Activity{
                         break;
                     case SHOW_CREDITS_BUTTON:
                         if (creditsButton != null) {
-                        	creditsButton.setVisibility(View.VISIBLE);
+                        	//creditsButton.setVisibility(View.VISIBLE);
+                        	creditsButton.setEnabled(true);
                         }
                         break;
                     case HIDE_CREDITS_BUTTON:
                         if (creditsButton != null) {
                         	//creditsButton.setVisibility(View.INVISIBLE);
+                        	creditsButton.setEnabled(false);
                         }
                         break;
                     case HIDE_START_BUTTON:
                         if (startButton != null) {
                             //startButton.setVisibility(View.INVISIBLE);
+                            startButton.setEnabled(false);
                         }
                         break;
                     case DISPLAY_INFO_TOAST:
@@ -217,6 +230,7 @@ public class GUIManager extends Activity{
         startButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF00AA00));
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+              	pauseButton.setVisibility(View.VISIBLE);
             	nativeStart();
             	newLevel(String.valueOf(1)); 
             }
@@ -251,6 +265,13 @@ public class GUIManager extends Activity{
                 nativeCredits();
             }
         });
+        
+        
+        pauseButton.setEnabled(false);
+        unpauseButton.setEnabled(false);
+        deleteButton.setEnabled(false);
+        upgradeButton.setEnabled(false);
+        storeButton.setEnabled(false);
         
         currentLevel = (TextView) overlayView.findViewById(R.id.current_level);
     	currentLevel.setText("Game Setup!");

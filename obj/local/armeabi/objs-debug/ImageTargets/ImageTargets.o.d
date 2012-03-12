@@ -51,10 +51,12 @@
  /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../../../build/include/QCAR/Marker.h \
  /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/Texture.h \
  /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/CubeShaders.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/graphics_arrays.h \
  /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/tower.h \
  /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/snowball.h \
  /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/igloo.h \
- /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/graphics_arrays.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/spaceship.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/tank.h \
  /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/arrow_new_000001.h \
  /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/arrow_new_000002.h \
  /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/arrow_new_000003.h \
@@ -283,13 +285,17 @@
 
 /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/CubeShaders.h:
 
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/graphics_arrays.h:
+
 /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/tower.h:
 
 /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/snowball.h:
 
 /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/igloo.h:
 
-/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/graphics_arrays.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/spaceship.h:
+
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/tank.h:
 
 /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/arrow_new_000001.h:
 
