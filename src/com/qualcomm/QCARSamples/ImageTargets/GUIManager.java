@@ -114,7 +114,7 @@ public class GUIManager extends Activity{
                     case SHOW_PAUSE_BUTTON:
                         if (pauseButton != null) {
                             //pauseButton.setVisibility(View.VISIBLE);
-                        	pauseButton.setEnabled(false);
+                        	pauseButton.setEnabled(true);
                         }
                         break;
                     case HIDE_PAUSE_BUTTON:
