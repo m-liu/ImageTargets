@@ -97,13 +97,13 @@ public class GUIManager extends Activity{
                     case SHOW_DELETE_BUTTON:
                         if (deleteButton != null) {
                             //deleteButton.setVisibility(View.VISIBLE);
-                            deleteButton.setEnabled(true);
+                            //deleteButton.setEnabled(true);
                         }
                         break;
                     case HIDE_DELETE_BUTTON:
                         if (deleteButton != null) {
-                            deleteButton.setVisibility(View.INVISIBLE);
-                            deleteButton.setEnabled(false);
+                            //deleteButton.setVisibility(View.INVISIBLE);
+                            //deleteButton.setEnabled(false);
                         }
                         break;
                     case TOGGLE_PAUSE_BUTTON:
@@ -177,13 +177,13 @@ public class GUIManager extends Activity{
                     case SHOW_CREDITS_BUTTON:
                         if (creditsButton != null) {
                         	//creditsButton.setVisibility(View.VISIBLE);
-                        	creditsButton.setEnabled(true);
+                        	//creditsButton.setEnabled(true);
                         }
                         break;
                     case HIDE_CREDITS_BUTTON:
                         if (creditsButton != null) {
                         	//creditsButton.setVisibility(View.INVISIBLE);
-                        	creditsButton.setEnabled(false);
+                        	//creditsButton.setEnabled(false);
                         }
                         break;
                     case HIDE_START_BUTTON:

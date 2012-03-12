@@ -107,18 +107,18 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="100px"
         android:layout_height="70px"
-        android:layout_toRightOf="@id/store_button"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:text="@string/button_credits"
-        android:visibility="visible"
+        android:visibility="invisible"
     />
     
     <Button android:id="@+id/upgrade_button"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="100px"
         android:layout_height="70px"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/store_button"
+        android:layout_alignParentBottom="true"
         android:text="@string/button_upgrade"
         android:visibility="visible"
     />
@@ -130,7 +130,7 @@
         android:layout_toLeftOf="@id/upgrade_button"
         android:layout_alignParentTop="true"
         android:text="@string/button_delete"
-        android:visibility="visible"
+        android:visibility="invisible"
     />
     
 </RelativeLayout>

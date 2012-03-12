@@ -109,13 +109,13 @@ void initUnitDB () {
  
     //enemy initialization
     strcpy(enemy_type[0].name, "HeadlessCow");
-	initEnemy(0, 7, 150.0f, 1.2f, 1.0f, 1.0f);
+	initEnemy(0, 1, 150.0f, 1.2f, 1.0f, 1.0f);
 	strcpy(enemy_type[1].name, "Zombie");
-	initEnemy(1, 6, 200.0f, 1.0f, 1.0f, 2.0f);
+	initEnemy(1, 5, 200.0f, 1.0f, 1.0f, 2.0f);
 	strcpy(enemy_type[2].name, "HeadlessCow2");
-	initEnemy(2, 1, 250.0f, 1.5f, 1.0f, 3.0f);	
+	initEnemy(2, 6, 250.0f, 1.5f, 1.0f, 3.0f);	
 	strcpy(enemy_type[3].name, "Zombie2");
-	initEnemy(3, 5, 300.0f, 1.0f, 1.0f, 4.0f);
+	initEnemy(3, 7, 300.0f, 1.0f, 1.0f, 4.0f);
 	strcpy(enemy_type[4].name, "HeadlessCow3");
 	initEnemy(4, 1, 350.0f, 1.0f, 2.0f, 5.0f);
 	strcpy(enemy_type[5].name, "Zombie3");
@@ -362,8 +362,7 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber, int x_offset, i
     //offset the object based on corner marker in view
 	SampleUtils::translatePoseMatrix(enemy[enemyNumber].X + x_offset, enemy[enemyNumber].Y + y_offset, 20.0f, &enemyMatrix.data[0]);
 	SampleUtils::rotatePoseMatrix(enemy[enemyNumber].direction, 0.0f, 0.0f, 1.0f, &enemyMatrix.data[0]);
-	//SampleUtils::rotatePoseMatrix(90.0f, 1.0f, 0.0f, 0.0f, &enemyMatrix.data[0]);
-	//SampleUtils::rotatePoseMatrix(90.0f, 0.0f, 1.0f, 0.0f, &enemyMatrix.data[0]);
+	SampleUtils::rotatePoseMatrix(90.0f, 1.0f, 0.0f, 0.0f, &enemyMatrix.data[0]);
 	SampleUtils::scalePoseMatrix(ENEMY_SCALE, ENEMY_SCALE, ENEMY_SCALE, &enemyMatrix.data[0]);
 
 }
