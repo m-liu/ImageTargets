@@ -30,22 +30,38 @@ void displayMessage(char* message)
 }
 
 //display a message    
-void displayScore(char* score)
-{	//RTS: REMEMBER TO CONVERT TO INT IF CHANGING THIS BACK TO INT
+void displayScore(int score)
+{
+	char scoreString[10];
+	sprintf (scoreString, "%d", score);
+	//RTS: REMEMBER TO CONVERT TO INT IF CHANGING THIS BACK TO INT
     // Use the environment and class stored in initNativeCallback
     // to call a Java method that displays a message via a toast
-	jstring js = javaEnv->NewStringUTF(score);
+	jstring js = javaEnv->NewStringUTF(scoreString);
     jmethodID method = javaEnv->GetMethodID(javaClass, "displayScore", "(Ljava/lang/String;)V");
     javaEnv->CallVoidMethod(javaObj, method, js);
 }
 
 //display a message    
-void displayZen(char* zen)
-{
+void displayZen(int zen)
+{	char zenString[10];
+	sprintf (zenString, "%d", zen);
     // Use the environment and class stored in initNativeCallback
     // to call a Java method that displays a message via a toast
-	jstring js = javaEnv->NewStringUTF(zen);
+	jstring js = javaEnv->NewStringUTF(zenString);
     jmethodID method = javaEnv->GetMethodID(javaClass, "displayZen", "(Ljava/lang/String;)V");
+    javaEnv->CallVoidMethod(javaObj, method, js);
+}
+
+//display a message    
+void displayLives(int lives)
+{
+	char livesString[10];
+	sprintf (livesString, "%d", lives);
+    // Use the environment and class stored in initNativeCallback
+    // to call a Java method that displays a message via a toast
+	jstring js = javaEnv->NewStringUTF(livesString);
+    jmethodID method = javaEnv->GetMethodID(javaClass, "displayLives", "(Ljava/lang/String;)V");
     javaEnv->CallVoidMethod(javaObj, method, js);
 }
 

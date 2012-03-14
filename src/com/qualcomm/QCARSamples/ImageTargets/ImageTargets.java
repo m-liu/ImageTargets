@@ -68,6 +68,11 @@ public class ImageTargets extends Activity {
     private int currentLevel;
     Boolean PauseState = false;
     Boolean EOLState = false;
+    
+	int level = 0;
+	int difficulty = 0;
+	int lives = 0;
+    
 	// Our OpenGL view:
 	private QCARSampleGLView mGlView;
 	
@@ -103,6 +108,7 @@ public class ImageTargets extends Activity {
 
 	public static native void nativeBuy(int cost);
 	public static native void nativeNext();
+	public static native void nativeSettings(int level, int difficulty, int lives);
 	
     /** Native function to store Java environment information for callbacks. */
     public native void initNativeCallback();
@@ -232,6 +238,7 @@ public class ImageTargets extends Activity {
             .setItems(items, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
                     nativeBuy((int)(item+1));
+                	mRenderer.hideStoreButton();
 
                     if (item == 0) {
                     	showDialog(DIALOG_STORE_CASTLE);
@@ -563,8 +570,6 @@ public class ImageTargets extends Activity {
     				
     				StartGameButton2.setOnClickListener(new OnClickListener() {
 	        			public void onClick(View v) {
-	        				int level,difficulty,lives;
-	        				//TODO: do something with these variables
 	        				RadioButton level1_button = (RadioButton) findViewById(R.id.radioButton_level1);
 	        				RadioButton level2_button = (RadioButton) findViewById(R.id.radioButton_level2);
 	        				RadioButton level3_button = (RadioButton) findViewById(R.id.radioButton_level3);
@@ -595,14 +600,16 @@ public class ImageTargets extends Activity {
 	        				}
 	        				
 	        				if (lives1_button.isChecked()) {
-	        					lives = 1;
+	        					lives = 5;
 	        				}
 	        				else if (lives2_button.isChecked()) {
-	        					lives = 2;
+	        					lives = 10;
 	        				}
 	        				else if (lives3_button.isChecked()) {
-	        					lives = 3;
+	        					lives = 20;
 	        				}
+	        				
+	        				nativeSettings(level, difficulty, lives);
 	        				updateApplicationStatus(APPSTATUS_INIT_QCAR);
 	        			}
 	        		});
@@ -709,7 +716,7 @@ public class ImageTargets extends Activity {
 					
                     mGUIManager.initButtons();
 
-                    
+                    mGUIManager.newLives(String.valueOf(lives));
                     
                     Button storeButton;
                     storeButton = (Button) mGUIManager.getOverlayView().findViewById(R.id.store_button);

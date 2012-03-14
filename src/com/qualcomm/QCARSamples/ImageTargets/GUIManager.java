@@ -31,6 +31,7 @@ public class GUIManager extends Activity{
     private TextView currentLevel;
     private TextView currentScore;
     private TextView currentZen;
+    private TextView currentLives;
     
     // The main application context
     private Context applicationContext;
@@ -281,6 +282,8 @@ public class GUIManager extends Activity{
     	
         currentZen = (TextView) overlayView.findViewById(R.id.current_zen);
     	currentZen.setText(String.valueOf(5));
+    	
+        currentLives = (TextView) overlayView.findViewById(R.id.current_lives);
 
     }
     
@@ -347,6 +350,20 @@ public class GUIManager extends Activity{
     	     public void run() {
     	    	 
              	currentLevel.setText(temp);
+
+    	    }
+    	});
+    }
+    
+    public void newLives(String lives)
+    {
+    	final String temp = lives;
+    	//extended activity. Hopefully not too much overhead?
+    	runOnUiThread(new Runnable() {
+    		
+    	     public void run() {
+    	    	 
+             	currentLives.setText(temp);
 
     	    }
     	});

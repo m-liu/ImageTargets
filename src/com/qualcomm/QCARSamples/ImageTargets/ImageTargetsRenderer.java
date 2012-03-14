@@ -244,6 +244,11 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
     	mGUIManager.newZen(zen);
     }
     
+    public void displayLives(String lives)
+    {
+        mGUIManager.newLives(lives);
+    }
+    
     /** Setter for the gui manager. */
     public void setGUIManager(GUIManager guiManager)
     {

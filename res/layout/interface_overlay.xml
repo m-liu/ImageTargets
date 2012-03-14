@@ -60,7 +60,24 @@
       android:textSize="20dip"
       android:id="@+id/current_zen" />
   </LinearLayout>
-    	  </LinearLayout>
+  <LinearLayout 
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dip">
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textSize="20dip"
+      android:text="Lives: " />
+    <TextView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:text="None"
+      android:textSize="20dip"
+      android:id="@+id/current_lives" />
+    </LinearLayout>
+   	</LinearLayout>
     
     <Button android:id="@+id/pause_button"
         style="?android:attr/buttonStyleSmall"

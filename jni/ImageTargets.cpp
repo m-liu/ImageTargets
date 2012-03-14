@@ -409,7 +409,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeBuy(JNIEnv *env, j
 {
     //a purchase was made. Initialize the tower and deduct the cost
     LOG("nativeBuy called");
-    //FIXME tower type is cost-1
+    //FIXME tower type is cost-1, should be based on tower
     int towerType = (int)cost -1;
     
     //check that we have a selection
@@ -424,9 +424,16 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeBuy(JNIEnv *env, j
 
     //deduct cost
 	currentZen = currentZen - (int)cost;
-	char zenString[20];
-	sprintf (zenString, "%d", currentZen);
-	displayZen(zenString);
+	displayZen(currentZen);
+}
+
+JNIEXPORT void JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeSettings(JNIEnv *env, jobject thiz, jint level, jint difficulty, jint lives)//type?
+{
+//TODO: Uncomment once this is used
+//currentLevel = (int)level;
+//difficulty? = (int)difficulty;
+currentLives = (int)lives;
 }
 
 
@@ -562,10 +569,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
                     animateEnemy(enemyMatrix, i, x_offset, y_offset); //animate the i-th enemy
                     QCAR::Matrix44F enemyProjection;
                     DrawEnemy(enemyMatrix, enemyProjection,enemy[i].texture);
-					
-					//char scoreString[20];
-					//sprintf (scoreString, "%d", enemy[i].texture);
-					//displayMessage(scoreString);
                 }
             }
 
@@ -586,8 +589,11 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
  
             //if marker is tapped, show store and upgrade buttons
             if ( checkTapMarker(marker, towerMatrix) ){
+				//TODO: only show store if uninitialized
                 showStoreButton();
+				//TODO: only show upgrade if initialized
                 showUpgradeButton();
+				//TODO: show delete button
                 selMarkerID = mID;
                 //tower[mID].initialized=1;
                 //tower[mID].type=0;
@@ -621,7 +627,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 #ifdef USE_OPENGL_ES_1_1
 #else
                 QCAR::Matrix44F missileProjection;
-				//TODO: should technically use the texture from the missile database
                 DrawMissile(missileMatrix, missileProjection, missile[mID].texture); 
 #endif
 
@@ -636,11 +641,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
         // If this is our first time seeing the target, display a tip
         if (!displayedMessage) {
-			
-			char levelString[20];
-			sprintf (levelString, "%d", currentLevel);
-			//TODO: Uncomment this to test menu
-			//updateApplicationStatusEOL(levelString);
 			displayMessage("Press Start!");
 			seeTargets = 1;
 			counterprevTime = getCurrentTime();
@@ -689,12 +689,8 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 	if (missileFrameCounter == 5) {
 	currentScore = currentScore + 1;
 	currentZen = currentZen + 1;
-	char scoreString[20];
-	sprintf (scoreString, "%d", currentScore);
-	displayScore(scoreString);
-	char zenString[20];
-	sprintf (zenString, "%d", currentZen);
-	displayZen(zenString);
+	displayScore(currentScore);
+	displayZen(currentZen);
 	}
 	*/
 }

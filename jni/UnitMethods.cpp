@@ -311,12 +311,8 @@ int checkMissileContact(int missileNumber)
 				currentScore += enemy[missile[missileNumber].currentTarget].score;
 				currentZen += enemy[missile[missileNumber].currentTarget].score;
 
-				char scoreString[20];
-				sprintf (scoreString, "%d", currentScore);
-				displayScore(scoreString);
-				char zenString[20];
-				sprintf (zenString, "%d", currentZen);
-				displayZen(zenString);
+				displayScore(currentScore);
+				displayZen(currentZen);
 				level[currentLevel].killCount = level[currentLevel].killCount + 1;
 
 				//if enough enemies are killed, new level is started
@@ -396,6 +392,7 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber, int x_offset, i
 			
 			if (enemy[enemyNumber].X < 0.0f) {
 				currentLives = currentLives - 1;
+				displayLives(currentLives);
 				if (currentLives == 0 ) {
 					gameOver();
 				}
@@ -445,6 +442,7 @@ void gameOver ()
 	for (int enemyNumber2 = 0; enemyNumber2 < MAX_NUM_ENEMIES; enemyNumber2++) {
 		removeEnemy(enemyNumber2);
 	}
+	displayMessage("Game Over, all lives lost!");
 }
 
 void moveEnemy (float &x, float &y, float &direction, float speed, float timeDiff)
