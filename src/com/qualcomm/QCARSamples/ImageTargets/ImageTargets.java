@@ -565,7 +565,6 @@ public class ImageTargets extends Activity {
 	        			public void onClick(View v) {
 	        				int level,difficulty,lives;
 	        				//TODO: do something with these variables
-	        				//TODO: Maybe add the images?
 	        				RadioButton level1_button = (RadioButton) findViewById(R.id.radioButton_level1);
 	        				RadioButton level2_button = (RadioButton) findViewById(R.id.radioButton_level2);
 	        				RadioButton level3_button = (RadioButton) findViewById(R.id.radioButton_level3);
