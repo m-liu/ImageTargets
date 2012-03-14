@@ -16,29 +16,91 @@ xmlns:android="http://schemas.android.com/apk/res/android"
   android:paddingTop="20dip"
   >
     <TextView android:id="@+id/textView1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="Level"></TextView>
-    <RadioGroup
-		android:id="@+id/radioGroup_level"
-        android:layout_height="wrap_content" android:layout_width="wrap_content">
+    
+    <LinearLayout
+	  xmlns:android="http://schemas.android.com/apk/res/android"
+	  android:layout_width="fill_parent"
+	  android:layout_height="fill_parent" 
+	  android:orientation="horizontal"
+	  >
+    
+    <ImageView android:id="@+id/imageView1" android:layout_height="wrap_content" android:src="@drawable/grid_sample1_small" android:layout_width="wrap_content"></ImageView>
+    <LinearLayout
+	  xmlns:android="http://schemas.android.com/apk/res/android"
+	  android:layout_height="fill_parent" 
+	  android:orientation="horizontal"
+	  android:paddingLeft="20dip"
+	  android:layout_width="wrap_content">
+    <ImageView android:id="@+id/imageView2" android:layout_height="wrap_content" android:src="@drawable/grid_sample2_small" android:layout_width="wrap_content"></ImageView>
+    </LinearLayout>
+    <LinearLayout
+	  xmlns:android="http://schemas.android.com/apk/res/android"
+	  android:layout_width="fill_parent"
+	  android:layout_height="fill_parent" 
+	  android:orientation="horizontal"
+	  android:paddingLeft="20dip"
+	  >
+    <ImageView android:id="@+id/imageView2" android:layout_height="wrap_content" android:src="@drawable/grid_sample3_small" android:layout_width="wrap_content"></ImageView>
+    </LinearLayout>
+    
+    </LinearLayout>
+    
+    <LinearLayout
+	  xmlns:android="http://schemas.android.com/apk/res/android"
+	  android:layout_width="fill_parent"
+	  android:layout_height="fill_parent" 
+	  android:orientation="horizontal"
+	  >
+	  
 	    <RadioButton android:text="Level 1" android:id="@+id/radioButton_level1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true"></RadioButton>
+	    
+	    <LinearLayout
+		  xmlns:android="http://schemas.android.com/apk/res/android"
+		  android:layout_height="fill_parent" 
+		  android:orientation="horizontal"
+		  android:layout_width="wrap_content"
+		  android:paddingLeft="30dip">
 	    <RadioButton android:text="Level 2" android:id="@+id/radioButton_level2" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
+	    </LinearLayout>
+	    <LinearLayout
+		  xmlns:android="http://schemas.android.com/apk/res/android"
+		  android:layout_width="fill_parent"
+		  android:layout_height="fill_parent" 
+		  android:orientation="horizontal"
+		  android:paddingLeft="30dip"
+		  >
 	    <RadioButton android:text="Level 3" android:id="@+id/radioButton_level3" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
-    </RadioGroup>
+		</LinearLayout>
+    </LinearLayout>
+    
     <TextView android:id="@+id/textView2" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="Difficulty"></TextView>
-    <RadioGroup
-    	android:id="@+id/radioGroup_difficulty"
-        android:layout_height="wrap_content" android:layout_width="wrap_content">
+	
+	<LinearLayout
+		  xmlns:android="http://schemas.android.com/apk/res/android"
+		  android:layout_height="fill_parent" 
+		  android:orientation="horizontal"
+		  android:layout_width="wrap_content"
+		  >
 	    <RadioButton android:text="Easy" android:id="@+id/radioButton_difficulty1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true"></RadioButton>
 	    <RadioButton android:text="Medium" android:id="@+id/radioButton_difficulty2" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
 	    <RadioButton android:text="Hard" android:id="@+id/radioButton_difficulty3" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
-    </RadioGroup>
+	</LinearLayout>
+    
+
+    
     <TextView android:id="@+id/textView3" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="Number of Lives"></TextView>
-    <RadioGroup
-		android:id="@+id/radioGroup_lives"
-        android:layout_height="wrap_content" android:layout_width="96dp">
+    <LinearLayout
+		  xmlns:android="http://schemas.android.com/apk/res/android"
+		  android:layout_height="fill_parent" 
+		  android:orientation="horizontal"
+		  android:layout_width="wrap_content"
+		  >
 	    <RadioButton android:text="5" android:id="@+id/radioButton_lives1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true"></RadioButton>
 	    <RadioButton android:text="10" android:id="@+id/radioButton_lives2" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
 	    <RadioButton android:text="20" android:id="@+id/radioButton_lives3" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
-    </RadioGroup>
+    </LinearLayout>
+    
+    
     <LinearLayout
 	  xmlns:android="http://schemas.android.com/apk/res/android"
 	  android:layout_width="fill_parent"
