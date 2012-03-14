@@ -57,14 +57,29 @@ void makeMissile(int missileType, int missileNumber, float lx, float ly)
 	missile[missileNumber].defaultY = ly;
 	missile[missileNumber].X = lx;
 	missile[missileNumber].Y = ly;	
+	missile[missileNumber].angle = 0.0f;
 	missile[missileNumber].speed = missile_type[missileType].speed;
 	missile[missileNumber].currentTarget = -1;
 	missile[missileNumber].currentTargetDistance = -1;
+	missile[missileNumber].scale = missile_type[missileType].scale;
 	missile[missileNumber].cost = missile_type[missileType].cost;
 	missile[missileNumber].attack = missile_type[missileType].attack;
 	missile[missileNumber].prevTime = getCurrentTime();
 }
 
+void makeTower(int towerType, int towerNumber)
+{
+	tower[towerNumber].type = tower_type[towerType].type;
+	tower[towerNumber].texture = tower_type[towerType].texture;
+	tower[towerNumber].missiletype = tower_type[towerType].missiletype;
+    tower[towerNumber].lift = tower_type[towerType].lift;
+    tower[towerNumber].scale = tower_type[towerType].scale;
+    tower[towerNumber].rotate = tower_type[towerType].rotate;
+	tower[towerNumber].initialized = true;
+	tower[towerNumber].upgradeLevel = 1;
+	//tower[towerNumber].boardX = 0.0f;
+	//tower[towerNumber].boardY = 0.0f;
+};
 
 /********************
  * Initializes the DB and the unit stats
@@ -78,13 +93,27 @@ void initEnemy (int type, int texture, float max_HP, float speed, float defense,
 	enemy_type[type].score = score;
 }
 
-void initMissile (int type, int texture, float speed, float cost, float attack) {
+void initMissile (int type, int texture, float speed, float cost, float scale, float attack) {
 	missile_type[type].type = type;
 	missile_type[type].texture = texture;
     missile_type[type].speed = speed;
     missile_type[type].cost = cost;
     missile_type[type].attack = attack;
+	missile_type[type].scale = scale;
 }
+
+void initTower (int type, int texture, int missiletype, float lift, float scale, float rotate) {
+	tower_type[type].type = type;
+	tower_type[type].texture = texture;
+	tower_type[type].missiletype = missiletype;
+    tower_type[type].lift = lift;
+    tower_type[type].scale = scale;
+    tower_type[type].rotate = rotate;
+	tower_type[type].initialized = 0;
+	tower_type[type].upgradeLevel = 0;
+	tower_type[type].boardX = 0.0f;
+	tower_type[type].boardY = 0.0f;
+};
  
 void initUnitDB () {
 
@@ -145,17 +174,32 @@ void initUnitDB () {
 		
     //missile initializations
 	strcpy(missile_type[0].name, "Arrow");
-	initMissile (0, 2, 14, 3, 20.0f);
+	initMissile (0, 2, 14, 3, 40.0f, 20.0f);
 	strcpy(missile_type[1].name, "Snowball");
-	initMissile (1, 4, 22, 2, 10.0f);
+	initMissile (1, 4, 22, 2, 10.0f, 10.0f);
 	strcpy(missile_type[2].name, "Arrow2");
-	initMissile (2, 2, 20, 3, 20.0f);
+	initMissile (2, 4, 20, 3, 7.0f, 20.0f);
 	strcpy(missile_type[3].name, "Snowball2");
-	initMissile (3, 4, 30, 2, 10.0f);
+	initMissile (3, 4, 30, 2, 10.0f, 10.0f);
 	strcpy(missile_type[4].name, "Arrow3");
-	initMissile (4, 2, 30, 3, 50.0f);
+	initMissile (4, 2, 30, 3, 60.0f, 50.0f);
 	strcpy(missile_type[5].name, "Snowball3");
-	initMissile (5, 4, 30, 2, 50.0f);
+	initMissile (5, 4, 30, 2, 10.0f, 50.0f);
+	
+	
+	//missile initializations
+	strcpy(tower_type[0].name, "Arrow");
+	initTower (0, 0, 0, 50.0f, 60.0f, 0.0f);
+	strcpy(tower_type[1].name, "Snowball");
+	initTower (1, 3, 1, 0.0f, 50.0f, 0.0f);
+	strcpy(tower_type[2].name, "Arrow2");
+	initTower (2, 9, 2, 0.0f, 50.0f, 90.0f);
+	strcpy(tower_type[3].name, "Snowball2");
+	initTower (3, 0, 3, 50.0f, 75.0f, 0.0f);
+	strcpy(tower_type[4].name, "Arrow3");
+	initTower (4, 3, 4, 0.0f, 50.0f, 0.0f);
+	strcpy(tower_type[5].name, "Snowball3");
+	initTower (5, 9, 5, 0.0f, 75.0f, 90.0f);
 	
 	for (int i = 0; i < NUM_MISSILE_TYPES; i++) {
 		missile_type[i].initialized = false;
@@ -163,6 +207,7 @@ void initUnitDB () {
 		missile_type[i].Y = -10000.0f;
 		missile_type[i].defaultX = -10000.0f;
 		missile_type[i].defaultY = -10000.0f;
+		missile_type[i].angle = 0.0f;
 		missile_type[i].currentTarget = -1;
 		missile_type[i].currentTargetDistance = -1;
 		missile_type[i].prevTime = -1;
@@ -180,7 +225,6 @@ int animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber, int x_offs
 {
     float xdiff;
 	float ydiff;
-	float angle;
 	float slope;
 
 	int possibleTarget = 0;
@@ -211,7 +255,7 @@ int animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber, int x_offs
 		xdiff = enemy[missile[missileNumber].currentTarget].X-missile[missileNumber].X;
 		ydiff = enemy[missile[missileNumber].currentTarget].Y-missile[missileNumber].Y;
 		slope = ydiff/xdiff;
-		angle = atan2(ydiff, xdiff) * 180 / 3.14159265;
+		missile[missileNumber].angle = atan2(ydiff, xdiff) * 180 / 3.14159265;
 		//x2 + y2 = 196 (move 14 units each second)
 		//y/x = slope (move along slope)
 		float xdist = sqrt(missile[missileNumber].speed*missile[missileNumber].speed/(1+(slope*slope)));
@@ -238,9 +282,9 @@ int animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber, int x_offs
 		}
 	}
     //offset the object based on corner marker in view and position
-	SampleUtils::translatePoseMatrix(missile[missileNumber].X + x_offset, missile[missileNumber].Y + y_offset, 20.0f, &missileMatrix.data[0]);
-	SampleUtils::rotatePoseMatrix(angle, 0.0f, 0.0f, 1.0f, &missileMatrix.data[0]);
-    SampleUtils::scalePoseMatrix(MISSILE_SCALE, MISSILE_SCALE, MISSILE_SCALE, &missileMatrix.data[0]);
+	SampleUtils::translatePoseMatrix(missile[missileNumber].X + x_offset, missile[missileNumber].Y + y_offset, 0.0f, &missileMatrix.data[0]);
+	SampleUtils::rotatePoseMatrix(missile[missileNumber].angle, 0.0f, 0.0f, 1.0f, &missileMatrix.data[0]);
+    SampleUtils::scalePoseMatrix(missile[missileNumber].scale, missile[missileNumber].scale, missile[missileNumber].scale, &missileMatrix.data[0]);
     return 1;
 }
 
@@ -266,7 +310,7 @@ int checkMissileContact(int missileNumber)
 				
 				currentScore += enemy[missile[missileNumber].currentTarget].score;
 				currentZen += enemy[missile[missileNumber].currentTarget].score;
-                //TODO: Uncomment
+
 				char scoreString[20];
 				sprintf (scoreString, "%d", currentScore);
 				displayScore(scoreString);
@@ -306,7 +350,7 @@ return enemiesKilled;
 
 
 //animate the tower
-void animateTower(QCAR::Matrix44F& towerMatrix)
+void animateTower(QCAR::Matrix44F& towerMatrix,  int mID)
 {
     /*
     static float rotateBowlAngle2 = 0.0f;
@@ -319,8 +363,10 @@ void animateTower(QCAR::Matrix44F& towerMatrix)
     */ 
 
     //FIXME: Model base not at Z=0?
-    SampleUtils::translatePoseMatrix(0 ,0, 50.0f, &towerMatrix.data[0]);
-    SampleUtils::scalePoseMatrix(TOWER_SCALE, TOWER_SCALE, TOWER_SCALE, &towerMatrix.data[0]);
+    SampleUtils::translatePoseMatrix(0 ,0, tower[mID].lift, &towerMatrix.data[0]);
+	if (tower[mID].rotate != 0.0f) 
+		SampleUtils::rotatePoseMatrix(missile[mID].angle + tower[mID].rotate, 0.0f, 0.0f, 1.0f, &towerMatrix.data[0]);
+    SampleUtils::scalePoseMatrix(tower[mID].scale, tower[mID].scale, tower[mID].scale, &towerMatrix.data[0]);
 }
 
 

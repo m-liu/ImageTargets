@@ -58,6 +58,7 @@ EnemyUnit enemy_type[NUM_ENEMY_TYPES];
 MissileUnit missile[MAX_NUM_TOWERS];
 MissileUnit missile_type[NUM_MISSILE_TYPES];
 TowerUnit tower[MAX_NUM_TOWERS];
+TowerUnit tower_type[NUM_TOWER_TYPES];
 
 //java objects
 JNIEnv* javaEnv;
@@ -419,23 +420,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeBuy(JNIEnv *env, j
     
     LOG("nativeBuy: selMarkerID=%d", selMarkerID);
     //initialize the tower
-    tower[selMarkerID].initialized = true;
-    tower[selMarkerID].upgradeLevel = 1;
-    tower[selMarkerID].type = towerType;
-	//TODO: Fix this, this is good for now
-	if (towerType % 3 == 0) {
-		LOG("castle");
-		tower[selMarkerID].texture = 0;
-	}
-	else if (towerType % 3 == 1) {
-			LOG("igloo");
-		tower[selMarkerID].texture = 3;
-	}
-	else {
-			LOG("cannon");
-		tower[selMarkerID].texture = 9;
-	}
-	
+	makeTower(towerType, selMarkerID);
 
     //deduct cost
 	currentZen = currentZen - (int)cost;
@@ -612,7 +597,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
             //draw the tower at the precise location of the marker if it's initialized
             if (tower[mID].initialized){
-                animateTower(towerMatrix);
+                animateTower(towerMatrix, mID);
                 DrawTower(towerMatrix, towerProjection, tower[mID].texture); 
 
                 //render the missile relative to the corner marker

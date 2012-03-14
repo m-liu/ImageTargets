@@ -15,10 +15,11 @@
 
 //tower/missile properties
 #define NUM_MISSILE_TYPES 6
+#define NUM_TOWER_TYPES 6
 #define MAX_NUM_TOWERS 4
 #define MISSILE_NUM_FRAMES 24
 #define TOWER_SCALE 75.0f
-#define MISSILE_SCALE 75.0f
+#define MISSILE_SCALE 40.0f
 
 #define STARTING_X 350.0f
 #define STARTING_Y -350.0.0f
@@ -60,9 +61,11 @@ struct MissileUnit
     float Y;
 	float defaultX;
 	float defaultY;
+	float angle;
 	float speed;
 	float attack;
 	float cost;
+	float scale;
 	int currentTarget;
 	float currentTargetDistance;
 	double prevTime;
@@ -71,10 +74,15 @@ struct MissileUnit
 //tower struct
 struct TowerUnit
 {
-    int initialized;
-    int upgradeLevel; //tower level
     int type;
 	int texture;
+	int missiletype;
+	char name[20];
+	float lift;
+	float scale;
+	float rotate;
+    int initialized;
+    int upgradeLevel; //tower level
     float boardX;   //position of tower in board coordinates
     float boardY;
 };
