@@ -123,7 +123,7 @@ if (nextLevel == 0)
 	if (nextLevel == 6)
 	{
 		for (int i = 0; i < NUM_ENEMY_PER_ROUND; i++) {
-			makeEnemy (5, i, (i+2)*5);
+			makeEnemy (6, i, (i+2)*5);
 		}
 		displayMessage("LEVEL 7 START!");
 		level[6].start = 1;
@@ -144,7 +144,7 @@ if (nextLevel == 0)
 	if (nextLevel == 8)
 	{
 		for (int i = 0; i < NUM_ENEMY_PER_ROUND; i++) {
-			makeEnemy (0, i, (i+2)*5);
+			makeEnemy (7, i, (i+2)*5);
 		}
 		displayMessage("LEVEL 9 START!");
 		level[8].start = 1;
@@ -153,7 +153,7 @@ if (nextLevel == 0)
 	if (nextLevel == 9)
 	{
 		for (int i = 0; i < 5; i++) {
-			makeEnemy (0, i, (i+2)*5);
+			makeEnemy (8, i, (i+2)*5);
 		}
 		displayMessage("LEVEL 10 START!");
 		level[9].start = 1;
