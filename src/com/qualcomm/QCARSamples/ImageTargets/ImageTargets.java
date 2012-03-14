@@ -34,6 +34,7 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.RadioButton;
 
 import com.qualcomm.QCAR.QCAR;
 import com.qualcomm.QCARSamples.ImageTargets.GUIManager;
@@ -51,6 +52,7 @@ public class ImageTargets extends Activity {
 	private static final int APPSTATUS_CAMERA_RUNNING = 6;
 	private static final int APPSTATUS_INIT_MENU = 7;
 	private static final int APPSTATUS_INIT_EOL = 8;
+	//private static final int APPSTATUS_LEVEL_SELECT = 9;
 
 	private static final int DIALOG_PAUSE = 99;
     private static final int DIALOG_STORE = 100;
@@ -555,7 +557,54 @@ public class ImageTargets extends Activity {
 	        StartGameButton.setOnClickListener(new OnClickListener() {
 	        	
 	        	public void onClick(View v) {
-	        		updateApplicationStatus(APPSTATUS_INIT_QCAR);
+	        		setContentView(R.layout.level_select);
+	        		Button StartGameButton2 = (Button)findViewById(R.id.start_game_button);
+	        		
+    				
+    				StartGameButton2.setOnClickListener(new OnClickListener() {
+	        			public void onClick(View v) {
+	        				int level,difficulty,lives;
+	        				RadioButton level1_button = (RadioButton) findViewById(R.id.radioButton_level1);
+	        				RadioButton level2_button = (RadioButton) findViewById(R.id.radioButton_level2);
+	        				RadioButton level3_button = (RadioButton) findViewById(R.id.radioButton_level3);
+	        				RadioButton difficulty1_button = (RadioButton) findViewById(R.id.radioButton_difficulty1);
+	        				RadioButton difficulty2_button = (RadioButton) findViewById(R.id.radioButton_difficulty2);
+	        				RadioButton difficulty3_button = (RadioButton) findViewById(R.id.radioButton_difficulty3);
+	        				RadioButton lives1_button = (RadioButton) findViewById(R.id.radioButton_lives1);
+	        				RadioButton lives2_button = (RadioButton) findViewById(R.id.radioButton_lives2);
+	        				RadioButton lives3_button = (RadioButton) findViewById(R.id.radioButton_lives3);
+	        				if (level1_button.isChecked()) {
+	        					level = 1;
+	        				}
+	        				else if (level2_button.isChecked()) {
+	        					level = 2;
+	        				}
+	        				else if (level3_button.isChecked()) {
+	        					level = 3;
+	        				}
+	        				
+	        				if (difficulty1_button.isChecked()) {
+	        					difficulty = 1;
+	        				}
+	        				else if (difficulty2_button.isChecked()) {
+	        					difficulty = 2;
+	        				}
+	        				else if (difficulty3_button.isChecked()) {
+	        					difficulty = 3;
+	        				}
+	        				
+	        				if (lives1_button.isChecked()) {
+	        					lives = 1;
+	        				}
+	        				else if (lives2_button.isChecked()) {
+	        					lives = 2;
+	        				}
+	        				else if (lives3_button.isChecked()) {
+	        					lives = 3;
+	        				}
+	        				updateApplicationStatus(APPSTATUS_INIT_QCAR);
+	        			}
+	        		});
 	        	}
 	        });
 			
@@ -588,6 +637,8 @@ public class ImageTargets extends Activity {
 			
 			break;
 		
+		
+			
 		case APPSTATUS_INIT_QCAR:
 			// Initialize QCAR SDK asynchronously to avoid blocking the
 			// main (UI) thread.
