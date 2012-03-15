@@ -81,10 +81,6 @@ int stageType = 1;
 
 bool displayedMessage = false;
 
-//board properties
-#define MARKER_SIZE 50
-#define BOARD_SIZE 8  //8x8 markers
-
 static int startGame = 0;
 static int seeTargets = 0;
 static int pauseGame = 0;
@@ -539,10 +535,13 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
     //helper vars
     int x_offset;
     int y_offset;
-    int trackedCornerID=-1; //the corner marker # used to render enemies
-    QCAR::Matrix44F cornerMarkerModelViewMatrix; //save the corner marker MVM
+    int testID = -1;
+    int trackerID=-1; //the corner marker # used to render enemies
+    QCAR::Matrix44F trackerMVM; //save the corner marker MVM
+
 
     // Did we find any trackables this frame?
+    // first loop through all trackables to find a reference "tracker" marker
     for(int tIdx = 0; tIdx < state.getNumActiveTrackables(); tIdx++)
     {
         //LOG("num tracked: %d", state.getNumActiveTrackables());
@@ -552,106 +551,122 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         // Check the type of the trackable:
         assert(trackable->getType() == QCAR::Trackable::MARKER);
         const QCAR::Marker* marker = static_cast<const QCAR::Marker*>(trackable);
-
-        //if a corner marker is seen, render the enemies relative to that marker
-        if (trackedCornerID<0 && marker->getMarkerId()<4 ){
+        
+        testID = marker->getMarkerId();
+        trackerMVM = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
+        
+        //use corner markers OR initialized towers as trackers
+        if ( (testID < 4) ||
+                (tower[testID].initialized==true && 
+                 tower[testID].boardX != 0 && 
+                 tower[testID].boardY != 0 ) ) 
+        {
             //get the modelview matrix of the corner marker
-            cornerMarkerModelViewMatrix = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
-            trackedCornerID=marker->getMarkerId();
+            trackerID=testID;
+            getMarkerOffset(trackerID, x_offset, y_offset);
+            if (testID >= 4){
+                LOG("using TOWER marker #%d as tracker", testID);
+                LOG("x_offset=%d, y_offset=%d", x_offset, y_offset);
+            }
+            break;
+        }
+    }
 
-            getMarkerOffset(trackedCornerID, x_offset, y_offset);
 
+    //if a tracker is found, then render the rest
+    if (trackerID >= 0) {
+        for(int tIdx = 0; tIdx < state.getNumActiveTrackables(); tIdx++)
+        {
+            // Get the trackable
+            const QCAR::Trackable* trackable = state.getActiveTrackable(tIdx);
+
+            // Check the type of the trackable:
+            assert(trackable->getType() == QCAR::Trackable::MARKER);
+            const QCAR::Marker* marker = static_cast<const QCAR::Marker*>(trackable);
 
             if (startGame == 1 && pauseGame == 0) {
-                //animate and draw the enemy units in reference to the marker position
+                //animate and draw the enemy units in reference to the tracker position
                 for (int i=0; i<MAX_NUM_ENEMIES; i++){
-                    QCAR::Matrix44F enemyMatrix = cornerMarkerModelViewMatrix;        
+                    QCAR::Matrix44F enemyMatrix = trackerMVM;        
                     animateEnemy(enemyMatrix, i, x_offset, y_offset); //animate the i-th enemy
                     QCAR::Matrix44F enemyProjection;
-                    DrawEnemy(enemyMatrix, enemyProjection,enemy[i].texture);
+                    DrawEnemy(enemyMatrix, enemyProjection, enemy[i].texture);
                 }
             }
 
+            //render towers and missiles
+            if (marker->getMarkerId() >= 4 && marker->getMarkerId() < MAX_NUM_MARKERS) {
+
+                //get the marker id
+                int mID = (marker->getMarkerId());
+                QCAR::Matrix44F towerMatrix = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
+                QCAR::Matrix44F towerProjection;
 
 
-
-        } //end enemy rendering
-        
-        //render towers and missiles
-        //Note: do not draw the towers if a corner marker is not seen
-        else if (trackedCornerID>=0 && marker->getMarkerId() >= 4 && marker->getMarkerId() < 4+MAX_NUM_TOWERS) {
-
-            //get the marker id
-            int mID = (marker->getMarkerId()) - 4;
-            QCAR::Matrix44F towerMatrix = QCAR::Tool::convertPose2GLMatrix(trackable->getPose());
-            QCAR::Matrix44F towerProjection;
- 
- 
-            //if marker is tapped, show store and upgrade buttons
-            if ( checkTapMarker(marker, towerMatrix) ){
-				//TODO: only show store if uninitialized
-                showStoreButton();
-				//TODO: only show upgrade if initialized
-                showUpgradeButton();
-				//TODO: show delete button
-                selMarkerID = mID;
-                //tower[mID].initialized=1;
-                //tower[mID].type=0;
-                //end remove
-            }
-
-
-            //draw the tower at the precise location of the marker if it's initialized
-            if (tower[mID].initialized){
-                animateTower(towerMatrix, mID);
-                DrawTower(towerMatrix, towerProjection, tower[mID].texture); 
-
-                //render the missile relative to the corner marker
-                //1) find x, y board coordinates of the tower marker
-                convert2BoardCoord (trackedCornerID, cornerMarkerModelViewMatrix, towerMatrix, tower[mID].boardX, tower[mID].boardY);
-
-                //initialize the missile if not init
-                if (!missile[mID].initialized){
-                    makeMissile (tower[mID].type, mID, tower[mID].boardX, tower[mID].boardY);
+                //if marker is tapped, show store and upgrade buttons
+                if ( checkTapMarker(marker, towerMatrix) ){
+                    //TODO: only show store if uninitialized
+                    showStoreButton();
+                    //TODO: only show upgrade if initialized
+                    showUpgradeButton();
+                    //TODO: show delete button
+                    selMarkerID = mID;
                 }
-                //always update the original missile position (in case of glitches)
-                updateMissileDefaultPos (mID, tower[mID].boardX, tower[mID].boardY);
 
-                //animate missile with respect to corner marker
-                QCAR::Matrix44F missileMatrix = cornerMarkerModelViewMatrix;    
-                getMarkerOffset(trackedCornerID, x_offset, y_offset);
-                if (startGame == 1 && pauseGame == 0) {
-                    animateMissile(missileMatrix, mID, x_offset, y_offset);
-                    checkMissileContact(mID);
-                }
+                //draw the tower at the precise location of the marker if it's initialized
+                if (tower[mID].initialized){
+                    animateTower(towerMatrix, mID);
+                    DrawTower(towerMatrix, towerProjection, tower[mID].texture); 
+
+                    //find x, y board coordinates of the tower marker
+                    if (mID != trackerID){
+                        convert2BoardCoord (trackerID, trackerMVM, towerMatrix, tower[mID].boardX, tower[mID].boardY);
+                    }
+
+                    //initialize the missile if not init
+                    if (!missile[mID].initialized){
+                        makeMissile (tower[mID].type, mID, tower[mID].boardX, tower[mID].boardY);
+                    }
+                    //always update the original missile position (in case of glitches)
+                    updateMissileDefaultPos (mID, tower[mID].boardX, tower[mID].boardY);
+
+                    //animate missile with respect to corner marker
+                    QCAR::Matrix44F missileMatrix = trackerMVM;    
+                    getMarkerOffset(trackerID, x_offset, y_offset);
+                    if (startGame == 1 && pauseGame == 0) {
+                        animateMissile(missileMatrix, mID, x_offset, y_offset);
+                        checkMissileContact(mID);
+                    }
 #ifdef USE_OPENGL_ES_1_1
 #else
-                QCAR::Matrix44F missileProjection;
-                DrawMissile(missileMatrix, missileProjection, missile[mID].texture); 
+                    QCAR::Matrix44F missileProjection;
+                    DrawMissile(missileMatrix, missileProjection, missile[mID].texture); 
 #endif
 
+                }
+
+                else { //if tower is uninitialized, display a ring to indicate marker is recognized
+                    //TODO
+                    DrawSelRing(towerMatrix, towerProjection); 
+                }
+
+            }//end tower drawing
+
+            // If this is our first time seeing the target, display a tip
+            if (!displayedMessage) {
+                displayMessage("Press Start!");
+                seeTargets = 1;
+                counterprevTime = getCurrentTime();
+                //TODO: move this at some point			
+                displayedMessage = true;
             }
 
-            else { //if tower is uninitialized, display a ring to indicate marker is recognized
-                //TODO
-                DrawSelRing(towerMatrix, towerProjection); 
-            }
-
-        }//end tower drawing
-
-        // If this is our first time seeing the target, display a tip
-        if (!displayedMessage) {
-			displayMessage("Press Start!");
-			seeTargets = 1;
-			counterprevTime = getCurrentTime();
-			//TODO: move this at some point			
-            displayedMessage = true;
         }
 
     }
 
     //re-render every frame
-    trackedCornerID=-1;
+    trackerID=-1;
     //if tap outside markers, unselect tower
     if (tap) { 
         hideStoreButton();
@@ -1024,19 +1039,19 @@ void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, in
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &TowerMatrix.data[0], &TowerProjection.data[0]);
     glUseProgram(shaderProgramID);
 	if (type == 0) {
-	 LOG("type0");
+	 //LOG("type0");
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, towerVerts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, towerNormals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, towerTexCoords);
 	}
 	else if (type == 3) {
-	LOG("type3");
+	//LOG("type3");
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, iglooVerts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, iglooNormals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, iglooTexCoords);
 	}
 	else if (type == 9) {
-		LOG("type9");
+		//LOG("type9");
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, cannonVerts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, cannonNormals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, cannonTexCoords);
@@ -1120,27 +1135,33 @@ void DrawSelRing (QCAR::Matrix44F selMatrix, QCAR::Matrix44F selProjection) {
 
 
 
-void getMarkerOffset(int trackedCornerID, int &x_offset, int &y_offset){
-    if (trackedCornerID == 0) //top left marker
+void getMarkerOffset(int trackerID, int &x_offset, int &y_offset){
+    if (trackerID == 0) //top left marker
     {
         x_offset = 0;
         y_offset = 0;
     }
-    else if (trackedCornerID ==1) //top right marker
+    else if (trackerID ==1) //top right marker
     {
         x_offset = (-1) * (MARKER_SIZE * (BOARD_SIZE-1));
         y_offset = 0;
     }
-    else if (trackedCornerID==2) //bottom left marker
+    else if (trackerID==2) //bottom left marker
     {
         x_offset = 0;
         y_offset = (MARKER_SIZE * (BOARD_SIZE-1));
     }
-    else if (trackedCornerID==3) //bottom right marker
+    else if (trackerID==3) //bottom right marker
     {
         x_offset = (-1) * (MARKER_SIZE * (BOARD_SIZE-1));
         y_offset = (MARKER_SIZE * (BOARD_SIZE-1));
-    } 
+    }
+    else if (trackerID > 3 && trackerID < MAX_NUM_MARKERS) //using towers as tracker
+    {   
+        //FIXME: may not be correct?
+        x_offset = tower[trackerID].boardX * (-1); //may need to -1 boardX
+        y_offset = tower[trackerID].boardY * (-1);
+    }
     else
     {
         LOG ("ERROR getMarkerOffset");
@@ -1233,8 +1254,7 @@ linePlaneIntersection(QCAR::Vec3F lineStart, QCAR::Vec3F lineEnd,
     
     QCAR::Vec3F offset = SampleMath::Vec3FScale(lineDir, dist);
     intersection = SampleMath::Vec3FAdd(lineStart, offset);
-	//TODO NOTE by ALTON: added this don't know if its correct
-	return true;
+    return true;
 }
 
 
