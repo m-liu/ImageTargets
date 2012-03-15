@@ -49,6 +49,7 @@ struct EnemyUnit
 	bool deployed;
 	bool dead;
     double prevTime;
+	int section;
 };
 
 struct MissileUnit

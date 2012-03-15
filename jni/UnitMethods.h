@@ -55,14 +55,12 @@ double getCurrentTime();
 //Set all missiles to deinitialized state
 void deinitAllMissiles ();
 
-//Creates a new enemy unit
+//Functions that initiate new units
 void makeTower(int towerType, int towerNumber);
 void makeEnemy(int enemyType, int enemyNumber, int Delay);
+void makeMissile(int missileType, int missileNumber, float lx, float ly);
 
 void initUnitDB () ;
-
-//Initiate a new missile based on its type and location
-void makeMissile(int missileType, int missileNumber, float lx, float ly);
 
 int animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber, int x_offset, int y_offset);
 int checkMissileContact(int missileNumber);
@@ -71,6 +69,6 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber, int x_offset, i
 void updateMissileDefaultPos(int missileNumber, float lx, float ly);
 void removeEnemy (int enemyNumber);
 void gameOver ();
-void moveEnemy (float &x, float &y, float &direction, float speed, float timeDiff);
+void moveEnemy (float &x, float &y, float &direction, float speed, float timeDiff, int section);
 
 #endif // _UNITDB_H_

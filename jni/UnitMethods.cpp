@@ -43,6 +43,7 @@ void makeEnemy(int enemyType, int enemyNumber, int delay)
 	enemy[enemyNumber].deployed = false;
 	enemy[enemyNumber].dead = false;
     enemy[enemyNumber].prevTime = getCurrentTime();
+	enemy[enemyNumber].section = 0;
 }
 
 /********************
@@ -125,28 +126,28 @@ void initUnitDB () {
  * |   |         |                    |        |           |           |         |
  * | # | Texture |        Name        | Max HP |   Speed   |  Defense  |  Score  |
  * |___|_________|____________________|________|___________|___________|_________|
- * | 0 |    1    | Headless Cow       |   150  |    1.2    |    1.0    |    1    |
+ * | 0 |    1    | Cow                |   150  |    1.2    |    1.0    |    1    |
  * | 1 |    5    | Zombie             |   200  |    1.0    |    1.0    |    2    |
- * | 2 |    1    | Headless Cow2      |   250  |    1.5    |    1.0    |    3    |
- * | 3 |    5    | Zombie2            |   300  |    1.0    |    1.0    |    4    |
- * | 4 |    1    | Headless Cow3      |   350  |    1.0    |    2.0    |    5    |
- * | 5 |    5    | Zombie3            |   400  |    1.0    |    1.0    |    6    |
- * | 6 |    1    | Headless Cow4      |   500  |    2.0    |    1.0    |    7    |
- * | 7 |    1    | Headless Cow3      |   350  |    1.0    |    2.0    |    5    |
- * | 8 |    5    | Zombie3            |   400  |    1.0    |    1.0    |    6    |
- * | 9 |    1    | Headless Cow4      |   500  |    2.0    |    1.0    |    7    |
+ * | 2 |    6    | Tank               |   250  |    1.5    |    1.0    |    3    |
+ * | 3 |    7    | Spaceship          |   300  |    1.0    |    1.0    |    4    |
+ * | 4 |    1    | Cow2               |   350  |    1.0    |    2.0    |    5    |
+ * | 5 |    5    | Zombie2            |   400  |    1.0    |    1.0    |    6    |
+ * | 6 |    6    | Tank2              |   500  |    2.0    |    1.0    |    7    |
+ * | 7 |    7    | Spaceship2         |   350  |    1.0    |    2.0    |    5    |
+ * | 8 |    1    | Cow3               |   400  |    1.0    |    1.0    |    6    |
+ * | 9 |    5    | Zombie3            |   500  |    2.0    |    1.0    |    7    |
  * |___|_________|____________________|________|___________|___________|_________|
  *
  *********************************************************************************/
  
     //enemy initialization
-    strcpy(enemy_type[0].name, "HeadlessCow");
+    strcpy(enemy_type[0].name, "Cow");
 	initEnemy(0, 1, 150.0f, 1.2f, 1.0f, 1.0f);
 	strcpy(enemy_type[1].name, "Zombie");
 	initEnemy(1, 5, 200.0f, 1.0f, 1.0f, 2.0f);
-	strcpy(enemy_type[2].name, "HeadlessCow2");
+	strcpy(enemy_type[2].name, "Tank");
 	initEnemy(2, 6, 250.0f, 1.5f, 1.0f, 3.0f);	
-	strcpy(enemy_type[3].name, "Zombie2");
+	strcpy(enemy_type[3].name, "Spaceship");
 	initEnemy(3, 7, 300.0f, 1.0f, 1.0f, 4.0f);
 	strcpy(enemy_type[4].name, "HeadlessCow3");
 	initEnemy(4, 1, 350.0f, 1.0f, 2.0f, 5.0f);
@@ -169,37 +170,36 @@ void initUnitDB () {
 		enemy_type[i].direction = 0.0f;
 		enemy_type[i].deployed = false;
 		enemy_type[i].dead = false;
+		enemy_type[i].section = 0;
 	}
 	
-		
+	//tower initializations
+	strcpy(tower_type[0].name, "Castle");
+	initTower (0, 0, 0, 50.0f, 60.0f, 0.0f);
+	strcpy(tower_type[1].name, "Igloo");
+	initTower (1, 3, 1, 0.0f, 50.0f, 0.0f);
+	strcpy(tower_type[2].name, "Cannon");
+	initTower (2, 9, 2, 0.0f, 50.0f, 90.0f);
+	strcpy(tower_type[3].name, "Castle2");
+	initTower (3, 0, 3, 50.0f, 75.0f, 0.0f);
+	strcpy(tower_type[4].name, "Igloo2");
+	initTower (4, 3, 4, 0.0f, 50.0f, 0.0f);
+	strcpy(tower_type[5].name, "Cannon2");
+	initTower (5, 9, 5, 0.0f, 75.0f, 90.0f);
+	
     //missile initializations
 	strcpy(missile_type[0].name, "Arrow");
 	initMissile (0, 2, 14, 3, 40.0f, 20.0f);
 	strcpy(missile_type[1].name, "Snowball");
 	initMissile (1, 4, 22, 2, 10.0f, 10.0f);
-	strcpy(missile_type[2].name, "Arrow2");
+	strcpy(missile_type[2].name, "Cannonball");
 	initMissile (2, 4, 20, 3, 7.0f, 20.0f);
-	strcpy(missile_type[3].name, "Snowball2");
-	initMissile (3, 4, 30, 2, 10.0f, 10.0f);
-	strcpy(missile_type[4].name, "Arrow3");
-	initMissile (4, 2, 30, 3, 60.0f, 50.0f);
-	strcpy(missile_type[5].name, "Snowball3");
+	strcpy(missile_type[3].name, "Arrow2");
+	initMissile (3, 2, 30, 2, 10.0f, 10.0f);
+	strcpy(missile_type[4].name, "Snowball2");
+	initMissile (4, 4, 30, 3, 60.0f, 50.0f);
+	strcpy(missile_type[5].name, "Cannonball2");
 	initMissile (5, 4, 30, 2, 10.0f, 50.0f);
-	
-	
-	//missile initializations
-	strcpy(tower_type[0].name, "Arrow");
-	initTower (0, 0, 0, 50.0f, 60.0f, 0.0f);
-	strcpy(tower_type[1].name, "Snowball");
-	initTower (1, 3, 1, 0.0f, 50.0f, 0.0f);
-	strcpy(tower_type[2].name, "Arrow2");
-	initTower (2, 9, 2, 0.0f, 50.0f, 90.0f);
-	strcpy(tower_type[3].name, "Snowball2");
-	initTower (3, 0, 3, 50.0f, 75.0f, 0.0f);
-	strcpy(tower_type[4].name, "Arrow3");
-	initTower (4, 3, 4, 0.0f, 50.0f, 0.0f);
-	strcpy(tower_type[5].name, "Snowball3");
-	initTower (5, 9, 5, 0.0f, 75.0f, 90.0f);
 	
 	for (int i = 0; i < NUM_MISSILE_TYPES; i++) {
 		missile_type[i].initialized = false;
@@ -348,20 +348,10 @@ return enemiesKilled;
 //animate the tower
 void animateTower(QCAR::Matrix44F& towerMatrix,  int mID)
 {
-    /*
-    static float rotateBowlAngle2 = 0.0f;
-    static double prevTime2 = getCurrentTime();
-    double time2 = getCurrentTime();             // Get real time difference
-    float dt2 = (float)(time2-prevTime2);          // from frame to frame
-    rotateBowlAngle2 += dt2 * 360.0f;     // Animate angle based on time
-    SampleUtils::rotatePoseMatrix(rotateBowlAngle2, 0.0f, 0.0f, 1.0f, &towerMatrix.data[0]);
-    prevTime2 = time2;
-    */ 
-
-    //FIXME: Model base not at Z=0?
     SampleUtils::translatePoseMatrix(0 ,0, tower[mID].lift, &towerMatrix.data[0]);
-	if (tower[mID].rotate != 0.0f) 
+	if (tower[mID].rotate != 0.0f) {
 		SampleUtils::rotatePoseMatrix(missile[mID].angle + tower[mID].rotate, 0.0f, 0.0f, 1.0f, &towerMatrix.data[0]);
+	}
     SampleUtils::scalePoseMatrix(tower[mID].scale, tower[mID].scale, tower[mID].scale, &towerMatrix.data[0]);
 }
 
@@ -381,14 +371,20 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber, int x_offset, i
 		else if (!enemy[enemyNumber].deployed)
 		{
 			enemy[enemyNumber].deploydelay = 0;
-			enemy[enemyNumber].X = 350.0f; //arbitrary initial positions
-			enemy[enemyNumber].Y = -350.0f;
+			if (stageType != 3) {
+				enemy[enemyNumber].X = 350.0f; //arbitrary initial positions
+				enemy[enemyNumber].Y = -350.0f;
+			}
+			else if (stageType == 3) {
+				enemy[enemyNumber].X = 150.0f; //arbitrary initial positions
+				enemy[enemyNumber].Y = -200.0f;
+			}
 			enemy[enemyNumber].direction = 90.0f;
 			enemy[enemyNumber].HP = enemy[enemyNumber].max_HP;
 			enemy[enemyNumber].deployed = true;
 		}
 		else {
-			moveEnemy(enemy[enemyNumber].X, enemy[enemyNumber].Y, enemy[enemyNumber].direction, enemy[enemyNumber].speed, timeDiff);
+			moveEnemy(enemy[enemyNumber].X, enemy[enemyNumber].Y, enemy[enemyNumber].direction, enemy[enemyNumber].speed, timeDiff, enemy[enemyNumber].section);
 			
 			if (enemy[enemyNumber].X < 0.0f) {
 				currentLives = currentLives - 1;
@@ -445,11 +441,12 @@ void gameOver ()
 	displayMessage("Game Over, all lives lost!");
 }
 
-void moveEnemy (float &x, float &y, float &direction, float speed, float timeDiff)
+void moveEnemy (float &x, float &y, float &direction, float speed, float timeDiff, int section)
 {
-	//basic
+	//Level1: basic
 	if (stageType == 1) {
 		if (y < 0.0f) {
+			x = 350.0f;
 			y += timeDiff * ENEMY_MOVEMENT_SPEED * speed;
 			direction = 90.0f; //up
 		}
@@ -461,7 +458,7 @@ void moveEnemy (float &x, float &y, float &direction, float speed, float timeDif
 		}
 	}
 	
-	//S-shaped
+	//Level2: S-shaped
 	else if (stageType == 2) {
 		if (x == 350.0f && y < 0.0f) {
 			y += timeDiff * ENEMY_MOVEMENT_SPEED * speed;
@@ -490,32 +487,49 @@ void moveEnemy (float &x, float &y, float &direction, float speed, float timeDif
 		}
 	}
 	
-	//TODO: spiral
+	//Level3: spiral
 	else if (stageType == 3) {
-		if (x == 350.0f && y < 0.0f) {
+		if (section == 0 && x <= 250.0f) {
+			y = -200.0f;
+			x += timeDiff * ENEMY_MOVEMENT_SPEED * speed;
+			direction = 0.0f; //right
+		}
+		else if ((section == 0 || section == 1) && y < -100.0f){
+			section = 1;
 			y += timeDiff * ENEMY_MOVEMENT_SPEED * speed;
+			x = 250.0f;
 			direction = 90.0f; //up
 		}
-		else if (x > 200.0f){
-			y = 0.0f;
+		else if ((section == 1 || section == 2) && x > 0.0f){
+			section = 2;
+			y = -100.0f;
 			x -= timeDiff * ENEMY_MOVEMENT_SPEED * speed;
 			direction = 180.0f; //left
 		}
-		else if (y > -350.0f){
-			x = 200.0f;
+		else if ((section == 2 || section == 3) && y > -350.0f){
+			section = 3;
+			x = 0.0f;
 			y -= timeDiff * ENEMY_MOVEMENT_SPEED * speed;
 			direction = 270.0f; //down
 		}
-		else if (x > 0.0f){
+		else if ((section == 3 || section == 4) && x < 350.0f){
+			section = 4;
 			y = -350.0f;
 			x -= timeDiff * ENEMY_MOVEMENT_SPEED * speed;
-			direction = 180.0f; //left
+			direction = 0.0f; //right
+		}
+		else if ((section == 4 || section == 5) && y < 0.0f){
+			section = 5;
+			x = 350.0f;
+			y += timeDiff * ENEMY_MOVEMENT_SPEED * speed;
+			direction = 90.0f; //up
 		}
 		else
 		{
-			x = 0.0f;
-			y += timeDiff * ENEMY_MOVEMENT_SPEED * speed;
-			direction = 90.0f; //up
+			section = 6;
+			y = 0.0f;
+			x -= timeDiff * ENEMY_MOVEMENT_SPEED * speed;
+			direction = 180.0f; //left
 		}
 	}
 	

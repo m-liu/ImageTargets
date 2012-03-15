@@ -34,7 +34,6 @@ void displayScore(int score)
 {
 	char scoreString[10];
 	sprintf (scoreString, "%d", score);
-	//RTS: REMEMBER TO CONVERT TO INT IF CHANGING THIS BACK TO INT
     // Use the environment and class stored in initNativeCallback
     // to call a Java method that displays a message via a toast
 	jstring js = javaEnv->NewStringUTF(scoreString);
@@ -44,7 +43,8 @@ void displayScore(int score)
 
 //display a message    
 void displayZen(int zen)
-{	char zenString[10];
+{
+	char zenString[10];
 	sprintf (zenString, "%d", zen);
     // Use the environment and class stored in initNativeCallback
     // to call a Java method that displays a message via a toast
