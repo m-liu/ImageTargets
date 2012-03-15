@@ -78,8 +78,8 @@ void makeTower(int towerType, int towerNumber)
     tower[towerNumber].rotate = tower_type[towerType].rotate;
 	tower[towerNumber].initialized = true;
 	tower[towerNumber].upgradeLevel = 1;
-	//tower[towerNumber].boardX = 0.0f;
-	//tower[towerNumber].boardY = 0.0f;
+	tower[towerNumber].boardX = 0;
+	tower[towerNumber].boardY = 0;
 };
 
 /********************
@@ -110,10 +110,10 @@ void initTower (int type, int texture, int missiletype, float lift, float scale,
     tower_type[type].lift = lift;
     tower_type[type].scale = scale;
     tower_type[type].rotate = rotate;
-	tower_type[type].initialized = 0;
+	tower_type[type].initialized = false;
 	tower_type[type].upgradeLevel = 0;
-	tower_type[type].boardX = 0.0f;
-	tower_type[type].boardY = 0.0f;
+	tower_type[type].boardX = 0;
+	tower_type[type].boardY = 0;
 };
  
 void initUnitDB () {
