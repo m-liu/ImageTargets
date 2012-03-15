@@ -29,6 +29,12 @@
 #define NUM_LEVELS 10
 #define NUM_ENEMY_PER_ROUND 10
 
+//board properties
+#define MARKER_SIZE 50
+#define BOARD_SIZE 8  //8x8 markers
+#define MAX_NUM_MARKERS (MAX_NUM_TOWERS+4) //# towers + 4 corners
+
+
 
 
 // Structures: 
