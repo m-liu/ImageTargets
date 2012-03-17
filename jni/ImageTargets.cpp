@@ -414,7 +414,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeBuy(JNIEnv *env, j
         return;
     }
     
-    LOG("nativeBuy: selMarkerID=%d", selMarkerID);
+    LOG("nativeBuy: selMarkerID=%d, towerType=%d", selMarkerID, towerType);
     //initialize the tower
 	makeTower(towerType, selMarkerID);
 
