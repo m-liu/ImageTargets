@@ -316,7 +316,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeNext(JNIEnv*, jobj
 JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativePause(JNIEnv*, jobject)
 {
-			hideStoreButton();
 			pauseGame = 1;
 }
 
@@ -327,7 +326,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeUnpause(JNIEnv*, job
 			for (int i=0; i<MAX_NUM_ENEMIES; i++){
 				enemy[i].prevTime = getCurrentTime();  
             }
-			showStoreButton();
 			pauseGame = 0;
 
 }
@@ -354,8 +352,9 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeLeave(JNIEnv*, jobje
 			for (int i=0; i<MAX_NUM_ENEMIES; i++){
 				enemy[i].prevTime = getCurrentTime();  
             }
-			showPauseButton();
-			showStatsButton();
+			if (startGame == 1) {
+				showPauseButton();
+			}
 			pauseGame = 0;
 
 }
@@ -367,10 +366,8 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeStart(JNIEnv*, jobje
 			{
 				startGame = 1;
 				hideStartButton();
-				hideCreditsButton();
 				showPauseButton();
-				showStatsButton();
-				hideStoreButton();
+				//hideStoreButton();
 				startLevel(0);
 				for (int enemyNumber = 0; enemyNumber < MAX_NUM_ENEMIES; enemyNumber++) {
 					enemy[enemyNumber].prevTime = getCurrentTime();
@@ -417,7 +414,10 @@ if (currentZen - missile_type[type].cost < 0)
 	displayZen(currentZen);
 	
 	hideStoreButton();
-	showUpgradeButton();
+	
+	if (towerType == 3 || towerType == 4 || towerType == 5)
+		showUpgradeButton();
+
 	showDeleteButton();
 	
 }
