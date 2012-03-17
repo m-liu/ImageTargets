@@ -65,6 +65,7 @@ void makeMissile(int missileType, int missileNumber, float lx, float ly)
 	missile[missileNumber].scale = missile_type[missileType].scale;
 	missile[missileNumber].cost = missile_type[missileType].cost;
 	missile[missileNumber].attack = missile_type[missileType].attack;
+	missile[missileNumber].stunrate = missile_type[missileType].stunrate;
 	missile[missileNumber].prevTime = getCurrentTime();
 }
 
@@ -94,13 +95,14 @@ void initEnemy (int type, int texture, float max_HP, float speed, float defense,
 	enemy_type[type].score = score;
 }
 
-void initMissile (int type, int texture, float speed, int cost, float scale, float attack) {
+void initMissile (int type, int texture, float speed, int cost, float scale, float attack, float stunrate) {
 	missile_type[type].type = type;
 	missile_type[type].texture = texture;
     missile_type[type].speed = speed;
     missile_type[type].cost = cost;
     missile_type[type].attack = attack;
 	missile_type[type].scale = scale;
+	missile_type[type].stunrate = stunrate;
 }
 
 void initTower (int type, int texture, int missiletype, float lift, float scale, float rotate) {
@@ -189,17 +191,17 @@ void initUnitDB () {
 	
     //missile initializations
 	strcpy(missile_type[0].name, "Arrow");
-	initMissile (0, 2, 15, 2, 40.0f, 15.0f);
+	initMissile (0, 2, 15, 2, 40.0f, 15.0f, 1.0f);
 	strcpy(missile_type[1].name, "Snowball");
-	initMissile (1, 4, 14, 3, 10.0f, 10.0f); //TODO: add stun
+	initMissile (1, 4, 14, 3, 10.0f, 10.0f, 0.85f); //TODO: add stun
 	strcpy(missile_type[2].name, "Cannonball");
-	initMissile (2, 4, 25, 4, 7.0f, 25.0f);
+	initMissile (2, 4, 25, 4, 7.0f, 25.0f, 1.0f);
 	strcpy(missile_type[3].name, "Arrow2");
-	initMissile (3, 2, 20, 4, 10.0f, 30.0f);
+	initMissile (3, 2, 20, 4, 10.0f, 30.0f, 1.0f);
 	strcpy(missile_type[4].name, "Snowball2");
-	initMissile (4, 4, 20, 6, 60.0f, 20.0f);//TODO: add stun
+	initMissile (4, 4, 20, 6, 60.0f, 20.0f, 0.85f);//TODO: add stun
 	strcpy(missile_type[5].name, "Cannonball2");
-	initMissile (5, 4, 35, 8, 10.0f, 50.0f);
+	initMissile (5, 4, 35, 8, 10.0f, 50.0f, 1.0f);
 	
 	for (int i = 0; i < NUM_MISSILE_TYPES; i++) {
 		missile_type[i].initialized = false;
@@ -299,6 +301,7 @@ int checkMissileContact(int missileNumber)
 			missile[missileNumber].X = missile[missileNumber].defaultX;
 			missile[missileNumber].Y = missile[missileNumber].defaultY;
 			enemy[missile[missileNumber].currentTarget].HP = enemy[missile[missileNumber].currentTarget].HP - ((missile[missileNumber].attack)/(enemy[missile[missileNumber].currentTarget].defense));
+			enemy[missile[missileNumber].currentTarget].speed *= missile[missileNumber].stunrate;
 
 			//if hit damages enemy enough, enemy is killed and and kill count is increased
 			if (enemy[missile[missileNumber].currentTarget].HP <= 0.0f) {

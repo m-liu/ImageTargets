@@ -70,6 +70,7 @@ struct MissileUnit
 	float defaultY;
 	float angle;
 	float speed;
+	float stunrate;
 	float attack;
 	int cost;
 	float scale;
