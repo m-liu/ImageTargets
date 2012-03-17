@@ -281,10 +281,9 @@ public class GUIManager extends Activity{
     	currentScore.setText(String.valueOf(0));
     	
         currentZen = (TextView) overlayView.findViewById(R.id.current_zen);
-    	currentZen.setText(String.valueOf(5));
+    	currentZen.setText(String.valueOf(20));
     	
         currentLives = (TextView) overlayView.findViewById(R.id.current_lives);
-
     }
     
     

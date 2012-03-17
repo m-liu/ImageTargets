@@ -183,25 +183,25 @@ void initUnitDB () {
 	strcpy(tower_type[2].name, "Cannon");
 	initTower (2, 9, 2, 0.0f, 50.0f, 90.0f);
 	strcpy(tower_type[3].name, "Castle2");
-	initTower (3, 0, 3, 50.0f, 75.0f, 0.0f);
+	initTower (3, 0, 3, 50.0f, 80.0f, 0.0f);
 	strcpy(tower_type[4].name, "Igloo2");
-	initTower (4, 3, 4, 0.0f, 50.0f, 0.0f);
+	initTower (4, 3, 4, 0.0f, 65.0f, 0.0f);
 	strcpy(tower_type[5].name, "Cannon2");
-	initTower (5, 9, 5, 0.0f, 75.0f, 90.0f);
+	initTower (5, 9, 5, 0.0f, 65.0f, 90.0f);
 	
     //missile initializations
 	strcpy(missile_type[0].name, "Arrow");
-	initMissile (0, 2, 15, 2, 40.0f, 15.0f, 1.0f);
+	initMissile (0, 2, 15, 7, 40.0f, 15.0f, 1.0f);
 	strcpy(missile_type[1].name, "Snowball");
-	initMissile (1, 4, 14, 3, 10.0f, 10.0f, 0.85f); //TODO: add stun
+	initMissile (1, 4, 14, 10, 10.0f, 10.0f, 0.85f);
 	strcpy(missile_type[2].name, "Cannonball");
-	initMissile (2, 4, 25, 4, 7.0f, 25.0f, 1.0f);
+	initMissile (2, 10, 25, 15, 7.0f, 25.0f, 1.0f);
 	strcpy(missile_type[3].name, "Arrow2");
-	initMissile (3, 2, 20, 4, 10.0f, 30.0f, 1.0f);
+	initMissile (3, 2, 20, 14, 10.0f, 30.0f, 1.0f);
 	strcpy(missile_type[4].name, "Snowball2");
-	initMissile (4, 4, 20, 6, 60.0f, 20.0f, 0.85f);//TODO: add stun
+	initMissile (4, 4, 20, 20, 60.0f, 20.0f, 0.85f);
 	strcpy(missile_type[5].name, "Cannonball2");
-	initMissile (5, 4, 35, 8, 10.0f, 50.0f, 1.0f);
+	initMissile (5, 10, 35, 30, 10.0f, 50.0f, 1.0f);
 	
 	for (int i = 0; i < NUM_MISSILE_TYPES; i++) {
 		missile_type[i].initialized = false;
@@ -311,7 +311,7 @@ int checkMissileContact(int missileNumber)
 				enemy[missile[missileNumber].currentTarget].HP = 0.0f;
 				enemy[missile[missileNumber].currentTarget].dead = true;
 				
-				currentScore += enemy[missile[missileNumber].currentTarget].score;
+				currentScore += enemy[missile[missileNumber].currentTarget].score*100;
 				currentZen += enemy[missile[missileNumber].currentTarget].score;
 
 				displayScore(currentScore);

@@ -233,7 +233,7 @@ public class ImageTargets extends Activity {
     	AlertDialog dialog = null;
         switch (id) {
         case DIALOG_STORE:
-            final CharSequence[] items = {"Castle: 2 ZP", "Igloo: 3 ZP", "Cannon: 4 ZP", "Castle2: 4 ZP", "Igloo2: 6 ZP", "Cannon2: 8 ZP"};
+            final CharSequence[] items = {"Castle: 7 ZP", "Igloo: 10 ZP", "Cannon: 15 ZP", "Castle2: 14 ZP", "Igloo2: 20 ZP", "Cannon2: 30 ZP"};
         	AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Welcome to the Store! Buy:")
             .setItems(items, new DialogInterface.OnClickListener() {

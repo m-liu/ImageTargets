@@ -75,7 +75,7 @@ int currentLevel = 0;
 int currentLives = 20;
 
 int currentScore = 0;
-int currentZen = 5;
+int currentZen = 20;
 
 int currentDiff = 2;
 int stageType = 1;
@@ -1046,22 +1046,24 @@ void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, in
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &TowerMatrix.data[0], &TowerProjection.data[0]);
     glUseProgram(shaderProgramID);
 	if (type == 0) {
-	 //LOG("type0");
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, towerVerts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, towerNormals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, towerTexCoords);
 	}
 	else if (type == 3) {
-	//LOG("type3");
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, iglooVerts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, iglooNormals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, iglooTexCoords);
 	}
 	else if (type == 9) {
-		//LOG("type9");
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, cannonVerts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, cannonNormals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, cannonTexCoords);
+	}
+	else {
+		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, towerVerts);
+		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, towerNormals);
+		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, towerTexCoords);
 	}
     glEnableVertexAttribArray(vertexHandle);
 	glEnableVertexAttribArray(normalHandle);
@@ -1078,6 +1080,9 @@ void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, in
 	else if (type == 9) {
 		glDrawArrays(GL_TRIANGLES, 0, cannonNumVerts);
 	}
+	else {
+		glDrawArrays(GL_TRIANGLES, 0, towerNumVerts);
+	}
 	SampleUtils::checkGlError("ImageTargets renderFrame");
 }
 
@@ -1085,7 +1090,7 @@ void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, in
 
 
 void DrawMissile (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection, int type) {
-	//Arrow = 2, Snowball =  4
+	//Arrow = 2, Snowball =  4, Cannonball = 10
 	
 	struct graphics_arrays arrow_animate_array = get_graphics_stats (missileFrameCounter, 0);
 	const Texture* const thisTexture = textures[type];
@@ -1097,10 +1102,15 @@ void DrawMissile (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjecti
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.Normals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.TexCoords);
 	}
-	else if (type == 4) {
+	else if (type == 4 || type == 10) {
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, snowballVerts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, snowballNormals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, snowballTexCoords);
+	}
+	else {
+		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.Verts);
+		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.Normals);
+		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, arrow_animate_array.TexCoords);
 	}
 	
     glEnableVertexAttribArray(vertexHandle);
@@ -1112,8 +1122,11 @@ void DrawMissile (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjecti
 	if (type == 2) {
 		glDrawArrays(GL_TRIANGLES, 0, (int)*arrow_animate_array.NumVerts);
 	}
-	else if (type == 4) {
+	else if (type == 4|| type == 10) {
 		glDrawArrays(GL_TRIANGLES, 0, snowballNumVerts);
+	}
+	else {
+		glDrawArrays(GL_TRIANGLES, 0, (int)*arrow_animate_array.NumVerts);
 	}
 	SampleUtils::checkGlError("ImageTargets renderFrame");
 }
