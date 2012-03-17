@@ -94,7 +94,7 @@ void initEnemy (int type, int texture, float max_HP, float speed, float defense,
 	enemy_type[type].score = score;
 }
 
-void initMissile (int type, int texture, float speed, float cost, float scale, float attack) {
+void initMissile (int type, int texture, float speed, int cost, float scale, float attack) {
 	missile_type[type].type = type;
 	missile_type[type].texture = texture;
     missile_type[type].speed = speed;
@@ -142,25 +142,25 @@ void initUnitDB () {
  
     //enemy initialization
     strcpy(enemy_type[0].name, "Cow");
-	initEnemy(0, 1, 150.0f, 1.2f, 1.0f, 1.0f);
+	initEnemy(0, 1, 125.0f, 1.2f, 1.0f, 1.0f);
 	strcpy(enemy_type[1].name, "Zombie");
-	initEnemy(1, 5, 200.0f, 1.0f, 1.0f, 2.0f);
+	initEnemy(1, 5, 175.0f, 1.0f, 1.0f, 1.0f);
 	strcpy(enemy_type[2].name, "Tank");
-	initEnemy(2, 6, 250.0f, 1.5f, 1.0f, 3.0f);	
+	initEnemy(2, 6, 200.0f, 1.2f, 1.5f, 3.0f);	
 	strcpy(enemy_type[3].name, "Spaceship");
-	initEnemy(3, 7, 300.0f, 1.0f, 1.0f, 4.0f);
+	initEnemy(3, 7, 200.0f, 1.7f, 1.0f, 4.0f);
 	strcpy(enemy_type[4].name, "HeadlessCow3");
-	initEnemy(4, 1, 350.0f, 1.0f, 2.0f, 5.0f);
+	initEnemy(4, 1, 250.0f, 1.2f, 1.0f, 3.0f);
 	strcpy(enemy_type[5].name, "Zombie3");
-	initEnemy(5, 5, 400.0f, 1.0f, 1.0f, 6.0f);
+	initEnemy(5, 5, 350.0f, 1.0f, 1.0f, 3.0f);
 	strcpy(enemy_type[6].name, "HeadlessCow4");
-	initEnemy(6, 6, 500.0f, 2.0f, 1.0f, 7.0f);
+	initEnemy(6, 6, 350.0f, 1.5f, 1.5f, 6.0f);
 	strcpy(enemy_type[7].name, "HeadlessCow3");
-	initEnemy(7, 7, 600.0f, 1.0f, 2.0f, 8.0f);
+	initEnemy(7, 7, 350.0f, 2.0f, 1.2f, 6.0f);
 	strcpy(enemy_type[8].name, "Zombie3");
-	initEnemy(8, 1, 700.0f, 1.0f, 1.0f, 9.0f);
+	initEnemy(8, 1, 700.0f, 0.5f, 1.0f, 8.0f);
 	strcpy(enemy_type[9].name, "HeadlessCow4");
-	initEnemy(9, 5, 1000.0f, 2.0f, 1.0f, 10.0f);
+	initEnemy(9, 5, 1000.0f, 0.5f, 1.0f, 10.0f);
 
 	for (int i = 0; i < NUM_ENEMY_TYPES; i++) {
 		enemy_type[i].X = 10000.0f;
@@ -189,17 +189,17 @@ void initUnitDB () {
 	
     //missile initializations
 	strcpy(missile_type[0].name, "Arrow");
-	initMissile (0, 2, 14, 3, 40.0f, 20.0f);
+	initMissile (0, 2, 15, 2, 40.0f, 15.0f);
 	strcpy(missile_type[1].name, "Snowball");
-	initMissile (1, 4, 22, 2, 10.0f, 10.0f);
+	initMissile (1, 4, 14, 3, 10.0f, 10.0f); //TODO: add stun
 	strcpy(missile_type[2].name, "Cannonball");
-	initMissile (2, 4, 20, 3, 7.0f, 20.0f);
+	initMissile (2, 4, 25, 4, 7.0f, 25.0f);
 	strcpy(missile_type[3].name, "Arrow2");
-	initMissile (3, 2, 30, 2, 10.0f, 10.0f);
+	initMissile (3, 2, 20, 4, 10.0f, 30.0f);
 	strcpy(missile_type[4].name, "Snowball2");
-	initMissile (4, 4, 30, 3, 60.0f, 50.0f);
+	initMissile (4, 4, 20, 6, 60.0f, 20.0f);//TODO: add stun
 	strcpy(missile_type[5].name, "Cannonball2");
-	initMissile (5, 4, 30, 2, 10.0f, 50.0f);
+	initMissile (5, 4, 35, 8, 10.0f, 50.0f);
 	
 	for (int i = 0; i < NUM_MISSILE_TYPES; i++) {
 		missile_type[i].initialized = false;

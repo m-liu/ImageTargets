@@ -77,6 +77,7 @@ int currentLives = 20;
 int currentScore = 0;
 int currentZen = 5;
 
+int currentDiff = 2;
 int stageType = 1;
 
 bool displayedMessage = false;
@@ -401,12 +402,18 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeCredits(JNIEnv*, job
 }
 
 JNIEXPORT void JNICALL
-Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeBuy(JNIEnv *env, jobject thiz, jint cost)//type?
+Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeBuy(JNIEnv *env, jobject thiz, jint type)
 {
+if (currentZen - missile_type[type].cost < 0)
+{
+//TODO: not allowed
+}
+
+
     //a purchase was made. Initialize the tower and deduct the cost
     LOG("nativeBuy called");
-    //FIXME tower type is cost-1, should be based on tower
-    int towerType = (int)cost -1;
+
+    int towerType = (int)type;
     
     //check that we have a selection
     if (selMarkerID < 0){
@@ -419,7 +426,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeBuy(JNIEnv *env, j
 	makeTower(towerType, selMarkerID);
 
     //deduct cost
-	currentZen = currentZen - (int)cost;
+	currentZen = currentZen - missile_type[towerType].cost;
 	displayZen(currentZen);
 }
 
@@ -427,8 +434,8 @@ JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeSettings(JNIEnv *env, jobject thiz, jint level, jint difficulty, jint lives)//type?
 {
 //TODO: Uncomment once this is used
-//currentLevel = (int)level;
-//difficulty? = (int)difficulty;
+stageType = (int)level;
+currentDiff = (int)difficulty;
 currentLives = (int)lives;
 }
 

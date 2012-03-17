@@ -7,7 +7,7 @@
 // Defines:
 
 //enemy properties
-#define MAX_NUM_ENEMIES 10
+#define MAX_NUM_ENEMIES 20
 #define NUM_ENEMY_TYPES 10
 #define ENEMY_NUM_FRAMES 48
 #define ENEMY_SCALE 50.0f
@@ -27,7 +27,7 @@
 
 //game properties
 #define NUM_LEVELS 10
-#define NUM_ENEMY_PER_ROUND 10
+#define NUM_ENEMY_PER_ROUND 20
 
 //board properties
 #define MARKER_SIZE 50
@@ -71,7 +71,7 @@ struct MissileUnit
 	float angle;
 	float speed;
 	float attack;
-	float cost;
+	int cost;
 	float scale;
 	int currentTarget;
 	float currentTargetDistance;

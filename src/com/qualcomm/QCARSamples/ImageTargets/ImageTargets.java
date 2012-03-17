@@ -60,6 +60,7 @@ public class ImageTargets extends Activity {
     private static final int DIALOG_STORE_CONT = 102;
     private static final int DIALOG_STORE_CASTLE = 103;
     private static final int DIALOG_STORE_IGLOO = 104;
+    private static final int DIALOG_STORE_CANNON = 105;
 	
 	// Name of the native dynamic libraries to load:
 	private static final String NATIVE_LIB_SAMPLE = "ImageTargets";
@@ -232,19 +233,22 @@ public class ImageTargets extends Activity {
     	AlertDialog dialog = null;
         switch (id) {
         case DIALOG_STORE:
-            final CharSequence[] items = {"Castle: 1 ZP", "Igloo: 2 ZP", "Cannon: 3 ZP", "Castle2: 4 ZP", "Igloo2: 5 ZP", "Cannon2: 6 ZP"};
+            final CharSequence[] items = {"Castle: 2 ZP", "Igloo: 3 ZP", "Cannon: 4 ZP", "Castle2: 4 ZP", "Igloo2: 6 ZP", "Cannon2: 8 ZP"};
         	AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Welcome to the Store! Buy:")
             .setItems(items, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
-                    nativeBuy((int)(item+1));
+                    nativeBuy((int)item);
                 	mRenderer.hideStoreButton();
 
-                    if (item == 0) {
+                    if (item == 0 || item == 3) {
                     	showDialog(DIALOG_STORE_CASTLE);
                     }
-                    else if (item == 1) {
+                    else if (item == 1 || item == 4) {
                     	showDialog(DIALOG_STORE_IGLOO);
+                    }
+                    else if (item == 2 || item == 5) {
+                    	showDialog(DIALOG_STORE_CANNON);
                     }
                     else {
                     	showDialog(DIALOG_STORE_CONT);
@@ -356,6 +360,20 @@ public class ImageTargets extends Activity {
             dialog = builder5.create();
             break;
             
+        case DIALOG_STORE_CANNON:
+            final CharSequence[] items6 = {"Return to Game"};
+        	AlertDialog.Builder builder6 = new AlertDialog.Builder(this);
+            builder6.setTitle("Bought a Cannon!")
+            .setItems(items6, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                	if (PauseState != true) {
+                		mGUIManager.nativeLeave();
+                	}
+                }
+            });
+            dialog = builder6.create();
+            break;
+            
         }
         return dialog;
         
@@ -410,7 +428,7 @@ public class ImageTargets extends Activity {
 				getAssets()));
 		mTextures.add(Texture.loadTextureFromApk("cannon.jpg",
 				getAssets()));
-		mTextures.add(Texture.loadTextureFromApk("snowball.png",
+		mTextures.add(Texture.loadTextureFromApk("tower_bake.png",
 				getAssets()));
 		
 	}
