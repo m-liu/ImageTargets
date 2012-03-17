@@ -340,12 +340,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeStore(JNIEnv*, jobje
 }
 
 JNIEXPORT void JNICALL
-Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeStats(JNIEnv*, jobject)
-{
-			displayMessage("Stats!");
-}
-
-JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeLeave(JNIEnv*, jobject)
 {
 			//update times
@@ -380,11 +374,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeStart(JNIEnv*, jobje
 			
 }
 
+/*
 JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeCredits(JNIEnv*, jobject)
 {
  			displayMessage("Credits!\n\n\nTeamRickroll'd\nMing Liu\n David Chou\n  Alton Chiu\n\n\nProfessor Enright Jerger\n\nECE496 2011-2012");
-}
+}*/
 
 JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeBuy(JNIEnv *env, jobject thiz, jint type)

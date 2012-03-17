@@ -73,10 +73,6 @@ public class GUIManager extends Activity{
     public native void nativeStore();
     public native void nativeLeave();
     public native void nativeUnpause();
-    public native void nativeDelete();
-    public native void nativeUpgrade();
-    public native void nativeStats();
-    public native void nativeCredits();
     
     /** Initialize the GUIManager. */
     public GUIManager(Context context)
