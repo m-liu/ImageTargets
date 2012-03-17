@@ -8,8 +8,6 @@
 	<string name="button_store">Place Tower</string>
 	<string name="button_leave">Leave Store</string>
 	<string name="button_upgrade">Upgrade Tower</string>
-	<string name="button_stats">View Stats</string>
-	<string name="button_credits">Credits</string>
 	<string name="button_delete">Delete Tower</string>
 
 	<string name="new_game_label">New Game</string>

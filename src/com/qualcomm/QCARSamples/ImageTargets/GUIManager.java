@@ -95,74 +95,93 @@ public class GUIManager extends Activity{
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
-                    case SHOW_DELETE_BUTTON:
-                        if (deleteButton != null) {
-                            //deleteButton.setVisibility(View.VISIBLE);
-                            //deleteButton.setEnabled(true);
-                        }
-                        break;
-                    case HIDE_DELETE_BUTTON:
-                        if (deleteButton != null) {
-                            //deleteButton.setVisibility(View.INVISIBLE);
-                            //deleteButton.setEnabled(false);
-                        }
-                        break;
-                    case TOGGLE_PAUSE_BUTTON:
-                        if (pauseButton != null) {
-                            //pauseButton.setChecked(true);
-                        }
-                        break;
-                    case SHOW_PAUSE_BUTTON:
+	                case HIDE_START_BUTTON:
+	                    if (startButton != null) {
+	                        //startButton.setVisibility(View.INVISIBLE);
+	                    	startButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFFAA0000));
+	                        startButton.setEnabled(false);
+	                    }
+	                    break;
+	                case SHOW_PAUSE_BUTTON:
                         if (pauseButton != null) {
                             //pauseButton.setVisibility(View.VISIBLE);
+                        	pauseButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF00AA00));
                         	pauseButton.setEnabled(true);
                         }
                         break;
                     case HIDE_PAUSE_BUTTON:
                         if (pauseButton != null) {
                             //pauseButton.setVisibility(View.INVISIBLE);
+                        	pauseButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFFAA0000));
                         	pauseButton.setEnabled(false);
                         }
                         break;
                     case SHOW_UNPAUSE_BUTTON:
                         if (unpauseButton != null) {
                             //unpauseButton.setVisibility(View.VISIBLE);
+                        	unpauseButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF00AA00));
                         	unpauseButton.setEnabled(true);
                         }
                         break;
                     case HIDE_UNPAUSE_BUTTON:
                         if (unpauseButton != null) {
                             //unpauseButton.setVisibility(View.INVISIBLE);
+                        	unpauseButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFFAA0000));
                         	unpauseButton.setEnabled(false);
                         }
-                        break;             
-                    case TOGGLE_STORE_BUTTON:
-                        if (storeButton != null) {
-                            //storeButton.setChecked(true);
-                        }
-                        break; 
+                        break;                 
                     case SHOW_STORE_BUTTON:
                         if (storeButton != null) {
                             //storeButton.setVisibility(View.VISIBLE);
+                        	storeButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF00AA00));
                         	storeButton.setEnabled(true);
                         }
                         break;
                     case HIDE_STORE_BUTTON:
                         if (storeButton != null) {
                             //storeButton.setVisibility(View.INVISIBLE);
+                        	storeButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFFAA0000));
                         	storeButton.setEnabled(false);
                         }
                         break;
                     case SHOW_UPGRADE_BUTTON:
                         if (upgradeButton != null) {
                         	//upgradeButton.setVisibility(View.VISIBLE);
+                            upgradeButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF00AA00));
                         	upgradeButton.setEnabled(true);
                         }
                         break;
                     case HIDE_UPGRADE_BUTTON:
                         if (upgradeButton != null) {
                         	//upgradeButton.setVisibility(View.INVISIBLE);
+                            upgradeButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFFAA0000));
                         	upgradeButton.setEnabled(false);
+                        }
+                        break;
+                    case SHOW_DELETE_BUTTON:
+                        if (deleteButton != null) {
+                            //deleteButton.setVisibility(View.VISIBLE);
+                        	deleteButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF00AA00));
+                            deleteButton.setEnabled(true);
+                        }
+                        break;
+                    case HIDE_DELETE_BUTTON:
+                        if (deleteButton != null) {
+                            //deleteButton.setVisibility(View.INVISIBLE);
+                        	deleteButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFFAA0000));
+                            deleteButton.setEnabled(false);
+                        }
+                        break;
+                        
+                        
+                    case TOGGLE_STORE_BUTTON:
+                        if (storeButton != null) {
+                            //storeButton.setChecked(true);
+                        }
+                        break; 
+                    case TOGGLE_PAUSE_BUTTON:
+                        if (pauseButton != null) {
+                            //pauseButton.setChecked(true);
                         }
                         break;
                     case SHOW_STATS_BUTTON:
@@ -187,15 +206,10 @@ public class GUIManager extends Activity{
                         	//creditsButton.setEnabled(false);
                         }
                         break;
-                    case HIDE_START_BUTTON:
-                        if (startButton != null) {
-                            //startButton.setVisibility(View.INVISIBLE);
-                            startButton.setEnabled(false);
-                        }
-                        break;
+                        
                     case DISPLAY_INFO_TOAST:
                         String text = (String) msg.obj;
-                        int duration = Toast.LENGTH_LONG;
+                        int duration = Toast.LENGTH_SHORT;
                         Toast toast = Toast.makeText(applicationContext, text, duration);
                         toast.show();
                         break;
@@ -225,7 +239,7 @@ public class GUIManager extends Activity{
         });
 
         storeButton = (Button) overlayView.findViewById(R.id.store_button);
-        storeButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF00AA00));
+        storeButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFFAA0000));
         
         startButton = (Button) overlayView.findViewById(R.id.start_button);
         startButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF00AA00));
@@ -238,36 +252,11 @@ public class GUIManager extends Activity{
         });
         
         deleteButton = (Button) overlayView.findViewById(R.id.delete_button);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                nativeDelete();
-            }
-        });
+        deleteButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFFAA0000));
         
         upgradeButton = (Button) overlayView.findViewById(R.id.upgrade_button);
-        upgradeButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                nativeUpgrade();
-            }
-        });
-        
-        /*statsButton = (Button) overlayView.findViewById(R.id.stats_button);
-        statsButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF0000AA));
-        statsButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                nativeStats();
-            }
-        });*/
-        
-        creditsButton = (Button) overlayView.findViewById(R.id.credits_button);
-        creditsButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFFAAAA00));
-        creditsButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                nativeCredits();
-            }
-        });
-        
-        
+        upgradeButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFFAA0000));
+                
         pauseButton.setEnabled(false);
         unpauseButton.setEnabled(false);
         deleteButton.setEnabled(false);

@@ -51,7 +51,7 @@ void makeEnemy(int enemyType, int enemyNumber, int delay)
  ********************/
 void makeMissile(int missileType, int missileNumber, float lx, float ly)
 {
-    missile[missileNumber].initialized=true;
+    missile[missileNumber].initialized = true;
 	missile[missileNumber].type = missile_type[missileType].type;
 	missile[missileNumber].texture = missile_type[missileType].texture;
 	missile[missileNumber].defaultX = lx;
@@ -77,11 +77,41 @@ void makeTower(int towerType, int towerNumber)
     tower[towerNumber].lift = tower_type[towerType].lift;
     tower[towerNumber].scale = tower_type[towerType].scale;
     tower[towerNumber].rotate = tower_type[towerType].rotate;
+	tower[towerNumber].upgradeCost = missile_type[towerType].cost + 3;
 	tower[towerNumber].initialized = true;
 	tower[towerNumber].upgradeLevel = 1;
 	tower[towerNumber].boardX = 0;
 	tower[towerNumber].boardY = 0;
 };
+
+void upgradeTower(int towerNumber)
+{
+	int newTowerType = tower[towerNumber].type + 3; 
+	tower[towerNumber].type = newTowerType;
+	tower[towerNumber].texture = tower_type[newTowerType].texture;
+	tower[towerNumber].missiletype = tower_type[newTowerType].missiletype;
+    tower[towerNumber].lift = tower_type[newTowerType].lift;
+    tower[towerNumber].scale = tower_type[newTowerType].scale;
+	tower[towerNumber].rotate = tower_type[newTowerType].rotate;
+	tower[towerNumber].upgradeLevel = 2;
+	missile[towerNumber].type = missile_type[newTowerType].type;
+	missile[towerNumber].texture = missile_type[newTowerType].texture;
+	missile[towerNumber].angle = 0.0f;
+	missile[towerNumber].speed = missile_type[newTowerType].speed;
+	missile[towerNumber].currentTarget = -1;
+	missile[towerNumber].currentTargetDistance = -1;
+	missile[towerNumber].scale = missile_type[newTowerType].scale;
+	missile[towerNumber].cost = missile_type[newTowerType].cost;
+	missile[towerNumber].attack = missile_type[newTowerType].attack;
+	missile[towerNumber].stunrate = missile_type[newTowerType].stunrate;
+	missile[towerNumber].prevTime = getCurrentTime();
+};
+
+void deleteTower(int towerNumber)
+{
+	tower[towerNumber].initialized = false;
+	missile[towerNumber].initialized = false;
+}
 
 /********************
  * Initializes the DB and the unit stats
@@ -197,9 +227,9 @@ void initUnitDB () {
 	strcpy(missile_type[2].name, "Cannonball");
 	initMissile (2, 10, 25, 15, 7.0f, 25.0f, 1.0f);
 	strcpy(missile_type[3].name, "Arrow2");
-	initMissile (3, 2, 20, 14, 10.0f, 30.0f, 1.0f);
+	initMissile (3, 2, 20, 14, 50.0f, 30.0f, 1.0f);
 	strcpy(missile_type[4].name, "Snowball2");
-	initMissile (4, 4, 20, 20, 60.0f, 20.0f, 0.85f);
+	initMissile (4, 4, 20, 20, 12.0f, 20.0f, 0.85f);
 	strcpy(missile_type[5].name, "Cannonball2");
 	initMissile (5, 10, 35, 30, 10.0f, 50.0f, 1.0f);
 	

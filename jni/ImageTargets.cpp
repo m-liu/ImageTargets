@@ -348,13 +348,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeStats(JNIEnv*, jobje
 }
 
 JNIEXPORT void JNICALL
-Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeUpgrade(JNIEnv*, jobject)
-{
-			displayMessage("Upgrade!");
-}
-
-
-JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeLeave(JNIEnv*, jobject)
 {
 			//update times
@@ -389,11 +382,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeStart(JNIEnv*, jobje
 			}
 			
 }
-JNIEXPORT void JNICALL
-Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeDelete(JNIEnv*, jobject)
-{
- 			displayMessage("D4");
-}
 
 JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeCredits(JNIEnv*, jobject)
@@ -408,7 +396,6 @@ if (currentZen - missile_type[type].cost < 0)
 {
 //TODO: not allowed
 }
-
 
     //a purchase was made. Initialize the tower and deduct the cost
     LOG("nativeBuy called");
@@ -428,12 +415,72 @@ if (currentZen - missile_type[type].cost < 0)
     //deduct cost
 	currentZen = currentZen - missile_type[towerType].cost;
 	displayZen(currentZen);
+	
+	hideStoreButton();
+	showUpgradeButton();
+	showDeleteButton();
+	
 }
+
+JNIEXPORT void JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeUpgrade(JNIEnv *env)
+{
+
+    //a purchase was made. Initialize the tower and deduct the cost
+    LOG("nativeUpgrade called");
+
+    //check that we have a selection
+    if (selMarkerID < 0){
+        LOG("ERROR nativeUpgrade: selMarkerID < 0");
+        return;
+    }
+	
+if (currentZen - tower[selMarkerID].upgradeCost < 0)
+{
+//TODO: not allowed
+}
+
+    LOG("nativeUpgrade: selMarkerID=%d", selMarkerID);
+
+    //deduct cost
+	currentZen = currentZen - tower[selMarkerID].upgradeCost;
+	displayZen(currentZen);
+	
+	//initialize the tower
+	upgradeTower(selMarkerID);
+	
+	hideStoreButton();
+	hideUpgradeButton();
+	showDeleteButton();
+}
+
+JNIEXPORT void JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeDelete(JNIEnv*, jobject)
+{
+    //a purchase was made. Initialize the tower and deduct the cost
+    LOG("nativeDelete called");
+
+    //check that we have a selection
+    if (selMarkerID < 0){
+        LOG("ERROR nativeUpgrade: selMarkerID < 0");
+        return;
+    }
+	
+    LOG("nativeDelete: selMarkerID=%d", selMarkerID);
+	
+	//initialize the tower
+	deleteTower(selMarkerID);
+	
+	showStoreButton();
+	hideUpgradeButton();
+	hideDeleteButton();
+}
+
 
 JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeSettings(JNIEnv *env, jobject thiz, jint level, jint difficulty, jint lives)//type?
 {
-//TODO: Uncomment once this is used
+//TODO: Difficulty not used
 stageType = (int)level;
 currentDiff = (int)difficulty;
 currentLives = (int)lives;
@@ -612,11 +659,20 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
                 //if marker is tapped, show store and upgrade buttons
                 if ( checkTapMarker(marker, towerMatrix) ){
-                    //TODO: only show store if uninitialized
-                    showStoreButton();
-                    //TODO: only show upgrade if initialized
-                    showUpgradeButton();
-                    //TODO: show delete button
+                    if (!tower[mID].initialized){
+						showStoreButton();
+						hideUpgradeButton();
+						hideDeleteButton();
+					}
+                    else if (tower[mID].initialized){
+	                    hideStoreButton();
+						showDeleteButton();
+						if (tower[mID].upgradeLevel != 2 &&(tower[mID].type == 0 || tower[mID].type == 1 || tower[mID].type == 2))
+							showUpgradeButton();
+						else
+							hideUpgradeButton();
+
+					}
                     selMarkerID = mID;
                 }
 
@@ -678,6 +734,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
     if (tap) { 
         hideStoreButton();
         hideUpgradeButton();
+		hideDeleteButton();
         selMarkerID = -1;
     }
     //reset tap

@@ -103,9 +103,8 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="100px"
         android:layout_height="70px"
-        android:layout_toLeftOf="@id/pause_button"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="10dip"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:text="@string/button_start"
         android:visibility="visible"
     />
@@ -116,18 +115,9 @@
         android:layout_height="70px"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
+        android:textSize="12dip"
         android:text="@string/button_store"
         android:visibility="visible"
-    />
-    
-    <Button android:id="@+id/credits_button"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="100px"
-        android:layout_height="70px"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/button_credits"
-        android:visibility="invisible"
     />
     
     <Button android:id="@+id/upgrade_button"
@@ -136,6 +126,7 @@
         android:layout_height="70px"
         android:layout_toRightOf="@id/store_button"
         android:layout_alignParentBottom="true"
+        android:textSize="12dip"
         android:text="@string/button_upgrade"
         android:visibility="visible"
     />
@@ -144,10 +135,11 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="100px"
         android:layout_height="70px"
-        android:layout_toLeftOf="@id/upgrade_button"
-        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/upgrade_button"
+        android:layout_alignParentBottom="true"
+        android:textSize="12dip"
         android:text="@string/button_delete"
-        android:visibility="invisible"
+        android:visibility="visible"
     />
     
 </RelativeLayout>

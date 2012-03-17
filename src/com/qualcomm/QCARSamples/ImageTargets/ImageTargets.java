@@ -108,7 +108,9 @@ public class ImageTargets extends Activity {
 	}
 
 	public static native void nativeBuy(int cost);
+	public static native void nativeUpgrade();
 	public static native void nativeNext();
+	public static native void nativeDelete();
 	public static native void nativeSettings(int level, int difficulty, int lives);
 	
     /** Native function to store Java environment information for callbacks. */
@@ -239,8 +241,6 @@ public class ImageTargets extends Activity {
             .setItems(items, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
                     nativeBuy((int)item);
-                	mRenderer.hideStoreButton();
-
                     if (item == 0 || item == 3) {
                     	showDialog(DIALOG_STORE_CASTLE);
                     }
@@ -652,7 +652,7 @@ public class ImageTargets extends Activity {
 	        	}
 	        });
 	        
-	      //New Game Button
+	      //Credits Button
 	        Button CreditsButton = (Button)findViewById(R.id.credits_button);
 	        CreditsButton.setOnClickListener(new OnClickListener() {
 	        	
@@ -752,6 +752,22 @@ public class ImageTargets extends Activity {
                         	PauseState = true;
                         	mGUIManager.nativePause();
                         	showDialog(DIALOG_PAUSE);   
+                        }
+                    });
+                    
+                    Button upgradeButton;
+                    upgradeButton = (Button) mGUIManager.getOverlayView().findViewById(R.id.upgrade_button);
+                    upgradeButton.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            nativeUpgrade();
+                        }
+                    });
+                    
+                    Button deleteButton;
+                    deleteButton = (Button) mGUIManager.getOverlayView().findViewById(R.id.delete_button);
+                    deleteButton.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            nativeDelete();
                         }
                     });
                     

@@ -91,6 +91,7 @@ struct TowerUnit
 	float rotate;
     int initialized;
     int upgradeLevel; //tower level
+	int upgradeCost;
     float boardX;   //position of tower in board coordinates
     float boardY;
 };

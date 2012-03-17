@@ -59,6 +59,8 @@ void deinitAllMissiles ();
 void makeTower(int towerType, int towerNumber);
 void makeEnemy(int enemyType, int enemyNumber, int Delay);
 void makeMissile(int missileType, int missileNumber, float lx, float ly);
+void upgradeTower(int towerNumber);
+void deleteTower(int towerNumber);
 
 void initUnitDB () ;
 
