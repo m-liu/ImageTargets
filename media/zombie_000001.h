@@ -12,7 +12,7 @@ texture coords : 285
 #import "./zombie_000001.h"
 
 // set input data to arrays
-glVertexPointer(3, GL_FLOAT, 0, zombie_000001Verts);
+glVertexPointer(3, GL_FLOAT, 0, zombie_000001Verts); 
 glNormalPointer(GL_FLOAT, 0, zombie_000001Normals);
 glTexCoordPointer(2, GL_FLOAT, 0, zombie_000001TexCoords);
 
