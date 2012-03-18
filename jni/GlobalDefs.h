@@ -77,6 +77,9 @@ struct MissileUnit
 	int currentTarget;
 	float currentTargetDistance;
 	double prevTime;
+	double prevShotTime;
+	double waitShotTime;
+	bool updatedShotTime;
 };
 
 //tower struct

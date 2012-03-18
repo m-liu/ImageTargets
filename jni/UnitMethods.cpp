@@ -67,6 +67,9 @@ void makeMissile(int missileType, int missileNumber, float lx, float ly)
 	missile[missileNumber].attack = missile_type[missileType].attack;
 	missile[missileNumber].stunrate = missile_type[missileType].stunrate;
 	missile[missileNumber].prevTime = getCurrentTime();
+	missile[missileNumber].prevShotTime = getCurrentTime();
+	missile[missileNumber].waitShotTime = missile_type[missileType].waitShotTime;
+	missile[missileNumber].updatedShotTime = false;
 }
 
 void makeTower(int towerType, int towerNumber)
@@ -125,7 +128,7 @@ void initEnemy (int type, int texture, float max_HP, float speed, float defense,
 	enemy_type[type].score = score;
 }
 
-void initMissile (int type, int texture, float speed, int cost, float scale, float attack, float stunrate) {
+void initMissile (int type, int texture, float speed, int cost, float scale, float attack, float stunrate, float waitShotTime) {
 	missile_type[type].type = type;
 	missile_type[type].texture = texture;
     missile_type[type].speed = speed;
@@ -133,6 +136,7 @@ void initMissile (int type, int texture, float speed, int cost, float scale, flo
     missile_type[type].attack = attack;
 	missile_type[type].scale = scale;
 	missile_type[type].stunrate = stunrate;
+	missile_type[type].waitShotTime = waitShotTime;
 }
 
 void initTower (int type, int texture, int missiletype, float lift, float scale, float rotate) {
@@ -174,25 +178,25 @@ void initUnitDB () {
  
     //enemy initialization
     strcpy(enemy_type[0].name, "Cow");
-	initEnemy(0, 1, 125.0f, 1.2f, 1.0f, 1.0f);
+	initEnemy(0, 1, 100.0f, 1.2f, 1.0f, 1.0f);
 	strcpy(enemy_type[1].name, "Zombie");
-	initEnemy(1, 5, 175.0f, 1.0f, 1.0f, 1.0f);
+	initEnemy(1, 5, 125.0f, 1.0f, 1.0f, 1.0f);
 	strcpy(enemy_type[2].name, "Tank");
-	initEnemy(2, 6, 200.0f, 1.2f, 1.5f, 3.0f);	
+	initEnemy(2, 6, 150.0f, 1.2f, 1.5f, 3.0f);	
 	strcpy(enemy_type[3].name, "Spaceship");
-	initEnemy(3, 7, 200.0f, 1.7f, 1.0f, 4.0f);
+	initEnemy(3, 7, 150.0f, 1.7f, 1.0f, 4.0f);
 	strcpy(enemy_type[4].name, "HeadlessCow3");
-	initEnemy(4, 1, 250.0f, 1.2f, 1.0f, 3.0f);
+	initEnemy(4, 1, 200.0f, 1.2f, 1.0f, 3.0f);
 	strcpy(enemy_type[5].name, "Zombie3");
-	initEnemy(5, 5, 350.0f, 1.0f, 1.0f, 3.0f);
+	initEnemy(5, 5, 250.0f, 1.0f, 1.0f, 3.0f);
 	strcpy(enemy_type[6].name, "HeadlessCow4");
-	initEnemy(6, 6, 350.0f, 1.5f, 1.5f, 6.0f);
+	initEnemy(6, 6, 300.0f, 1.5f, 1.5f, 6.0f);
 	strcpy(enemy_type[7].name, "HeadlessCow3");
-	initEnemy(7, 7, 350.0f, 2.0f, 1.2f, 6.0f);
+	initEnemy(7, 7, 300.0f, 2.0f, 1.2f, 6.0f);
 	strcpy(enemy_type[8].name, "Zombie3");
-	initEnemy(8, 1, 700.0f, 0.5f, 1.0f, 8.0f);
+	initEnemy(8, 1, 400.0f, 0.5f, 1.0f, 8.0f);
 	strcpy(enemy_type[9].name, "HeadlessCow4");
-	initEnemy(9, 5, 1000.0f, 0.5f, 1.0f, 10.0f);
+	initEnemy(9, 5, 500.0f, 0.5f, 1.0f, 10.0f);
 
 	for (int i = 0; i < NUM_ENEMY_TYPES; i++) {
 		enemy_type[i].X = 10000.0f;
@@ -221,17 +225,17 @@ void initUnitDB () {
 	
     //missile initializations
 	strcpy(missile_type[0].name, "Arrow");
-	initMissile (0, 2, 15, 7, 40.0f, 15.0f, 1.0f);
+	initMissile (0, 2, 15, 7, 40.0f, 15.0f, 1.0f, 0.9f);
 	strcpy(missile_type[1].name, "Snowball");
-	initMissile (1, 4, 14, 10, 10.0f, 10.0f, 0.85f);
+	initMissile (1, 4, 14, 10, 10.0f, 10.0f, 0.85f, 1.1f);
 	strcpy(missile_type[2].name, "Cannonball");
-	initMissile (2, 10, 25, 15, 7.0f, 25.0f, 1.0f);
+	initMissile (2, 10, 25, 15, 7.0f, 50.0f, 1.0f, 1.6f);
 	strcpy(missile_type[3].name, "Arrow2");
-	initMissile (3, 2, 20, 14, 50.0f, 30.0f, 1.0f);
+	initMissile (3, 2, 20, 14, 50.0f, 30.0f, 1.0f, 0.9f);
 	strcpy(missile_type[4].name, "Snowball2");
-	initMissile (4, 4, 20, 20, 12.0f, 20.0f, 0.85f);
+	initMissile (4, 4, 20, 20, 12.0f, 20.0f, 0.85f, 1.1f);
 	strcpy(missile_type[5].name, "Cannonball2");
-	initMissile (5, 10, 35, 30, 10.0f, 50.0f, 1.0f);
+	initMissile (5, 10, 35, 30, 10.0f, 80.0f, 1.0f, 1.6f);
 	
 	for (int i = 0; i < NUM_MISSILE_TYPES; i++) {
 		missile_type[i].initialized = false;
@@ -243,6 +247,8 @@ void initUnitDB () {
 		missile_type[i].currentTarget = -1;
 		missile_type[i].currentTargetDistance = -1;
 		missile_type[i].prevTime = -1;
+		missile_type[i].prevShotTime = -1;
+		missile_type[i].updatedShotTime = false;
 	}
 
     //Set all missiles to deinitialized state
@@ -264,9 +270,11 @@ int animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber, int x_offs
 	double currentTime = getCurrentTime();  
 	float timeDiff = (float)(currentTime-missile[missileNumber].prevTime);          // from frame to frame
 	missile[missileNumber].prevTime = currentTime;
-			
+
 	//find target if there is no target by cycling through enemies
-	if (missile[missileNumber].currentTarget == -1) {
+	if (missile[missileNumber].currentTarget == -1
+		&& currentTime >= missile[missileNumber].prevShotTime + missile[missileNumber].waitShotTime) 
+	{	
 		missile[missileNumber].currentTarget = 0;
 		xdiff = enemy[0].X-missile[missileNumber].defaultX;
 		ydiff = enemy[0].Y-missile[missileNumber].defaultY;
@@ -280,43 +288,66 @@ int animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber, int x_offs
 				missile[missileNumber].currentTargetDistance = possibleTargetDistance;
 			}
 		}
-	}
-	
-	//if there is a target, calculate distance and angle
-	if (missile[missileNumber].currentTarget != -1) {
-		xdiff = enemy[missile[missileNumber].currentTarget].X-missile[missileNumber].X;
-		ydiff = enemy[missile[missileNumber].currentTarget].Y-missile[missileNumber].Y;
-		slope = ydiff/xdiff;
-		missile[missileNumber].angle = atan2(ydiff, xdiff) * 180 / 3.14159265;
-		//x2 + y2 = 196 (move 14 units each second)
-		//y/x = slope (move along slope)
-		float xdist = sqrt(missile[missileNumber].speed*missile[missileNumber].speed/(1+(slope*slope)));
-		float ydist = sqrt(missile[missileNumber].speed*missile[missileNumber].speed-(xdist*xdist));
-		xdist = timeDiff*10.0f*xdist;
-		ydist = timeDiff*10.0f*ydist;
-		
-		//move missile towards target
-		if (enemy[missile[missileNumber].currentTarget].X > missile[missileNumber].X)
-			missile[missileNumber].X = missile[missileNumber].X + xdist;
-		else
-			missile[missileNumber].X = missile[missileNumber].X - xdist;
-		if (enemy[missile[missileNumber].currentTarget].Y > missile[missileNumber].Y)
-			missile[missileNumber].Y = missile[missileNumber].Y + ydist;
-		else
-			missile[missileNumber].Y = missile[missileNumber].Y - ydist;
-	
-		//if target is too far away, reset the target
-		if (missile[missileNumber].X-enemy[missile[missileNumber].currentTarget].X > 150 || missile[missileNumber].X-enemy[missile[missileNumber].currentTarget].X < -150 
-		|| missile[missileNumber].Y-enemy[missile[missileNumber].currentTarget].Y > 150 || missile[missileNumber].Y-enemy[missile[missileNumber].currentTarget].Y < -150 ) {
-			missile[missileNumber].X = missile[missileNumber].defaultX;
-			missile[missileNumber].Y = missile[missileNumber].defaultY;
+		if (missile[missileNumber].currentTargetDistance > 200) {
 			missile[missileNumber].currentTarget = -1;
 		}
 	}
-    //offset the object based on corner marker in view and position
-	SampleUtils::translatePoseMatrix(missile[missileNumber].X + x_offset, missile[missileNumber].Y + y_offset, 0.0f, &missileMatrix.data[0]);
-	SampleUtils::rotatePoseMatrix(missile[missileNumber].angle, 0.0f, 0.0f, 1.0f, &missileMatrix.data[0]);
-    SampleUtils::scalePoseMatrix(missile[missileNumber].scale, missile[missileNumber].scale, missile[missileNumber].scale, &missileMatrix.data[0]);
+	
+	//if there is a target, calculate distance and angle
+	if (missile[missileNumber].currentTarget != -1 
+		//Already attacking something
+		&& (missile[missileNumber].updatedShotTime == true 
+			//Missile shot delay
+			|| currentTime >= missile[missileNumber].prevShotTime + missile[missileNumber].waitShotTime)) {
+
+		xdiff = enemy[missile[missileNumber].currentTarget].X-missile[missileNumber].X;
+		ydiff = enemy[missile[missileNumber].currentTarget].Y-missile[missileNumber].Y;
+		missile[missileNumber].currentTargetDistance = sqrt((xdiff*xdiff) + (ydiff*ydiff));
+		if (missile[missileNumber].currentTargetDistance > 200) {
+			missile[missileNumber].X = missile[missileNumber].defaultX;
+			missile[missileNumber].Y = missile[missileNumber].defaultY;
+			missile[missileNumber].currentTarget = -1;
+			missile[missileNumber].updatedShotTime = false;
+		}
+		else {
+			if 	(missile[missileNumber].updatedShotTime == false) {
+				missile[missileNumber].updatedShotTime = true;
+				missile[missileNumber].prevShotTime = currentTime;
+			}
+			
+			slope = ydiff/xdiff;
+			missile[missileNumber].angle = atan2(ydiff, xdiff) * 180 / 3.14159265;
+			//x2 + y2 = 196 (move 14 units each second)
+			//y/x = slope (move along slope)
+			float xdist = sqrt(missile[missileNumber].speed*missile[missileNumber].speed/(1+(slope*slope)));
+			float ydist = sqrt(missile[missileNumber].speed*missile[missileNumber].speed-(xdist*xdist));
+			xdist = timeDiff*10.0f*xdist;
+			ydist = timeDiff*10.0f*ydist;
+			
+			//move missile towards target
+			if (enemy[missile[missileNumber].currentTarget].X > missile[missileNumber].X)
+				missile[missileNumber].X = missile[missileNumber].X + xdist;
+			else
+				missile[missileNumber].X = missile[missileNumber].X - xdist;
+			if (enemy[missile[missileNumber].currentTarget].Y > missile[missileNumber].Y)
+				missile[missileNumber].Y = missile[missileNumber].Y + ydist;
+			else
+				missile[missileNumber].Y = missile[missileNumber].Y - ydist;
+		
+			//if target is too far away, reset the target
+			xdiff = enemy[missile[missileNumber].currentTarget].X-missile[missileNumber].X;
+			ydiff = enemy[missile[missileNumber].currentTarget].Y-missile[missileNumber].Y;
+			missile[missileNumber].currentTargetDistance = sqrt((xdiff*xdiff) + (ydiff*ydiff));
+			
+			//offset the object based on corner marker in view and position
+			SampleUtils::translatePoseMatrix(missile[missileNumber].X + x_offset, missile[missileNumber].Y + y_offset, 0.0f, &missileMatrix.data[0]);
+			SampleUtils::rotatePoseMatrix(missile[missileNumber].angle, 0.0f, 0.0f, 1.0f, &missileMatrix.data[0]);
+			SampleUtils::scalePoseMatrix(missile[missileNumber].scale, missile[missileNumber].scale, missile[missileNumber].scale, &missileMatrix.data[0]);
+			
+			checkMissileContact(missileNumber);
+		}
+	}
+
     return 1;
 }
 
@@ -324,15 +355,15 @@ int checkMissileContact(int missileNumber)
 {
 
 	    int enemiesKilled=0;
-		
 		//if missile is close, there may be a hit and missile is used up
-		if (missile[missileNumber].X-enemy[missile[missileNumber].currentTarget].X < 15 && missile[missileNumber].X-enemy[missile[missileNumber].currentTarget].X > -15 
-		&& missile[missileNumber].Y-enemy[missile[missileNumber].currentTarget].Y < 15 && missile[missileNumber].Y-enemy[missile[missileNumber].currentTarget].Y > -15 ) {
+		if (missile[missileNumber].currentTargetDistance < 20) {
+		LOG("HIT!");
+			missile[missileNumber].updatedShotTime = false;
 			missile[missileNumber].X = missile[missileNumber].defaultX;
 			missile[missileNumber].Y = missile[missileNumber].defaultY;
 			enemy[missile[missileNumber].currentTarget].HP = enemy[missile[missileNumber].currentTarget].HP - ((missile[missileNumber].attack)/(enemy[missile[missileNumber].currentTarget].defense));
 			enemy[missile[missileNumber].currentTarget].speed *= missile[missileNumber].stunrate;
-
+			
 			//if hit damages enemy enough, enemy is killed and and kill count is increased
 			if (enemy[missile[missileNumber].currentTarget].HP <= 0.0f) {
 				int temp = missile[missileNumber].currentTarget;
@@ -348,6 +379,17 @@ int checkMissileContact(int missileNumber)
 				displayZen(currentZen);
 				level[currentLevel].killCount = level[currentLevel].killCount + 1;
 
+				//if other missiles are aiming at this enemy, reset their target
+				for (int i = 0; i < MAX_NUM_TOWERS; i++) {
+					if (missile[i].currentTarget == temp) {
+						missile[i].X = missile[i].defaultX;
+						missile[i].Y = missile[i].defaultY;
+						missile[i].updatedShotTime = false;
+						missile[i].currentTarget = -1;
+						missile[i].currentTargetDistance = 0;
+					}
+				}
+				
 				//if enough enemies are killed, new level is started
 				if (level[currentLevel].killCount >=NUM_ENEMY_PER_ROUND) {
 					level[currentLevel].end = 1;
@@ -360,15 +402,6 @@ int checkMissileContact(int missileNumber)
 
                 enemiesKilled++;
 
-				//if other missiles are aiming at this enemy, reset their target
-				for (int i = 0; i < MAX_NUM_TOWERS; i++) {
-					if (missile[i].currentTarget == temp) {
-						missile[i].X = missile[i].defaultX;
-						missile[i].Y = missile[i].defaultY;
-						missile[i].currentTarget = -1;
-						missile[i].currentTargetDistance = 0;
-					}
-				}
 			}
 			//This makes it home to nearest. Without it, it "locks on" to an enemy
 			// If (always attack nearest), reset the target after hit;
