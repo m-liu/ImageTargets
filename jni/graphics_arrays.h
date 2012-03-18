@@ -3,7 +3,9 @@
 #include "snowball.h"
 #include "igloo.h"
 #include "spaceship.h"
+#include "spaceship2.h"
 #include "tank.h"
+#include "tank2.h"
 #include "cannon.h"
 
 #include "arrow_new_000001.h"

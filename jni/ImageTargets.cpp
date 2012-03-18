@@ -1054,16 +1054,16 @@ void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, in
 	else if (type == 6) {
 		SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&EnemyMatrix.data[0], &EnemyProjection.data[0]);
 		glUseProgram(shaderProgramID);
-		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) tankVerts);
-		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) tankNormals);
-		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) tankTexCoords); 
+		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) tank2Verts);
+		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) tank2Normals);
+		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) tank2TexCoords); 
 	}
 	else if (type == 7) {
 		SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&EnemyMatrix.data[0], &EnemyProjection.data[0]);
 		glUseProgram(shaderProgramID);
-		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) spaceshipVerts);
-		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) spaceshipNormals);
-		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) spaceshipTexCoords); 
+		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) spaceship2Verts);
+		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) spaceship2Normals);
+		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) spaceship2TexCoords); 
 	}
 	
 	const Texture* const thisTexture = textures[type];
@@ -1081,10 +1081,10 @@ void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, in
 		glDrawArrays(GL_TRIANGLES, 0, (int)*zombie_animate_array.NumVerts);
 	}
 	if (type == 6) {
-		glDrawArrays(GL_TRIANGLES, 0, tankNumVerts);
+		glDrawArrays(GL_TRIANGLES, 0, tank2NumVerts);
 	}
 	if (type == 7) {
-		glDrawArrays(GL_TRIANGLES, 0, spaceshipNumVerts);
+		glDrawArrays(GL_TRIANGLES, 0, spaceship2NumVerts);
 	}
     SampleUtils::checkGlError("ImageTargets renderFrame");
 }

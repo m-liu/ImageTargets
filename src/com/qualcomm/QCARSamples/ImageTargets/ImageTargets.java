@@ -420,9 +420,9 @@ public class ImageTargets extends Activity {
 		//		getAssets()));
 		mTextures.add(Texture.loadTextureFromApk("zombie1.png",
 				getAssets()));
-		mTextures.add(Texture.loadTextureFromApk("tank.png",
+		mTextures.add(Texture.loadTextureFromApk("tank2.png",
 				getAssets()));
-		mTextures.add(Texture.loadTextureFromApk("spaceship.png",
+		mTextures.add(Texture.loadTextureFromApk("spaceship2.png",
 				getAssets()));
 		mTextures.add(Texture.loadTextureFromApk("grid_sample1_shrunk.jpg",
 				getAssets()));
