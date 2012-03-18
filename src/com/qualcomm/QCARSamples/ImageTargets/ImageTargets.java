@@ -61,6 +61,7 @@ public class ImageTargets extends Activity {
     private static final int DIALOG_STORE_CASTLE = 103;
     private static final int DIALOG_STORE_IGLOO = 104;
     private static final int DIALOG_STORE_CANNON = 105;
+    private static final int DIALOG_STORE_FAIL = 106;
 	
 	// Name of the native dynamic libraries to load:
 	private static final String NATIVE_LIB_SAMPLE = "ImageTargets";
@@ -107,8 +108,8 @@ public class ImageTargets extends Activity {
 		loadLibrary(NATIVE_LIB_SAMPLE);
 	}
 
-	public static native void nativeBuy(int cost);
-	public static native void nativeUpgrade();
+	public static native int nativeBuy(int cost);
+	public static native int nativeUpgrade();
 	public static native void nativeNext();
 	public static native void nativeDelete();
 	public static native void nativeSettings(int level, int difficulty, int lives);
@@ -240,8 +241,11 @@ public class ImageTargets extends Activity {
             builder.setTitle("Welcome to the Store! Buy:")
             .setItems(items, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
-                    nativeBuy((int)item);
-                    if (item == 0 || item == 3) {
+                    int success = nativeBuy((int)item);
+                    if (success == -1) {
+                    	showDialog(DIALOG_STORE_FAIL);     	
+                    }
+                    else if (item == 0 || item == 3) {
                     	showDialog(DIALOG_STORE_CASTLE);
                     }
                     else if (item == 1 || item == 4) {
@@ -373,7 +377,19 @@ public class ImageTargets extends Activity {
             });
             dialog = builder6.create();
             break;
-            
+        case DIALOG_STORE_FAIL:
+            final CharSequence[] items7 = {"Return to Game"};
+        	AlertDialog.Builder builder7 = new AlertDialog.Builder(this);
+            builder7.setTitle("Not enough ZP!")
+            .setItems(items7, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                	if (PauseState != true) {
+                		mGUIManager.nativeLeave();
+                	}
+                }
+            });
+            dialog = builder7.create();
+            break;
         }
         return dialog;
         

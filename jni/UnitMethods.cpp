@@ -119,7 +119,7 @@ void deleteTower(int towerNumber)
 void initEnemy (int type, int texture, float max_HP, float speed, float defense, float score) {
 	enemy_type[type].type = type;
 	enemy_type[type].texture = texture;
-    enemy_type[type].max_HP = max_HP;
+    enemy_type[type].max_HP = max_HP*currentDiff;
     enemy_type[type].speed = speed;
     enemy_type[type].defense = defense;
 	enemy_type[type].score = score;

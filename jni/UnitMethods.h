@@ -48,6 +48,7 @@ extern int currentLevel;
 extern int currentScore;
 extern int currentZen;
 extern int currentLives;
+extern float currentDiff;
 extern int stageType;
 
 

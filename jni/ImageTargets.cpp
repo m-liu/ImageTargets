@@ -77,7 +77,7 @@ int currentLives = 20;
 int currentScore = 0;
 int currentZen = 20;
 
-int currentDiff = 2;
+float currentDiff = 1;
 int stageType = 1;
 
 bool displayedMessage = false;
@@ -381,12 +381,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_GUIManager_nativeCredits(JNIEnv*, job
  			displayMessage("Credits!\n\n\nTeamRickroll'd\nMing Liu\n David Chou\n  Alton Chiu\n\n\nProfessor Enright Jerger\n\nECE496 2011-2012");
 }*/
 
-JNIEXPORT void JNICALL
+JNIEXPORT jint JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeBuy(JNIEnv *env, jobject thiz, jint type)
 {
 if (currentZen - missile_type[type].cost < 0)
 {
-//TODO: not allowed
+	return (jint)(-1);
 }
 
     //a purchase was made. Initialize the tower and deduct the cost
@@ -397,7 +397,7 @@ if (currentZen - missile_type[type].cost < 0)
     //check that we have a selection
     if (selMarkerID < 0){
         LOG("ERROR nativeBuy: selMarkerID < 0");
-        return;
+        return (jint)(-2);
     }
     
     LOG("nativeBuy: selMarkerID=%d, towerType=%d", selMarkerID, towerType);
@@ -409,15 +409,20 @@ if (currentZen - missile_type[type].cost < 0)
 	displayZen(currentZen);
 	
 	hideStoreButton();
-	
-	if (towerType == 3 || towerType == 4 || towerType == 5)
-		showUpgradeButton();
-
 	showDeleteButton();
 	
+	if ((towerType == 0 || towerType == 1 || towerType == 2) 
+		//TODO: if you want to show the button anyways, comment out next line
+		&& (currentZen - tower[selMarkerID].upgradeCost >= 0)
+		)
+		showUpgradeButton();
+	else
+		hideUpgradeButton();
+
+	return (jint)0;
 }
 
-JNIEXPORT void JNICALL
+JNIEXPORT int JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeUpgrade(JNIEnv *env)
 {
 
@@ -427,13 +432,14 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeUpgrade(JNIEnv *en
     //check that we have a selection
     if (selMarkerID < 0){
         LOG("ERROR nativeUpgrade: selMarkerID < 0");
-        return;
+        return(jint)(-2);
     }
-	
-if (currentZen - tower[selMarkerID].upgradeCost < 0)
-{
-//TODO: not allowed
-}
+	LOG("nativeUpgrade: currentZen=%d, tower[selMarkerID].upgradeCost=%d", currentZen, tower[selMarkerID].upgradeCost);
+	if (currentZen - tower[selMarkerID].upgradeCost < 0)
+	{
+		LOG("can't upgrade, cost");
+		return (jint)(-1);
+	}
 
     LOG("nativeUpgrade: selMarkerID=%d", selMarkerID);
 
@@ -447,6 +453,7 @@ if (currentZen - tower[selMarkerID].upgradeCost < 0)
 	hideStoreButton();
 	hideUpgradeButton();
 	showDeleteButton();
+		return (jint)(0);
 }
 
 JNIEXPORT void JNICALL
@@ -457,7 +464,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeDelete(JNIEnv*, jo
 
     //check that we have a selection
     if (selMarkerID < 0){
-        LOG("ERROR nativeUpgrade: selMarkerID < 0");
+        LOG("ERROR nativeDelete: selMarkerID < 0");
         return;
     }
 	
@@ -475,10 +482,18 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeDelete(JNIEnv*, jo
 JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeSettings(JNIEnv *env, jobject thiz, jint level, jint difficulty, jint lives)//type?
 {
-//TODO: Difficulty not used
 stageType = (int)level;
-currentDiff = (int)difficulty;
 currentLives = (int)lives;
+
+int diff = (int)difficulty;
+if (diff == 1)
+	currentDiff = 1.0f;
+else if (diff == 2)
+	currentDiff = 1.2f;
+else if (diff == 3)
+	currentDiff = 1.4f;
+else
+	currentDiff = 1.0f;
 }
 
 
@@ -662,7 +677,9 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
                     else if (tower[mID].initialized){
 	                    hideStoreButton();
 						showDeleteButton();
-						if (tower[mID].upgradeLevel != 2 &&(tower[mID].type == 0 || tower[mID].type == 1 || tower[mID].type == 2))
+						if (tower[mID].upgradeLevel != 2 &&(tower[mID].type == 0 || tower[mID].type == 1 || tower[mID].type == 2) 
+						&& (currentZen - tower[mID].upgradeCost >= 0)
+						)
 							showUpgradeButton();
 						else
 							hideUpgradeButton();
