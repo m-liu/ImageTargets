@@ -9,7 +9,7 @@ texture coords : 2366
 
 
 // include generated arrays
-#import "./tower.h" 
+#import "./tower.h"
 
 // set input data to arrays
 glVertexPointer(3, GL_FLOAT, 0, towerVerts);

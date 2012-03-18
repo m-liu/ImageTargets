@@ -406,7 +406,7 @@ public class ImageTargets extends Activity {
 	 * for rendering.
 	 */
 	private void loadTextures() {
-		mTextures.add(Texture.loadTextureFromApk("tower.png",
+		mTextures.add(Texture.loadTextureFromApk("tower_up3.png",
 				getAssets()));
 		mTextures.add(Texture.loadTextureFromApk("cow.png",
 				getAssets()));
@@ -426,7 +426,7 @@ public class ImageTargets extends Activity {
 				getAssets()));
 		mTextures.add(Texture.loadTextureFromApk("grid_sample1_shrunk.jpg",
 				getAssets()));
-		mTextures.add(Texture.loadTextureFromApk("cannon_up2.jpg",
+		mTextures.add(Texture.loadTextureFromApk("cannon_up3.jpg",
 				getAssets()));
 		mTextures.add(Texture.loadTextureFromApk("tower_bake.png",
 				getAssets()));

@@ -52,7 +52,7 @@
  /cygdrive/c/Users/David/git/ImageTargets/jni/Texture.h \
  /cygdrive/c/Users/David/git/ImageTargets/jni/CubeShaders.h \
  /cygdrive/c/Users/David/git/ImageTargets/jni/graphics_arrays.h \
- /cygdrive/c/Users/David/git/ImageTargets/jni/tower.h \
+ /cygdrive/c/Users/David/git/ImageTargets/jni/../media/tower.h \
  /cygdrive/c/Users/David/git/ImageTargets/jni/snowball.h \
  /cygdrive/c/Users/David/git/ImageTargets/jni/igloo.h \
  /cygdrive/c/Users/David/git/ImageTargets/jni/../media/spaceship.h \
@@ -290,7 +290,7 @@
 
 /cygdrive/c/Users/David/git/ImageTargets/jni/graphics_arrays.h:
 
-/cygdrive/c/Users/David/git/ImageTargets/jni/tower.h:
+/cygdrive/c/Users/David/git/ImageTargets/jni/../media/tower.h:
 
 /cygdrive/c/Users/David/git/ImageTargets/jni/snowball.h:
 
