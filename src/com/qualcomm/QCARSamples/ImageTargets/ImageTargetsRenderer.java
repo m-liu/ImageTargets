@@ -170,16 +170,26 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
     }
     
     /** Called from native to toggle the start button. */
-    public void showUpgradeButton()
+    public void showUpgradeButton(String cost)
     {
+    	mGUIManager.newCost(cost);
         Message message = new Message();
         message.what = GUIManager.SHOW_UPGRADE_BUTTON;
+        mGUIManager.sendThreadSafeGUIMessage(message);
+    }
+    
+    public void hideUpgradeButton2(String cost)
+    {
+    	mGUIManager.newCost("Upgrade Tower " + cost + "ZP");
+        Message message = new Message();
+        message.what = GUIManager.HIDE_UPGRADE_BUTTON;
         mGUIManager.sendThreadSafeGUIMessage(message);
     }
     
     /** Called from native to toggle the start button. */
     public void hideUpgradeButton()
     {
+    	mGUIManager.newCost("Upgrade Tower");
         Message message = new Message();
         message.what = GUIManager.HIDE_UPGRADE_BUTTON;
         mGUIManager.sendThreadSafeGUIMessage(message);

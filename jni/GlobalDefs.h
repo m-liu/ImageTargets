@@ -14,8 +14,8 @@
 #define ENEMY_MOVEMENT_SPEED 50.0f
 
 //tower/missile properties
-#define NUM_MISSILE_TYPES 6
-#define NUM_TOWER_TYPES 6
+#define NUM_MISSILE_TYPES 12
+#define NUM_TOWER_TYPES 12
 #define MAX_NUM_TOWERS 25
 #define MISSILE_NUM_FRAMES 24
 #define TOWER_SCALE 75.0f

@@ -366,6 +366,19 @@ public class GUIManager extends Activity{
     	     }
     	});*/
 	}
+	
+	 public void newCost(String cost)
+	    {
+	    	final String temp = cost;
+	    	//extended activity. Hopefully not too much overhead?
+	    	runOnUiThread(new Runnable() {
+	    		
+	    	     public void run() {
+	    	    	 upgradeButton.setText(temp);
+	    	    }
+	    	});
+
+	    }
     
     /** Getter for the overlay view. */
     public View getOverlayView()

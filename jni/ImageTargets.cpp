@@ -229,15 +229,29 @@ hideStoreButton()
 
 
 void
-showUpgradeButton()
+showUpgradeButton(int cost)
 {
-    // For this application, buttons are handled by the Android SDK
+	char scoreString[10];
+	sprintf (scoreString, "%d", cost);
     // Use the environment and class stored in initNativeCallback
-    // to call a Java method that shows the delete button
-    jmethodID method = javaEnv->GetMethodID(javaClass, "showUpgradeButton", "()V");
-    javaEnv->CallVoidMethod(javaObj, method);
+    // to call a Java method that displays a message via a toast
+	jstring js = javaEnv->NewStringUTF(scoreString);
+    jmethodID method = javaEnv->GetMethodID(javaClass, "showUpgradeButton", "(Ljava/lang/String;)V");
+    javaEnv->CallVoidMethod(javaObj, method, js);
 }
 
+void
+hideUpgradeButton2(int cost)
+{
+	char scoreString[10];
+	sprintf (scoreString, "%d", cost);
+    // For this application, buttons are handled by the Android SDK
+    // Use the environment and class stored in initNativeCallback
+    // to call a Java method that hides the delete button
+	jstring js = javaEnv->NewStringUTF(scoreString);
+    jmethodID method = javaEnv->GetMethodID(javaClass, "hideUpgradeButton2", "(Ljava/lang/String;)V");
+    javaEnv->CallVoidMethod(javaObj, method, js);
+}
 
 void
 hideUpgradeButton()
@@ -415,9 +429,9 @@ if (currentZen - missile_type[type].cost < 0)
 		//TODO: if you want to show the button anyways, comment out next line
 		&& (currentZen - tower[selMarkerID].upgradeCost >= 0)
 		)
-		showUpgradeButton();
+		showUpgradeButton(tower[selMarkerID].upgradeCost);
 	else
-		hideUpgradeButton();
+		hideUpgradeButton2(tower[selMarkerID].upgradeCost);
 
 	return (jint)0;
 }
@@ -680,9 +694,9 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 						if (tower[mID].upgradeLevel != 2 &&(tower[mID].type == 0 || tower[mID].type == 1 || tower[mID].type == 2) 
 						&& (currentZen - tower[mID].upgradeCost >= 0)
 						)
-							showUpgradeButton();
+							showUpgradeButton(tower[mID].upgradeCost);
 						else
-							hideUpgradeButton();
+							hideUpgradeButton2(tower[mID].upgradeCost);
 
 					}
                     selMarkerID = mID;
