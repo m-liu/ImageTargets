@@ -426,8 +426,7 @@ if (currentZen - missile_type[type].cost < 0)
 	hideStoreButton();
 	showDeleteButton();
 	
-	if ((towerType != 9 && towerType != 10 && towerType == 11) 
-		//TODO: if you want to show the button anyways, comment out next line
+	if ((towerType != 9 && towerType != 10 && towerType != 11) 
 		&& (currentZen - tower[selMarkerID].upgradeCost >= 0)
 		)
 		showUpgradeButton(tower[selMarkerID].upgradeCost);
@@ -466,7 +465,13 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeUpgrade(JNIEnv *en
 	upgradeTower(selMarkerID);
 	
 	hideStoreButton();
-	hideUpgradeButton();
+	if ((tower[selMarkerID].type != 9 && tower[selMarkerID].type != 10 && tower[selMarkerID].type != 11) 
+		&& (currentZen - tower[selMarkerID].upgradeCost >= 0)
+		)
+		showUpgradeButton(tower[selMarkerID].upgradeCost);
+	else
+		hideUpgradeButton2(tower[selMarkerID].upgradeCost);
+
 	showDeleteButton();
 		return (jint)(0);
 }
@@ -1063,7 +1068,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_updateRendering(
 #endif
 
 void DrawHpBar (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, int index) {
-	//SampleUtils::translatePoseMatrix(0.0f, 20.0f, 30.0f, &EnemyMatrix.data[0]);
+	SampleUtils::translatePoseMatrix(enemy[index].X, enemy[index].Y-20.0f, 30.0f, &EnemyMatrix.data[0]);
 	SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&EnemyMatrix.data[0], &EnemyProjection.data[0]);
 	glUseProgram(shaderProgramID);
 	glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) hp_barVerts);
