@@ -7,6 +7,7 @@
 #include "tank.h" 
 #include "tank2.h"
 #include "cannon.h"
+#include "hp_bar.h"
 
 #include "arrow_new_000001.h"
 #include "arrow_new_000002.h"
