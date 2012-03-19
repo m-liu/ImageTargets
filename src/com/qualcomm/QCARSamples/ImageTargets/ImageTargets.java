@@ -446,7 +446,26 @@ public class ImageTargets extends Activity {
 				getAssets()));
 		mTextures.add(Texture.loadTextureFromApk("tower_bake.png",
 				getAssets()));
-		
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_full.png",
+				getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_90.png",
+				getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_80.png",
+				getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_70.png",
+				getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_60.png",
+				getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_50.png",
+				getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_40.png",
+				getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_30.png",
+				getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_20.png",
+				getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_10.png",
+				getAssets()));
 	}
 
 	/** Configure QCAR with the desired version of OpenGL ES. */

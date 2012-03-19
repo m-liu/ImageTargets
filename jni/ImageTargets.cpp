@@ -122,6 +122,7 @@ QCAR::Matrix44F projectionMatrix;
 QCAR::Matrix44F inverseProjMatrix;
 
 void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, int type);
+void DrawHpBar (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, int index);
 void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, int type);
 void DrawMissile (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection, int type);
 void DrawSelRing (QCAR::Matrix44F selMatrix, QCAR::Matrix44F selProjection);
@@ -668,7 +669,10 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
                     QCAR::Matrix44F enemyMatrix = trackerMVM;        
                     animateEnemy(enemyMatrix, i, x_offset, y_offset); //animate the i-th enemy
                     QCAR::Matrix44F enemyProjection;
-                    DrawEnemy(enemyMatrix, enemyProjection, enemy[i].texture);
+                    if (enemy[i].deployed && !enemy[i].dead){ 
+	                    DrawEnemy(enemyMatrix, enemyProjection, enemy[i].texture);
+	                    DrawHpBar(enemyMatrix, enemyProjection,i);
+                    }
                 }
             }
 
@@ -1058,8 +1062,61 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_updateRendering(
 }
 #endif
 
-
-
+void DrawHpBar (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, int index) {
+	//SampleUtils::translatePoseMatrix(0.0f, 20.0f, 30.0f, &EnemyMatrix.data[0]);
+	SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&EnemyMatrix.data[0], &EnemyProjection.data[0]);
+	glUseProgram(shaderProgramID);
+	glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) hp_barVerts);
+	glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) hp_barNormals);
+	glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) hp_barTexCoords); 
+	
+	float hp_percent = enemy[index].HP/enemy[index].max_HP;
+	Texture* thisTexture = textures[11];
+	if ((hp_percent == 1)) {
+		thisTexture = textures[11];
+	} 
+	else if ((hp_percent >= 0.9)) {
+		thisTexture = textures[12];
+	} 
+	else if ((hp_percent >= 0.8) && (hp_percent < 0.9)) {
+		thisTexture = textures[13];
+	} 
+	else if ((hp_percent >= 0.7) && (hp_percent < 0.8)) {
+		thisTexture = textures[14];
+	} 
+	else if ((hp_percent >= 0.6) && (hp_percent < 0.7)) {
+		thisTexture = textures[15];
+	} 
+	else if ((hp_percent >= 0.5) && (hp_percent < 0.6)) {
+		thisTexture = textures[16];
+	} 
+	else if ((hp_percent >= 0.4) && (hp_percent < 0.5)) {
+		thisTexture = textures[17];
+	} 
+	else if ((hp_percent >= 0.3) && (hp_percent < 0.4)) {
+		thisTexture = textures[18];
+	} 
+	else if ((hp_percent >= 0.2) && (hp_percent < 0.3)) {
+		thisTexture = textures[19];
+	} 
+	else if ((hp_percent >= 0.1) && (hp_percent < 0.2)) {
+		thisTexture = textures[20];
+	} 
+	else if ((hp_percent >= 0) && (hp_percent < 0.1)) {
+		thisTexture = textures[20];
+	} 
+	
+    glEnableVertexAttribArray(vertexHandle);
+    glEnableVertexAttribArray(normalHandle);
+    glEnableVertexAttribArray(textureCoordHandle);      
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+    glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&EnemyProjection.data[0] );
+    
+    glDrawArrays(GL_TRIANGLES, 0, hp_barNumVerts);
+    
+    SampleUtils::checkGlError("ImageTargets renderFrame");
+}
 
 void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, int type) {
 	//Horse = 1, Zombie = 5
