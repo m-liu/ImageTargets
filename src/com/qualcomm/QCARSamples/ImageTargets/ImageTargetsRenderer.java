@@ -172,7 +172,7 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
     /** Called from native to toggle the start button. */
     public void showUpgradeButton(String cost)
     {
-    	mGUIManager.newCost(cost);
+    	mGUIManager.newCost("Upgrade Tower " + cost + " ZP");
         Message message = new Message();
         message.what = GUIManager.SHOW_UPGRADE_BUTTON;
         mGUIManager.sendThreadSafeGUIMessage(message);
@@ -180,7 +180,7 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
     
     public void hideUpgradeButton2(String cost)
     {
-    	mGUIManager.newCost("Upgrade Tower " + cost + "ZP");
+    	mGUIManager.newCost("Upgrade Tower " + cost + " ZP");
         Message message = new Message();
         message.what = GUIManager.HIDE_UPGRADE_BUTTON;
         mGUIManager.sendThreadSafeGUIMessage(message);
