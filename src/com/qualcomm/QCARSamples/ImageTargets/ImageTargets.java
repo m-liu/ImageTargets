@@ -422,50 +422,66 @@ public class ImageTargets extends Activity {
 	 * for rendering.
 	 */
 	private void loadTextures() {
-		mTextures.add(Texture.loadTextureFromApk("tower_up3.png",
-				getAssets()));
+		mTextures.add(Texture.loadTextureFromApk("tower.png",
+				getAssets()));//0
 		mTextures.add(Texture.loadTextureFromApk("cow.png",
-				getAssets()));
+				getAssets()));//1
 		mTextures.add(Texture.loadTextureFromApk("arrow_bake.png",
-				getAssets()));
-		mTextures.add(Texture.loadTextureFromApk("igloo_up3.png",
-				getAssets()));
+				getAssets()));//2
+		mTextures.add(Texture.loadTextureFromApk("igloo.png",
+				getAssets()));//3
 		mTextures.add(Texture.loadTextureFromApk("snowball.png",
-				getAssets()));
-		//mTextures.add(Texture.loadTextureFromApk("arrow_bake.png",
-		//		getAssets()));
+				getAssets()));//4
 		mTextures.add(Texture.loadTextureFromApk("zombie1.png",
-				getAssets()));
+				getAssets()));//5
 		mTextures.add(Texture.loadTextureFromApk("tank2.png",
-				getAssets()));
+				getAssets()));//6
 		mTextures.add(Texture.loadTextureFromApk("spaceship2.png",
-				getAssets()));
+				getAssets()));//7
 		mTextures.add(Texture.loadTextureFromApk("grid_sample1_shrunk.jpg",
-				getAssets()));
-		mTextures.add(Texture.loadTextureFromApk("cannon_up3.jpg",
-				getAssets()));
-		mTextures.add(Texture.loadTextureFromApk("tower_bake.png",
-				getAssets()));
-		mTextures.add(Texture.loadTextureFromApk("hp_bar_full.png",
-				getAssets()));
-		mTextures.add(Texture.loadTextureFromApk("hp_bar_90.png",
-				getAssets()));
-		mTextures.add(Texture.loadTextureFromApk("hp_bar_80.png",
-				getAssets()));
-		mTextures.add(Texture.loadTextureFromApk("hp_bar_70.png",
-				getAssets()));
-		mTextures.add(Texture.loadTextureFromApk("hp_bar_60.png",
-				getAssets()));
-		mTextures.add(Texture.loadTextureFromApk("hp_bar_50.png",
-				getAssets()));
-		mTextures.add(Texture.loadTextureFromApk("hp_bar_40.png",
-				getAssets()));
-		mTextures.add(Texture.loadTextureFromApk("hp_bar_30.png",
-				getAssets()));
-		mTextures.add(Texture.loadTextureFromApk("hp_bar_20.png",
-				getAssets()));
+				getAssets()));//8
+		mTextures.add(Texture.loadTextureFromApk("cannon.jpg",
+				getAssets()));//9
 		mTextures.add(Texture.loadTextureFromApk("hp_bar_10.png",
-				getAssets()));
+				getAssets()));//10
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_full.png",
+				getAssets()));//11
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_90.png",
+				getAssets()));//12
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_80.png",
+				getAssets()));//13
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_70.png",
+				getAssets()));//14
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_60.png",
+				getAssets()));//15
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_50.png",
+				getAssets()));//16
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_40.png",
+				getAssets()));//17
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_30.png",
+				getAssets()));//18
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_20.png",
+				getAssets()));//19
+		mTextures.add(Texture.loadTextureFromApk("hp_bar_10.png",
+				getAssets()));//20
+		mTextures.add(Texture.loadTextureFromApk("tower_up1.png",
+				getAssets()));//11
+		mTextures.add(Texture.loadTextureFromApk("tower_up2.png",
+				getAssets()));//12
+		mTextures.add(Texture.loadTextureFromApk("tower_up3.png",
+				getAssets()));//13
+		mTextures.add(Texture.loadTextureFromApk("igloo_up1.png",
+				getAssets()));//14
+		mTextures.add(Texture.loadTextureFromApk("igloo_up2.png",
+				getAssets()));//15
+		mTextures.add(Texture.loadTextureFromApk("igloo_up3.png",
+				getAssets()));//16
+		mTextures.add(Texture.loadTextureFromApk("cannon_up1.jpg",
+				getAssets()));//17
+		mTextures.add(Texture.loadTextureFromApk("cannon_up2.jpg",
+				getAssets()));//18
+		mTextures.add(Texture.loadTextureFromApk("cannon_up3.jpg",
+				getAssets()));//19
 	}
 
 	/** Configure QCAR with the desired version of OpenGL ES. */

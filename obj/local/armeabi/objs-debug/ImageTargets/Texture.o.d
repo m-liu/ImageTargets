@@ -1,67 +1,65 @@
-obj/local/armeabi/objs-debug/ImageTargets/Texture.o: jni/Texture.cpp \
- jni/Texture.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/jni.h \
- jni/SampleUtils.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/stdio.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/sys/cdefs.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/sys/cdefs_elf.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/android/api-level.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/sys/_types.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/machine/_types.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/sys/types.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/stdint.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/linux/posix_types.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/linux/stddef.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/linux/compiler.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/asm/posix_types.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/asm/types.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/linux/types.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/machine/kernel.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/sys/sysmacros.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/android/log.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/string.h \
- /cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/malloc.h
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/obj/local/armeabi/objs-debug/ImageTargets/Texture.o: \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/Texture.cpp \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/Texture.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/jni.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/SampleUtils.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/stdio.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/sys/cdefs.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/sys/cdefs_elf.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/sys/_types.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/machine/_types.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/sys/types.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/stdint.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/linux/posix_types.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/linux/stddef.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/linux/compiler.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/asm/posix_types.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/asm/types.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/linux/types.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/machine/kernel.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/sys/sysmacros.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/android/log.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/string.h \
+ /cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/malloc.h
 
-jni/Texture.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/Texture.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/jni.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/jni.h:
 
-jni/SampleUtils.h:
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/SampleUtils.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/stdio.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/stdio.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/sys/cdefs.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/sys/cdefs.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/sys/cdefs_elf.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/sys/cdefs_elf.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/android/api-level.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/sys/_types.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/sys/_types.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/machine/_types.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/machine/_types.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/sys/types.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/sys/types.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/stdint.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/stdint.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/linux/posix_types.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/linux/posix_types.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/linux/stddef.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/linux/stddef.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/linux/compiler.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/linux/compiler.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/asm/posix_types.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/asm/posix_types.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/asm/types.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/asm/types.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/linux/types.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/linux/types.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/machine/kernel.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/machine/kernel.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/sys/sysmacros.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/sys/sysmacros.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/android/log.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/android/log.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/string.h:
 
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/string.h:
-
-/cygdrive/c/Development/Android/android-ndk-r7b/platforms/android-5/arch-arm/usr/include/malloc.h:
+/cygdrive/c/Development/Android/android-ndk-r6b/platforms/android-5/arch-arm/usr/include/malloc.h:
