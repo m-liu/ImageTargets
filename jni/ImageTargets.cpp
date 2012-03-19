@@ -426,7 +426,7 @@ if (currentZen - missile_type[type].cost < 0)
 	hideStoreButton();
 	showDeleteButton();
 	
-	if ((towerType == 0 || towerType == 1 || towerType == 2) 
+	if ((towerType != 9 && towerType != 10 && towerType == 11) 
 		//TODO: if you want to show the button anyways, comment out next line
 		&& (currentZen - tower[selMarkerID].upgradeCost >= 0)
 		)
@@ -695,7 +695,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
                     else if (tower[mID].initialized){
 	                    hideStoreButton();
 						showDeleteButton();
-						if (tower[mID].upgradeLevel != 2 &&(tower[mID].type == 0 || tower[mID].type == 1 || tower[mID].type == 2) 
+						if (/*tower[mID].upgradeLevel != 2 &&*/(tower[mID].type != 9 && tower[mID].type != 10 && tower[mID].type != 11) 
 						&& (currentZen - tower[mID].upgradeCost >= 0)
 						)
 							showUpgradeButton(tower[mID].upgradeCost);
@@ -1185,17 +1185,17 @@ void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, in
 
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &TowerMatrix.data[0], &TowerProjection.data[0]);
     glUseProgram(shaderProgramID);
-	if (type == 0) {
+	if (type == 0 || type == 21 || type == 22 || type == 23) {
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, towerVerts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, towerNormals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, towerTexCoords);
 	}
-	else if (type == 3) {
+	else if (type == 3 || type == 24 || type == 25 || type == 26) {
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, iglooVerts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, iglooNormals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, iglooTexCoords);
 	}
-	else if (type == 9) {
+	else if (type == 9 || type == 27 || type == 28 || type == 29) {
 		glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, cannonVerts);
 		glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, cannonNormals);
 		glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, cannonTexCoords);
@@ -1211,13 +1211,13 @@ void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, in
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
     glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&TowerProjection.data[0] );
-	if (type == 0) {
+	if (type == 0 || type == 21 || type == 22 || type == 23) {
 		glDrawArrays(GL_TRIANGLES, 0, towerNumVerts);
 	}
-	else if (type == 3) {
+	else if (type == 3 || type == 24 || type == 25 || type == 26) {
 		glDrawArrays(GL_TRIANGLES, 0, iglooNumVerts);
 	}
-	else if (type == 9) {
+	else if (type == 9 || type == 27 || type == 28 || type == 29) {
 		glDrawArrays(GL_TRIANGLES, 0, cannonNumVerts);
 	}
 	else {

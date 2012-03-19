@@ -80,7 +80,7 @@ void makeTower(int towerType, int towerNumber)
     tower[towerNumber].lift = tower_type[towerType].lift;
     tower[towerNumber].scale = tower_type[towerType].scale;
     tower[towerNumber].rotate = tower_type[towerType].rotate;
-	tower[towerNumber].upgradeCost = missile_type[towerType].cost + 3;
+	tower[towerNumber].upgradeCost = missile_type[towerType%3].cost + 1;
 	tower[towerNumber].initialized = true;
 	tower[towerNumber].upgradeLevel = 1;
 	tower[towerNumber].boardX = 0;
@@ -217,49 +217,49 @@ void initUnitDB () {
 	strcpy(tower_type[2].name, "Cannon");
 	initTower (2, 9, 2, 0.0f, 50.0f, 90.0f);
 	strcpy(tower_type[3].name, "Castle2");
-	initTower (3, 0, 3, 50.0f, 65.0f, 0.0f);
+	initTower (3, 21, 3, 50.0f, 65.0f, 0.0f);
 	strcpy(tower_type[4].name, "Igloo2");
-	initTower (4, 3, 4, 0.0f, 55.0f, 0.0f);
+	initTower (4, 24, 4, 0.0f, 55.0f, 0.0f);
 	strcpy(tower_type[5].name, "Cannon2");
-	initTower (5, 9, 5, 0.0f, 55.0f, 90.0f);
+	initTower (5, 27, 5, 0.0f, 55.0f, 90.0f);
 	strcpy(tower_type[0].name, "Castle3");
-	initTower (6, 0, 6, 50.0f, 70.0f, 0.0f);
+	initTower (6, 22, 6, 50.0f, 70.0f, 0.0f);
 	strcpy(tower_type[1].name, "Igloo3");
-	initTower (7, 3, 7, 0.0f, 60.0f, 0.0f);
+	initTower (7, 25, 7, 0.0f, 60.0f, 0.0f);
 	strcpy(tower_type[2].name, "Cannon3");
-	initTower (8, 9, 8, 0.0f, 60.0f, 90.0f);
+	initTower (8, 28, 8, 0.0f, 60.0f, 90.0f);
 	strcpy(tower_type[3].name, "Castle4");
-	initTower (9, 0, 9, 50.0f, 75.0f, 0.0f);
+	initTower (9, 23, 9, 50.0f, 75.0f, 0.0f);
 	strcpy(tower_type[4].name, "Igloo4");
-	initTower (10, 3, 10, 0.0f, 65.0f, 0.0f);
+	initTower (10, 26, 10, 0.0f, 65.0f, 0.0f);
 	strcpy(tower_type[5].name, "Cannon4");
-	initTower (11, 9, 11, 0.0f, 65.0f, 90.0f);
+	initTower (11, 29, 11, 0.0f, 65.0f, 90.0f);
 	
     //missile initializations
 	strcpy(missile_type[0].name, "Arrow");
-	initMissile (0, 2, 15, 7, 40.0f, 15.0f, 1.0f, 0.9f);
+	initMissile (0, 2, 15, 7, 40.0f, 25.0f, 1.0f, 0.9f);
 	strcpy(missile_type[1].name, "Snowball");
-	initMissile (1, 4, 14, 10, 10.0f, 10.0f, 0.85f, 1.1f);
+	initMissile (1, 4, 14, 10, 10.0f, 20.0f, 0.85f, 1.1f);
 	strcpy(missile_type[2].name, "Cannonball");
-	initMissile (2, 10, 25, 15, 7.0f, 50.0f, 1.0f, 1.6f);
+	initMissile (2, 10, 25, 15, 7.0f, 75.0f, 1.0f, 1.6f);
 	strcpy(missile_type[3].name, "Arrow2");
-	initMissile (3, 2, 20, 14, 50.0f, 30.0f, 1.0f, 0.9f);
+	initMissile (3, 2, 20, 14, 50.0f, 50.0f, 1.0f, 0.9f);
 	strcpy(missile_type[4].name, "Snowball2");
-	initMissile (4, 4, 20, 20, 12.0f, 20.0f, 0.85f, 1.1f);
+	initMissile (4, 4, 20, 20, 12.0f, 40.0f, 0.75f, 1.1f);
 	strcpy(missile_type[5].name, "Cannonball2");
-	initMissile (5, 10, 35, 30, 10.0f, 80.0f, 1.0f, 1.6f);
+	initMissile (5, 10, 35, 30, 10.0f, 150.0f, 1.0f, 1.6f);
 	strcpy(missile_type[0].name, "Arrow3");
-	initMissile (6, 2, 15, 7, 40.0f, 15.0f, 1.0f, 0.9f);
+	initMissile (6, 2, 25, 21, 40.0f, 75.0f, 1.0f, 0.9f);
 	strcpy(missile_type[1].name, "Snowball3");
-	initMissile (7, 4, 14, 10, 10.0f, 10.0f, 0.85f, 1.1f);
+	initMissile (7, 4, 45, 30, 10.0f, 60.0f, 0.65f, 1.1f);
 	strcpy(missile_type[2].name, "Cannonball3");
-	initMissile (8, 10, 25, 15, 7.0f, 50.0f, 1.0f, 1.6f);
+	initMissile (8, 10, 25, 45, 7.0f, 225.0f, 1.0f, 1.6f);
 	strcpy(missile_type[3].name, "Arrow4");
-	initMissile (9, 2, 20, 14, 50.0f, 30.0f, 1.0f, 0.9f);
+	initMissile (9, 2, 30, 28, 50.0f, 100.0f, 1.0f, 0.9f);
 	strcpy(missile_type[4].name, "Snowball4");
-	initMissile (10, 4, 20, 20, 12.0f, 20.0f, 0.85f, 1.1f);
+	initMissile (10, 4, 30, 40, 12.0f, 80.0f, 0.55f, 1.1f);
 	strcpy(missile_type[5].name, "Cannonball4");
-	initMissile (11, 10, 35, 30, 10.0f, 80.0f, 1.0f, 1.6f);
+	initMissile (11, 10, 50, 60, 10.0f, 300.0f, 1.0f, 1.6f);
 	
 	for (int i = 0; i < NUM_MISSILE_TYPES; i++) {
 		missile_type[i].initialized = false;
@@ -380,7 +380,7 @@ int checkMissileContact(int missileNumber)
 
 	    int enemiesKilled=0;
 		//if missile is close, there may be a hit and missile is used up
-		if (missile[missileNumber].currentTargetDistance < 20) {
+		if (missile[missileNumber].currentTargetDistance < missile[missileNumber].speed*1.5) {
 		LOG("HIT!");
 			missile[missileNumber].updatedShotTime = false;
 			missile[missileNumber].X = missile[missileNumber].defaultX;
