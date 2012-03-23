@@ -111,7 +111,7 @@ if (nextLevel == 0)
 	if (nextLevel == 3)
 	{
 		for (int i = 0; i < NUM_ENEMY_PER_ROUND; i++) {
-			makeEnemy (3, i, (i+2)*15);
+			makeEnemy (3, i, (i+2)*20);
 		}
 		displayMessage("LEVEL 4 START!");
 		level[3].start = 1;
@@ -120,7 +120,7 @@ if (nextLevel == 0)
 	if (nextLevel == 4)
 	{
 		for (int i = 0; i < NUM_ENEMY_PER_ROUND; i++) {
-			makeEnemy (4, i, (i+2)*10);
+			makeEnemy (4, i, (i+2)*15);
 		}
 		displayMessage("LEVEL 5 START!");
 		level[4].start = 1;
@@ -130,7 +130,7 @@ if (nextLevel == 0)
 	if (nextLevel == 5)
 	{
 		for (int i = 0; i < NUM_ENEMY_PER_ROUND; i++) {
-			makeEnemy (5, i, (i+2)*10);
+			makeEnemy (5, i, (i+2)*15);
 		}
 		displayMessage("LEVEL 6 START!");
 		level[5].start = 1;
@@ -139,7 +139,7 @@ if (nextLevel == 0)
 	if (nextLevel == 6)
 	{
 		for (int i = 0; i < NUM_ENEMY_PER_ROUND; i++) {
-			makeEnemy (6, i, (i+2)*5);
+			makeEnemy (6, i, (i+2)*10);
 		}
 		displayMessage("LEVEL 7 START!");
 		level[6].start = 1;
@@ -147,12 +147,16 @@ if (nextLevel == 0)
 	
 	if (nextLevel == 7)
 	{
+		for (int i = 0; i < NUM_ENEMY_PER_ROUND; i++) {
+			makeEnemy (7, i, (i+2)*10);
+		}
+	/*
 		for (int i = 0; i < 5; i++) {
 			makeEnemy (i, i, (i+2)*5);
 		}
 		for (int i = 5; i < 10; i++) {
 			makeEnemy (i-5, i, (i+2)*5);
-		}
+		}*/
 		displayMessage("LEVEL 8 START!");
 		level[7].start = 1;
 	}
@@ -160,7 +164,7 @@ if (nextLevel == 0)
 	if (nextLevel == 8)
 	{
 		for (int i = 0; i < NUM_ENEMY_PER_ROUND; i++) {
-			makeEnemy (7, i, (i+2)*5);
+			makeEnemy (8, i, (i+2)*10);
 		}
 		displayMessage("LEVEL 9 START!");
 		level[8].start = 1;
@@ -169,7 +173,7 @@ if (nextLevel == 0)
 	if (nextLevel == 9)
 	{
 		for (int i = 0; i < 5; i++) {
-			makeEnemy (8, i, (i+2)*5);
+			makeEnemy (9, i, (i+2)*10);
 		}
 		displayMessage("LEVEL 10 START!");
 		level[9].start = 1;
