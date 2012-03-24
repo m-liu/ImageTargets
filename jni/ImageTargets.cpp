@@ -82,7 +82,7 @@ int stageType = 1;
 
 bool displayedMessage = false;
 
-static int startGame = 0;
+int startGame = 0;
 static int seeTargets = 0;
 static int pauseGame = 0;
 

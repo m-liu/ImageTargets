@@ -50,7 +50,7 @@ extern int currentZen;
 extern int currentLives;
 extern float currentDiff;
 extern int stageType;
-
+extern int startGame;
 
 double getCurrentTime();
 //Set all missiles to deinitialized state

@@ -479,9 +479,10 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber, int x_offset, i
 			if (enemy[enemyNumber].X < 0.0f) {
 				currentLives = currentLives - 1;
 				displayLives(currentLives);
-				if (currentLives == 0 ) {
+				if (currentLives <= 0 ) {
 					gameOver();
 				}
+				else {
 				level[currentLevel].killCount = level[currentLevel].killCount + 1;
 				if (level[currentLevel].killCount >=NUM_ENEMY_PER_ROUND) {
 					level[currentLevel].end = 1;
@@ -492,6 +493,7 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber, int x_offset, i
 					updateApplicationStatusEOL(levelString);
 				}
 				removeEnemy(enemyNumber);
+				}
 			}
         }
 		enemy[enemyNumber].prevTime = currentTime;	
@@ -525,10 +527,11 @@ void removeEnemy (int enemyNumber)
 
 void gameOver ()
 {
+	startGame=0;
 	for (int enemyNumber2 = 0; enemyNumber2 < MAX_NUM_ENEMIES; enemyNumber2++) {
 		removeEnemy(enemyNumber2);
 	}
-	displayMessage("Game Over, all lives lost!");
+	updateApplicationStatusGameOver();
 }
 
 void moveEnemy (float &x, float &y, float &direction, float speed, float timeDiff, int section)

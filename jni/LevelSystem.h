@@ -37,6 +37,7 @@ void displayZen(int zen);
 void displayLives(int lives);
 
 void updateApplicationStatusEOL(char* level);
+void updateApplicationStatusGameOver();
 
 //initislize the levels
 void initLevels ();

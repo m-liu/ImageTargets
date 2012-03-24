@@ -35,6 +35,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.qualcomm.QCAR.QCAR;
 import com.qualcomm.QCARSamples.ImageTargets.GUIManager;
@@ -54,6 +55,7 @@ public class ImageTargets extends Activity {
 	private static final int APPSTATUS_INIT_EOL = 8;
 	//private static final int APPSTATUS_LEVEL_SELECT = 9;
 
+    private static final int DIALOG_GAMEOVER = 98;
 	private static final int DIALOG_PAUSE = 99;
     private static final int DIALOG_STORE = 100;
     private static final int DIALOG_EOL = 101;
@@ -309,7 +311,7 @@ public class ImageTargets extends Activity {
                     	mRenderer.hidePauseButton();
                     	mRenderer.showUnpauseButton();
                     }
-                    else if (item == 1) {
+                    else if (item == 2) {
                     	//end game
                     	updateApplicationStatus(APPSTATUS_INIT_APP);
                     }
@@ -330,6 +332,25 @@ public class ImageTargets extends Activity {
                 }
             });
             dialog = builder3.create();
+            break;
+            
+        case DIALOG_GAMEOVER:
+            final CharSequence[] itemsg = {"Click here to continue"};
+        	AlertDialog.Builder builderg = new AlertDialog.Builder(this);
+            TextView currentScore = (TextView) findViewById(R.id.current_score);
+            builderg.setTitle("GAME OVER! Final Score: " + currentScore.getText())
+            //builderg.setTitle("GAME OVER\n\nFINAL SCORE: ")
+            .setItems(itemsg, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                	
+                	if (item == 0) {
+ 
+                       	updateApplicationStatus(APPSTATUS_INIT_APP);             
+                    	
+                	}
+                }
+            });
+            dialog = builderg.create();
             break;
             
         case DIALOG_STORE_CASTLE:
@@ -1014,6 +1035,20 @@ public class ImageTargets extends Activity {
 
              	mGUIManager.nativeStore();
     	     	showDialog(DIALOG_EOL);
+    	     }
+    	});
+		
+	}
+	
+	public void updateGameOver() {
+		PauseState = true;
+		EOLState = true;
+
+    	runOnUiThread(new Runnable() {
+    		
+    	     public void run() {
+
+    	     	showDialog(DIALOG_GAMEOVER);
     	     }
     	});
 		
