@@ -293,7 +293,7 @@ public class ImageTargets extends Activity {
             break;
             
         case DIALOG_PAUSE:
-            final CharSequence[] itemsp = {"Return to Game", "Buy/Upgrade Towers", "View Stats", "Quit Game"};
+            final CharSequence[] itemsp = {"Return to Game", "Pause to Manage Towers", "Quit Game"};
         	AlertDialog.Builder builderp = new AlertDialog.Builder(this);
             builderp.setTitle("GAME PAUSED")
             .setItems(itemsp, new DialogInterface.OnClickListener() {
@@ -309,11 +309,7 @@ public class ImageTargets extends Activity {
                     	mRenderer.hidePauseButton();
                     	mRenderer.showUnpauseButton();
                     }
-                    else if (item == 2) {
-                    	//TODO: view stats
-                    	
-                    }
-                    else if (item == 3) {
+                    else if (item == 1) {
                     	//end game
                     	updateApplicationStatus(APPSTATUS_INIT_APP);
                     }
