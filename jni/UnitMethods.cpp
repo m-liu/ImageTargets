@@ -213,27 +213,27 @@ void initUnitDB () {
 	strcpy(tower_type[0].name, "Castle");
 	initTower (0, 0, 0, 50.0f, 60.0f, 0.0f);
 	strcpy(tower_type[1].name, "Igloo");
-	initTower (1, 3, 1, 0.0f, 50.0f, 0.0f);
+	initTower (1, 3, 1, 10.0f, 50.0f, 0.0f);
 	strcpy(tower_type[2].name, "Cannon");
-	initTower (2, 9, 2, 0.0f, 50.0f, 90.0f);
+	initTower (2, 9, 2, 10.0f, 50.0f, 90.0f);
 	strcpy(tower_type[3].name, "Castle2");
 	initTower (3, 21, 3, 50.0f, 65.0f, 0.0f);
 	strcpy(tower_type[4].name, "Igloo2");
-	initTower (4, 24, 4, 0.0f, 55.0f, 0.0f);
+	initTower (4, 24, 4, 10.0f, 55.0f, 0.0f);
 	strcpy(tower_type[5].name, "Cannon2");
-	initTower (5, 27, 5, 0.0f, 55.0f, 90.0f);
+	initTower (5, 27, 5, 10.0f, 55.0f, 90.0f);
 	strcpy(tower_type[0].name, "Castle3");
 	initTower (6, 22, 6, 50.0f, 70.0f, 0.0f);
 	strcpy(tower_type[1].name, "Igloo3");
-	initTower (7, 25, 7, 0.0f, 60.0f, 0.0f);
+	initTower (7, 25, 7, 10.0f, 60.0f, 0.0f);
 	strcpy(tower_type[2].name, "Cannon3");
-	initTower (8, 28, 8, 0.0f, 60.0f, 90.0f);
+	initTower (8, 28, 8, 10.0f, 60.0f, 90.0f);
 	strcpy(tower_type[3].name, "Castle4");
 	initTower (9, 23, 9, 50.0f, 75.0f, 0.0f);
 	strcpy(tower_type[4].name, "Igloo4");
-	initTower (10, 26, 10, 0.0f, 65.0f, 0.0f);
+	initTower (10, 26, 10, 10.0f, 65.0f, 0.0f);
 	strcpy(tower_type[5].name, "Cannon4");
-	initTower (11, 29, 11, 0.0f, 65.0f, 90.0f);
+	initTower (11, 29, 11, 10.0f, 65.0f, 90.0f);
 	
     //missile initializations
 	strcpy(missile_type[0].name, "Arrow");

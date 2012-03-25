@@ -502,6 +502,10 @@ public class ImageTargets extends Activity {
 				getAssets()));//28
 		mTextures.add(Texture.loadTextureFromApk("cannon_up3.jpg",
 				getAssets()));//29
+		mTextures.add(Texture.loadTextureFromApk("green_glow.png",
+				getAssets()));//30
+		mTextures.add(Texture.loadTextureFromApk("blue_glow.png",
+				getAssets()));//31
 	}
 
 	/** Configure QCAR with the desired version of OpenGL ES. */

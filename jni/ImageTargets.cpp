@@ -125,7 +125,7 @@ void DrawEnemy (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, in
 void DrawHpBar (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, int index);
 void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, int type);
 void DrawMissile (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection, int type);
-void DrawSelRing (QCAR::Matrix44F selMatrix, QCAR::Matrix44F selProjection);
+void DrawSelRing (QCAR::Matrix44F selMatrix, QCAR::Matrix44F selProjection, int ring_type);
 
 
 void getMarkerOffset(int trackedCornerID, int &x_offset, int &y_offset);
@@ -717,6 +717,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 					}
                     selMarkerID = mID;
                 }
+                    
+                
+                //draw selection ring
+                if (selMarkerID >= 0 && selMarkerID == mID){
+                    DrawSelRing(towerMatrix, towerProjection, 1); 
+                }
 
                 //draw the tower at the precise location of the marker if it's initialized
                 if (tower[mID].initialized){
@@ -750,9 +756,8 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
                 }
 
-                else { //if tower is uninitialized, display a ring to indicate marker is recognized
-                    //TODO
-                    DrawSelRing(towerMatrix, towerProjection); 
+                else if (selMarkerID != mID) { //if tower is uninitialized and not selected, display a ring to indicate marker is recognized
+                    DrawSelRing(towerMatrix, towerProjection, 0); 
                 }
 
             }//end tower drawing
@@ -1294,23 +1299,41 @@ void DrawMissile (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjecti
 
 
 //draws a selection ring around recognized markers without towers
-void DrawSelRing (QCAR::Matrix44F selMatrix, QCAR::Matrix44F selProjection) {
-    //TODO: no textures here or real model yet
-    //const Texture* const thisTexture = textures[0];
-    //Castle = 0, Igloo = 3
+void DrawSelRing (QCAR::Matrix44F selMatrix, QCAR::Matrix44F selProjection, int ring_type) {
+
+    Texture* thisTexture;
+    //sel ring texture is 30
+    if (ring_type==1){ //selected ring
+        SampleUtils::scalePoseMatrix(35,35,0, &selMatrix.data[0]);
+        thisTexture = textures[30];
+    }
+    else { //recognized marker ring
+        SampleUtils::scalePoseMatrix(20,20,0, &selMatrix.data[0]);
+        thisTexture = textures[31];
+        //const Texture* const thisTexture = textures[31];
+    }
 
     SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &selMatrix.data[0], &selProjection.data[0]);
     glUseProgram(shaderProgramID);
-    glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, towerVerts);
-    glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, towerNormals);
-    glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, towerTexCoords);
+    glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &cubeVertices[0]);
+    glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &cubeNormals[0]);
+    glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &cubeTexCoords[0]);
     glEnableVertexAttribArray(vertexHandle);
     glEnableVertexAttribArray(normalHandle);
     glEnableVertexAttribArray(textureCoordHandle);
+    //blending of graphics?
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     glActiveTexture(GL_TEXTURE0);
-    //glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+    glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
     glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&selProjection.data[0] );
-    glDrawArrays(GL_TRIANGLES, 0, iglooNumVerts);
+
+    //glDrawArrays(GL_TRIANGLES, 0, towerNumVerts);
+    glDrawElements(GL_TRIANGLES, NUM_CUBE_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &cubeIndices[0]);
+    glDisable(GL_BLEND);
+    SampleUtils::checkGlError("ImageTargets renderFrame");
+
 }
 
 
