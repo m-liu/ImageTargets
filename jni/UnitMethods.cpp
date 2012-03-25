@@ -528,6 +528,7 @@ void removeEnemy (int enemyNumber)
 void gameOver ()
 {
 	startGame=0;
+	seeTargets=0;
 	for (int enemyNumber2 = 0; enemyNumber2 < MAX_NUM_ENEMIES; enemyNumber2++) {
 		removeEnemy(enemyNumber2);
 	}

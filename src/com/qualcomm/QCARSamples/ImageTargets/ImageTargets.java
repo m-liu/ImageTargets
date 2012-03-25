@@ -53,7 +53,7 @@ public class ImageTargets extends Activity {
 	private static final int APPSTATUS_CAMERA_RUNNING = 6;
 	private static final int APPSTATUS_INIT_MENU = 7;
 	private static final int APPSTATUS_INIT_EOL = 8;
-	//private static final int APPSTATUS_LEVEL_SELECT = 9;
+	private static final int APPSTATUS_GAMEOVER = 9;
 
     private static final int DIALOG_GAMEOVER = 98;
 	private static final int DIALOG_PAUSE = 99;
@@ -69,6 +69,9 @@ public class ImageTargets extends Activity {
 	private static final String NATIVE_LIB_SAMPLE = "ImageTargets";
 	private static final String NATIVE_LIB_QCAR = "QCAR";
 	
+	
+    Boolean stuffInited = false;
+    
     private int currentLevel;
     Boolean PauseState = false;
     Boolean EOLState = false;
@@ -115,6 +118,7 @@ public class ImageTargets extends Activity {
 	public static native void nativeNext();
 	public static native void nativeDelete();
 	public static native void nativeSettings(int level, int difficulty, int lives);
+	public static native void nativeGameOver();
 	
     /** Native function to store Java environment information for callbacks. */
     public native void initNativeCallback();
@@ -313,7 +317,7 @@ public class ImageTargets extends Activity {
                     }
                     else if (item == 2) {
                     	//end game
-                    	updateApplicationStatus(APPSTATUS_INIT_APP);
+                       	nativeGameOver();  
                     }
                 }
             });
@@ -344,9 +348,8 @@ public class ImageTargets extends Activity {
                 public void onClick(DialogInterface dialog, int item) {
                 	
                 	if (item == 0) {
- 
-                       	updateApplicationStatus(APPSTATUS_INIT_APP);             
-                    	
+                		stopCamera();
+                		updateApplicationStatus(APPSTATUS_GAMEOVER);
                 	}
                 }
             });
@@ -779,20 +782,19 @@ public class ImageTargets extends Activity {
 
 			// Native post initialization:
 			onQCARInitializedNative();
-
 			// Request a callback function after a given timeout to dismiss
 			// the splash screen:
 			Handler handler = new Handler();
 			handler.postDelayed(new Runnable() {
 				public void run() {
-
 					// Activate the renderer
 					mRenderer.mIsActive = true;
 
-					// Now add the GL surface view. It is important
-					// that the OpenGL ES surface view gets added
-					// BEFORE the camera is started and video
-					// background is configured.
+						// Now add the GL surface view. It is important
+						// that the OpenGL ES surface view gets added
+						// BEFORE the camera is started and video
+						// background is configured.
+					
 					setContentView(mGlView, new LayoutParams(
 							LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 					
@@ -856,14 +858,19 @@ public class ImageTargets extends Activity {
                         	}
                         }
                     });
-                    
 					// Start the camera:
+        			stuffInited = true;
 					updateApplicationStatus(APPSTATUS_CAMERA_RUNNING);
+					
 				}
 			}, 0);
-
 			break;
 
+		case APPSTATUS_GAMEOVER:
+			
+			setContentView(R.layout.endgame);
+			break;
+			
 		case APPSTATUS_CAMERA_STOPPED:
 			// Call the native function to stop the camera
 			stopCamera();
@@ -1047,7 +1054,6 @@ public class ImageTargets extends Activity {
     	runOnUiThread(new Runnable() {
     		
     	     public void run() {
-
     	     	showDialog(DIALOG_GAMEOVER);
     	     }
     	});

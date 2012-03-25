@@ -83,7 +83,7 @@ int stageType = 1;
 bool displayedMessage = false;
 
 int startGame = 0;
-static int seeTargets = 0;
+int seeTargets = 0;
 static int pauseGame = 0;
 
 //screen tap globals
@@ -497,6 +497,13 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeDelete(JNIEnv*, jo
 	hideUpgradeButton();
 	hideDeleteButton();
 }
+
+JNIEXPORT void JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeGameOver(JNIEnv*, jobject)
+{
+    gameOver();
+}
+
 
 
 JNIEXPORT void JNICALL
@@ -934,8 +941,10 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_startCamera(JNIEnv *,
 
 		
     // Initialize the camera:
-    if (!QCAR::CameraDevice::getInstance().init())
+    if (!QCAR::CameraDevice::getInstance().init()) {
+		LOG("StartCamera: First Exit");
         return;
+	}
 
     // Configure the video background
     configureVideoBackground();
@@ -943,12 +952,18 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_startCamera(JNIEnv *,
     // Select the default mode:
     if (!QCAR::CameraDevice::getInstance().selectVideoMode(
                                 QCAR::CameraDevice::MODE_DEFAULT))
-        return;
+		{						
+			LOG("StartCamera: Second Exit");				
+			return;
+		}
 
     // Start the camera:
     if (!QCAR::CameraDevice::getInstance().start())
+	{
+		LOG("StartCamera: Third Exit");
         return;
-
+	}
+	LOG("StartCamera: No Exit");
     // Uncomment to enable flash
     //if(QCAR::CameraDevice::getInstance().setFlashTorchMode(true))
     //	LOG("IMAGE TARGETS : enabled torch");
@@ -981,7 +996,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_stopCamera(JNIEnv *,
     LOG("Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_stopCamera");
 
     QCAR::Tracker::getInstance().stop();
-
+ 
     QCAR::CameraDevice::getInstance().stop();
     QCAR::CameraDevice::getInstance().deinit();
 }
