@@ -1365,7 +1365,7 @@ DrawPath (QCAR::Matrix44F trackerMVM, QCAR::Matrix44F pathProjection, int x_offs
     float centerX = (MARKER_SIZE * (BOARD_SIZE-1))/2;
     float centerY = (-1)*(MARKER_SIZE * (BOARD_SIZE-1))/2;
 
-	SampleUtils::translatePoseMatrix(centerX + x_offset, centerY + y_offset, 0, &trackerMVM.data[0]);
+	SampleUtils::translatePoseMatrix(centerX + x_offset, centerY + y_offset, -10.0f, &trackerMVM.data[0]);
     SampleUtils::rotatePoseMatrix(90, 1.0f, 0.0f, 0.0f, &trackerMVM.data[0]);
     SampleUtils::rotatePoseMatrix(180, 0.0f, 0.0f, 1.0f, &trackerMVM.data[0]);
     SampleUtils::scalePoseMatrix(400,400,400, &trackerMVM.data[0]);

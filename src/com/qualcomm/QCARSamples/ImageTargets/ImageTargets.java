@@ -18,8 +18,10 @@ import java.util.Vector;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,13 +37,26 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
+
+import android.media.AudioManager;
+
 
 import com.qualcomm.QCAR.QCAR;
 import com.qualcomm.QCARSamples.ImageTargets.GUIManager;
 
 /** The main activity for the ImageTargets sample. */
 public class ImageTargets extends Activity {
+	
+	AudioManager audioManager;
+	
+	MediaPlayer arrow_sound;
+	MediaPlayer cannon_sound;
+	MediaPlayer snowball_sound;
+	MediaPlayer level_sound;
+	MediaPlayer button_sound;
+	
 	// Application status constants:
 	private static final int APPSTATUS_UNINITED = -1;
 	private static final int APPSTATUS_INIT_APP = 0;
@@ -631,6 +646,13 @@ public class ImageTargets extends Activity {
 
 	
 	private synchronized void updateApplicationStatus(int appStatus) {
+		
+		arrow_sound = MediaPlayer.create(this,R.raw.arrow);
+		snowball_sound = MediaPlayer.create(this,R.raw.snowball);
+		cannon_sound = MediaPlayer.create(this,R.raw.cannon);
+		level_sound = MediaPlayer.create(this,R.raw.harp);
+		button_sound = MediaPlayer.create(this,R.raw.button);
+		
 		// Exit if there is no change in status
 		if (mAppStatus == appStatus)
 			return;
@@ -725,6 +747,37 @@ public class ImageTargets extends Activity {
 	        SettingsButton.setOnClickListener(new OnClickListener() {
 	        	
 	        	public void onClick(View v) {
+	        		setContentView(R.layout.settings);
+	        		/*audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+		            int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+		            int curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+	        		SeekBar volControl = (SeekBar)findViewById(R.id.volbar);
+	        		
+	        		volControl.setMax(maxVolume);
+	        		volControl.setProgress(curVolume);
+	        		volControl.setOnSeenBarChangeListener(this);*/
+	        		
+	        		audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+	        	    int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+	        	    int curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+	        	    SeekBar volControl = (SeekBar)findViewById(R.id.volbar);
+	        	    volControl.setMax(maxVolume);
+	        	    volControl.setProgress(curVolume);
+	        	    volControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+	        	        @Override
+	        	        public void onStopTrackingTouch(SeekBar arg0) {
+	        	        }
+
+	        	        @Override
+	        	        public void onStartTrackingTouch(SeekBar arg0) {
+	        	        }
+
+	        	        @Override
+	        	        public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+	        	            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, arg1, 0);
+	        	        }
+	        	    });
+	        		
 	        		
 	        	}
 	        });
@@ -1116,5 +1169,26 @@ public class ImageTargets extends Activity {
         }
     }
 	
+    public void call_arrow_sound()
+    {
+        arrow_sound.start();
+    }
+    
+    public void call_snowball_sound()
+    {
+        snowball_sound.start();
+    }
+    public void call_cannon_sound()
+    {
+        cannon_sound.start();
+    }
+    public void call_level_sound()
+    {
+        level_sound.start();
+    }
+    public void call_button_sound()
+    {
+        button_sound.start();
+    }
 	
 }

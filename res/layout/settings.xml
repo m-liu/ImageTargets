@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:paddingLeft="20dip"
+  android:paddingTop="20dip">
+    <TextView android:id="@+id/textView1" android:text="Volume" android:layout_width="126dp" android:layout_height="wrap_content"></TextView>
+    <SeekBar android:id="@+id/volbar" android:layout_height="wrap_content" android:layout_width="221dp" android:max="10" android:progress="5"></SeekBar>
+    
+</LinearLayout>
