@@ -126,7 +126,7 @@ void DrawHpBar (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, in
 void DrawTower (QCAR::Matrix44F TowerMatrix, QCAR::Matrix44F TowerProjection, int type);
 void DrawMissile (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjection, int type);
 void DrawSelRing (QCAR::Matrix44F selMatrix, QCAR::Matrix44F selProjection, int ring_type);
-
+void DrawPath (QCAR::Matrix44F trackerMVM, QCAR::Matrix44F pathProjection, int x_offset, int y_offset, int currentLevel);
 
 void getMarkerOffset(int trackedCornerID, int &x_offset, int &y_offset);
 void convert2BoardCoord (int cornerID, QCAR::Matrix44F cornerMVM, QCAR::Matrix44F targetMVM, float &x, float &y);
@@ -620,7 +620,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 #endif
 
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+ //   glEnable(GL_CULL_FACE);
 	
 	
     //helper vars
@@ -761,6 +761,13 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
                 }
 
             }//end tower drawing
+
+            //render enemy path
+            QCAR::Matrix44F pathProjection;
+            DrawPath (trackerMVM, pathProjection, x_offset, y_offset, stageType);
+
+
+
 
             // If this is our first time seeing the target, display a tip
             if (!displayedMessage) {
@@ -1087,6 +1094,17 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_updateRendering(
 }
 #endif
 
+
+
+
+
+
+
+
+/****************************************************
+ * Draw functions
+ * **************************************************/
+
 void DrawHpBar (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, int index) {
 	//TODO: fix this
 	//SampleUtils::translatePoseMatrix(enemy[index].X, enemy[index].Y-20.0f, 30.0f, &EnemyMatrix.data[0]);
@@ -1302,6 +1320,7 @@ void DrawMissile (QCAR::Matrix44F MissileMatrix, QCAR::Matrix44F MissileProjecti
 void DrawSelRing (QCAR::Matrix44F selMatrix, QCAR::Matrix44F selProjection, int ring_type) {
 
     Texture* thisTexture;
+	SampleUtils::translatePoseMatrix(0, 0, 5, &selMatrix.data[0]);
     //sel ring texture is 30
     if (ring_type==1){ //selected ring
         SampleUtils::scalePoseMatrix(35,35,0, &selMatrix.data[0]);
@@ -1337,6 +1356,49 @@ void DrawSelRing (QCAR::Matrix44F selMatrix, QCAR::Matrix44F selProjection, int 
 }
 
 
+
+//draw the enemy path terrain
+void 
+DrawPath (QCAR::Matrix44F trackerMVM, QCAR::Matrix44F pathProjection, int x_offset, int y_offset, int stageType){
+    Texture* thisTexture;
+
+    float centerX = (MARKER_SIZE * (BOARD_SIZE-1))/2;
+    float centerY = (-1)*(MARKER_SIZE * (BOARD_SIZE-1))/2;
+
+	SampleUtils::translatePoseMatrix(centerX + x_offset, centerY + y_offset, 0, &trackerMVM.data[0]);
+    SampleUtils::rotatePoseMatrix(90, 1.0f, 0.0f, 0.0f, &trackerMVM.data[0]);
+    SampleUtils::rotatePoseMatrix(180, 0.0f, 0.0f, 1.0f, &trackerMVM.data[0]);
+    SampleUtils::scalePoseMatrix(400,400,400, &trackerMVM.data[0]);
+
+    //if (stageType==1){ 
+        thisTexture = textures[32];
+    //}
+
+    SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &trackerMVM.data[0], &pathProjection.data[0]);
+    glUseProgram(shaderProgramID);
+    glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &groundVerts[0]);
+    glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &groundNormals[0]);
+    glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &groundTexCoords[0]);
+    glEnableVertexAttribArray(vertexHandle);
+    glEnableVertexAttribArray(normalHandle);
+    glEnableVertexAttribArray(textureCoordHandle);
+    //blending of graphics?
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+    glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&pathProjection.data[0] );
+
+    glDrawArrays(GL_TRIANGLES, 0, groundNumVerts);
+    //glDrawElements(GL_TRIANGLES, NUM_CUBE_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &cubeIndices[0]);
+    glDisable(GL_BLEND);
+    SampleUtils::checkGlError("ImageTargets renderFrame");
+
+
+
+
+}
 
 
 void getMarkerOffset(int trackerID, int &x_offset, int &y_offset){

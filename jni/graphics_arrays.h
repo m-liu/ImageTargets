@@ -9,6 +9,7 @@
 #include "cannon.h"
 #include "hp_bar.h"
 #include "Cube.h"
+#include "ground.h"
 
 #include "arrow_new_000001.h"
 #include "arrow_new_000002.h"
