@@ -1181,24 +1181,24 @@ public class ImageTargets extends Activity {
 	
     public void call_arrow_sound()
     {
-        //arrow_sound.start();
+        arrow_sound.start();
     }
     
     public void call_snowball_sound()
     {
-        //snowball_sound.start();
+        snowball_sound.start();
     }
     public void call_cannon_sound()
     {
-        //cannon_sound.start();
+        cannon_sound.start();
     }
     public void call_level_sound()
     {
-        //level_sound.start();
+        level_sound.start();
     }
     public void call_button_sound()
     {
-        //button_sound.start();
+        button_sound.start();
     }
 	
 }

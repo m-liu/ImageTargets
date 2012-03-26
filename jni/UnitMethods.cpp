@@ -542,8 +542,18 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, QCAR::Matrix44F& HPMatrix, int e
 		}
 		else {
 			moveEnemy(enemyNumber, timeDiff);
-			
-			if (enemy[enemyNumber].X < 0.0f) {
+			//TODO: FIX THIS
+			bool endpath = false;
+			if (stageType == 1) {
+				endpath = enemy[enemyNumber].X < 0.0f;
+			}
+			if (stageType == 2) {
+				endpath = enemy[enemyNumber].X == 0.0f && enemy[enemyNumber].Y > 0.0f;
+			}
+			if (stageType == 3) {
+				endpath = enemy[enemyNumber].X < 0.0f;
+			}
+			if (endpath) {
 				currentLives = currentLives - 1;
 				displayLives(currentLives);
 				if (currentLives <= 0 ) {
