@@ -1109,6 +1109,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_updateRendering(
  * **************************************************/
 
 void DrawHpBar (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, int index) {
+	SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&EnemyMatrix.data[0], &EnemyProjection.data[0]);
 	glUseProgram(shaderProgramID);
 	glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) hp_barVerts);
 	glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) hp_barNormals);

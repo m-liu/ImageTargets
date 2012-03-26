@@ -18,7 +18,7 @@ LOCAL_PATH := $(call my-dir)
 # and setting the include path for library-specific header files
 
 include $(CLEAR_VARS)
-QCAR_SDK_ROOT = ../../../../../Development/Android/qcar-android-1-0-6
+QCAR_SDK_ROOT = ../../..
 LOCAL_MODULE := QCAR-prebuilt
 LOCAL_SRC_FILES = $(QCAR_SDK_ROOT)/build/lib/$(TARGET_ARCH_ABI)/libQCAR.so
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(QCAR_SDK_ROOT)/build/include

@@ -426,6 +426,7 @@ public class ImageTargets extends Activity {
             dialog = builder7.create();
             break;
         }
+        dialog.setCanceledOnTouchOutside(false);
         return dialog;
         
     }
