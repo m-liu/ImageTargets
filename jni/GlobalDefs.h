@@ -110,5 +110,4 @@ struct Level
     int killCount;
 };
 
-
 #endif
