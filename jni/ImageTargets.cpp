@@ -678,12 +678,15 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
             if (startGame == 1 && pauseGame == 0) {
                 //animate and draw the enemy units in reference to the tracker position
                 for (int i=0; i<MAX_NUM_ENEMIES; i++){
-                    QCAR::Matrix44F enemyMatrix = trackerMVM;        
-                    animateEnemy(enemyMatrix, i, x_offset, y_offset); //animate the i-th enemy
+                    QCAR::Matrix44F HPMatrix = trackerMVM; 
+					QCAR::Matrix44F enemyMatrix = trackerMVM;   
+					
+                    animateEnemy(enemyMatrix, HPMatrix, i, x_offset, y_offset); //animate the i-th enemy
                     QCAR::Matrix44F enemyProjection;
+					QCAR::Matrix44F HPProjection;
                     if (enemy[i].deployed && !enemy[i].dead){ 
 	                    DrawEnemy(enemyMatrix, enemyProjection, enemy[i].texture);
-	                    DrawHpBar(enemyMatrix, enemyProjection,i);
+	                    DrawHpBar(HPMatrix, HPProjection,i);
                     }
                 }
             }
@@ -1106,9 +1109,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_updateRendering(
  * **************************************************/
 
 void DrawHpBar (QCAR::Matrix44F EnemyMatrix, QCAR::Matrix44F EnemyProjection, int index) {
-	//TODO: fix this
-	//SampleUtils::translatePoseMatrix(enemy[index].X, enemy[index].Y-20.0f, 30.0f, &EnemyMatrix.data[0]);
-	SampleUtils::multiplyMatrix(&projectionMatrix.data[0],&EnemyMatrix.data[0], &EnemyProjection.data[0]);
 	glUseProgram(shaderProgramID);
 	glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) hp_barVerts);
 	glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) hp_barNormals);

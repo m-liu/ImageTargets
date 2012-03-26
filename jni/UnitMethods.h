@@ -69,10 +69,10 @@ void initUnitDB () ;
 int animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber, int x_offset, int y_offset);
 int checkMissileContact(int missileNumber);
 void animateTower(QCAR::Matrix44F& towerMatrix, int mID);
-void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber, int x_offset, int y_offset);
+void animateEnemy(QCAR::Matrix44F& enemyMatrix, QCAR::Matrix44F& HPMatrix, int enemyNumber, int x_offset, int y_offset);
 void updateMissileDefaultPos(int missileNumber, float lx, float ly);
 void removeEnemy (int enemyNumber);
 void gameOver ();
-void moveEnemy (float &x, float &y, float &direction, float speed, float timeDiff, int section);
+void moveEnemy (int enemyNumber, float timeDiff);
 
 #endif // _UNITDB_H_

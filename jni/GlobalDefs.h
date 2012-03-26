@@ -12,6 +12,9 @@
 #define ENEMY_NUM_FRAMES 48
 #define ENEMY_SCALE 50.0f
 #define ENEMY_MOVEMENT_SPEED 50.0f
+#define HP_SCALE 50.0f
+#define ENEMY_LIFT 20.0f
+#define HP_LIFT 60.0f
 
 //tower/missile properties
 #define NUM_MISSILE_TYPES 12

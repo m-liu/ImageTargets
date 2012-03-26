@@ -515,7 +515,7 @@ void animateTower(QCAR::Matrix44F& towerMatrix,  int mID)
 
 
 //animate the enemy
-void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber, int x_offset, int y_offset)
+void animateEnemy(QCAR::Matrix44F& enemyMatrix, QCAR::Matrix44F& HPMatrix, int enemyNumber, int x_offset, int y_offset)
 {	
 	if (enemy[enemyNumber].dead == false) {
 		double currentTime = getCurrentTime();  
@@ -541,7 +541,7 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber, int x_offset, i
 			enemy[enemyNumber].deployed = true;
 		}
 		else {
-			moveEnemy(enemy[enemyNumber].X, enemy[enemyNumber].Y, enemy[enemyNumber].direction, enemy[enemyNumber].speed, timeDiff, enemy[enemyNumber].section);
+			moveEnemy(enemyNumber, timeDiff);
 			
 			if (enemy[enemyNumber].X < 0.0f) {
 				currentLives = currentLives - 1;
@@ -567,10 +567,14 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, int enemyNumber, int x_offset, i
 	}		
 
     //offset the object based on corner marker in view
-	SampleUtils::translatePoseMatrix(enemy[enemyNumber].X + x_offset, enemy[enemyNumber].Y + y_offset, 20.0f, &enemyMatrix.data[0]);
+	SampleUtils::translatePoseMatrix(enemy[enemyNumber].X + x_offset, enemy[enemyNumber].Y + y_offset, ENEMY_LIFT, &enemyMatrix.data[0]);
 	SampleUtils::rotatePoseMatrix(enemy[enemyNumber].direction, 0.0f, 0.0f, 1.0f, &enemyMatrix.data[0]);
 	SampleUtils::rotatePoseMatrix(90.0f, 1.0f, 0.0f, 0.0f, &enemyMatrix.data[0]);
 	SampleUtils::scalePoseMatrix(ENEMY_SCALE, ENEMY_SCALE, ENEMY_SCALE, &enemyMatrix.data[0]);
+	SampleUtils::translatePoseMatrix(enemy[enemyNumber].X + x_offset, enemy[enemyNumber].Y + y_offset, HP_LIFT, &HPMatrix.data[0]);
+	SampleUtils::rotatePoseMatrix(enemy[enemyNumber].direction, 0.0f, 0.0f, 1.0f, &HPMatrix.data[0]);
+	SampleUtils::rotatePoseMatrix(270.0f, 1.0f, 0.0f, 0.0f, &HPMatrix.data[0]);
+	SampleUtils::scalePoseMatrix(HP_SCALE, HP_SCALE, HP_SCALE, &HPMatrix.data[0]);
 
 }
 
@@ -602,110 +606,110 @@ void gameOver ()
 	updateApplicationStatusGameOver();
 }
 
-void moveEnemy (float &x, float &y, float &direction, float speed, float timeDiff, int section)
+void moveEnemy (int enemyNumber, float timeDiff)
 {
 	//Level1: basic
 	if (stageType == 1) {
-		if (y < 0.0f) {
-			x = 350.0f;
-			y += timeDiff * ENEMY_MOVEMENT_SPEED * speed;
-			direction = 90.0f; //up
+		if (enemy[enemyNumber].Y < 0.0f) {
+			enemy[enemyNumber].X = 350.0f;
+			enemy[enemyNumber].Y += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
+			enemy[enemyNumber].direction = 90.0f; //up
 		}
 		else
 		{
-			y = 0.0f;
-			x -= timeDiff * ENEMY_MOVEMENT_SPEED * speed;
-			direction = 180.0f; //left
+			enemy[enemyNumber].Y = 0.0f;
+			enemy[enemyNumber].X -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
+			enemy[enemyNumber].direction = 180.0f; //left
 		}
 	}
 	
 	//Level2: S-shaped
 	else if (stageType == 2) {
-		if (x == 350.0f && y < 0.0f) {
-			y += timeDiff * ENEMY_MOVEMENT_SPEED * speed;
-			direction = 90.0f; //up
+		if (enemy[enemyNumber].X == 350.0f && enemy[enemyNumber].Y < 0.0f) {
+			enemy[enemyNumber].Y += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
+			enemy[enemyNumber].direction = 90.0f; //up
 		}
-		else if (x > 200.0f){
-			y = 0.0f;
-			x -= timeDiff * ENEMY_MOVEMENT_SPEED * speed;
-			direction = 180.0f; //left
+		else if (enemy[enemyNumber].X > 200.0f){
+			enemy[enemyNumber].Y = 0.0f;
+			enemy[enemyNumber].X -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
+			enemy[enemyNumber].direction = 180.0f; //left
 		}
-		else if (y > -350.0f){
-			x = 200.0f;
-			y -= timeDiff * ENEMY_MOVEMENT_SPEED * speed;
-			direction = 270.0f; //down
+		else if (enemy[enemyNumber].Y > -350.0f){
+			enemy[enemyNumber].X = 200.0f;
+			enemy[enemyNumber].Y -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
+			enemy[enemyNumber].direction = 270.0f; //down
 		}
-		else if (x > 0.0f){
-			y = -350.0f;
-			x -= timeDiff * ENEMY_MOVEMENT_SPEED * speed;
-			direction = 180.0f; //left
+		else if (enemy[enemyNumber].X > 0.0f){
+			enemy[enemyNumber].Y = -350.0f;
+			enemy[enemyNumber].X -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
+			enemy[enemyNumber].direction = 180.0f; //left
 		}
 		else
 		{
-			x = 0.0f;
-			y += timeDiff * ENEMY_MOVEMENT_SPEED * speed;
-			direction = 90.0f; //up
+			enemy[enemyNumber].X = 0.0f;
+			enemy[enemyNumber].Y += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
+			enemy[enemyNumber].direction = 90.0f; //up
 		}
 	}
 	
 	//Level3: spiral
 	else if (stageType == 3) {
-		if (section == 0 && x <= 250.0f) {
-			y = -200.0f;
-			x += timeDiff * ENEMY_MOVEMENT_SPEED * speed;
-			direction = 0.0f; //right
+		if (enemy[enemyNumber].section == 0 && enemy[enemyNumber].X <= 250.0f) {
+			enemy[enemyNumber].Y = -200.0f;
+			enemy[enemyNumber].X += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
+			enemy[enemyNumber].direction = 0.0f; //right
 		}
-		else if ((section == 0 || section == 1) && y < -100.0f){
-			section = 1;
-			y += timeDiff * ENEMY_MOVEMENT_SPEED * speed;
-			x = 250.0f;
-			direction = 90.0f; //up
+		else if ((enemy[enemyNumber].section == 0 || enemy[enemyNumber].section == 1) && enemy[enemyNumber].Y < -100.0f){
+			enemy[enemyNumber].section = 1;
+			enemy[enemyNumber].Y += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
+			enemy[enemyNumber].X = 250.0f;
+			enemy[enemyNumber].direction = 90.0f; //up
 		}
-		else if ((section == 1 || section == 2) && x > 0.0f){
-			section = 2;
-			y = -100.0f;
-			x -= timeDiff * ENEMY_MOVEMENT_SPEED * speed;
-			direction = 180.0f; //left
+		else if ((enemy[enemyNumber].section == 1 || enemy[enemyNumber].section == 2) && enemy[enemyNumber].X > 50.0f){
+			enemy[enemyNumber].section = 2;
+			enemy[enemyNumber].Y = -100.0f;
+			enemy[enemyNumber].X -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
+			enemy[enemyNumber].direction = 180.0f; //left
 		}
-		else if ((section == 2 || section == 3) && y > -350.0f){
-			section = 3;
-			x = 0.0f;
-			y -= timeDiff * ENEMY_MOVEMENT_SPEED * speed;
-			direction = 270.0f; //down
+		else if ((enemy[enemyNumber].section == 2 || enemy[enemyNumber].section == 3) && enemy[enemyNumber].Y > -350.0f){
+			enemy[enemyNumber].section = 3;
+			enemy[enemyNumber].X = 50.0f;
+			enemy[enemyNumber].Y -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
+			enemy[enemyNumber].direction = 270.0f; //down
 		}
-		else if ((section == 3 || section == 4) && x < 350.0f){
-			section = 4;
-			y = -350.0f;
-			x -= timeDiff * ENEMY_MOVEMENT_SPEED * speed;
-			direction = 0.0f; //right
+		else if ((enemy[enemyNumber].section == 3 || enemy[enemyNumber].section == 4) && enemy[enemyNumber].X < 350.0f){
+			enemy[enemyNumber].section = 4;
+			enemy[enemyNumber].Y = -350.0f;
+			enemy[enemyNumber].X -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
+			enemy[enemyNumber].direction = 0.0f; //right
 		}
-		else if ((section == 4 || section == 5) && y < 0.0f){
-			section = 5;
-			x = 350.0f;
-			y += timeDiff * ENEMY_MOVEMENT_SPEED * speed;
-			direction = 90.0f; //up
+		else if ((enemy[enemyNumber].section == 4 || enemy[enemyNumber].section == 5) && enemy[enemyNumber].Y < 0.0f){
+			enemy[enemyNumber].section = 5;
+			enemy[enemyNumber].X = 350.0f;
+			enemy[enemyNumber].Y += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
+			enemy[enemyNumber].direction = 90.0f; //up
 		}
 		else
 		{
-			section = 6;
-			y = 0.0f;
-			x -= timeDiff * ENEMY_MOVEMENT_SPEED * speed;
-			direction = 180.0f; //left
+			enemy[enemyNumber].section = 6;
+			enemy[enemyNumber].Y = 0.0f;
+			enemy[enemyNumber].X -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
+			enemy[enemyNumber].direction = 180.0f; //left
 		}
 	}
 	
 	//default to basic
 	else
 	{
-		if (y < 0.0f) {
-			y += timeDiff * ENEMY_MOVEMENT_SPEED * speed;
-			direction = 90.0f; //up
+		if (enemy[enemyNumber].Y < 0.0f) {
+			enemy[enemyNumber].Y += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
+			enemy[enemyNumber].direction = 90.0f; //up
 		}
 		else
 		{
-			y = 0.0f;
-			x -= timeDiff * ENEMY_MOVEMENT_SPEED * speed;
-			direction = 180.0f; //left
+			enemy[enemyNumber].Y = 0.0f;
+			enemy[enemyNumber].X -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
+			enemy[enemyNumber].direction = 180.0f; //left
 		}
 	}
 }
