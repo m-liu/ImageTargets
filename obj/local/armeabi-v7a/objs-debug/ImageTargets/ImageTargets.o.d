@@ -61,6 +61,8 @@
  /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/tank2.h \
  /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/cannon.h \
  /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/hp_bar.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/Cube.h \
+ /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/ground.h \
  /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/arrow_new_000001.h \
  /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/arrow_new_000002.h \
  /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/arrow_new_000003.h \
@@ -308,6 +310,10 @@
 /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/cannon.h:
 
 /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/hp_bar.h:
+
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/Cube.h:
+
+/cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/ground.h:
 
 /cygdrive/c/Development/Android/qcar-android-1-0-6/samples/ImageTargets/jni/../media/arrow_new_000001.h:
 

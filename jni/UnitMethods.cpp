@@ -595,14 +595,32 @@ void removeEnemy (int enemyNumber)
 	enemy[enemyNumber].dead = true;
 }
 
+void removeTower (int towerNumber)
+{
+	tower[towerNumber].initialized = false;
+	missile[towerNumber].initialized = false;
+}
+
 
 void gameOver ()
 {
+	currentLevel = 0;
+	currentLives = 20;
+
+	currentScore = 0;
+	currentZen = 20;
+
+	currentDiff = 1;
+	stageType = 1;
 	startGame=0;
 	seeTargets=0;
+	for (int towerNumber2 = 0; towerNumber2 < MAX_NUM_TOWERS; towerNumber2++) {
+		removeTower(towerNumber2);
+	}
 	for (int enemyNumber2 = 0; enemyNumber2 < MAX_NUM_ENEMIES; enemyNumber2++) {
 		removeEnemy(enemyNumber2);
 	}
+
 	updateApplicationStatusGameOver();
 }
 

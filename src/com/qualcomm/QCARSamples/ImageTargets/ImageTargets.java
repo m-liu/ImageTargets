@@ -257,27 +257,34 @@ public class ImageTargets extends Activity {
     	AlertDialog dialog = null;
         switch (id) {
         case DIALOG_STORE:
-            final CharSequence[] items = {"Castle: 7 ZP", "Igloo: 10 ZP", "Cannon: 15 ZP", "Castle2: 14 ZP", "Igloo2: 20 ZP", "Cannon2: 30 ZP"};
+            final CharSequence[] items = {"Castle: 7 ZP", "Igloo: 10 ZP", "Cannon: 15 ZP", "Castle2: 14 ZP", "Igloo2: 20 ZP", "Cannon2: 30 ZP", "Cancel"};
         	AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Welcome to the Store! Buy:")
             .setItems(items, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
-                    int success = nativeBuy((int)item);
-                    if (success == -1) {
-                    	showDialog(DIALOG_STORE_FAIL);     	
+                	if (item == 6) {
+                    	if (PauseState != true) {
+                    		mGUIManager.nativeLeave();
+                    	}
                     }
-                    else if (item == 0 || item == 3) {
-                    	showDialog(DIALOG_STORE_CASTLE);
-                    }
-                    else if (item == 1 || item == 4) {
-                    	showDialog(DIALOG_STORE_IGLOO);
-                    }
-                    else if (item == 2 || item == 5) {
-                    	showDialog(DIALOG_STORE_CANNON);
-                    }
-                    else {
-                    	showDialog(DIALOG_STORE_CONT);
-                    }
+                	else {
+                		int success = nativeBuy((int)item);
+	                    if (success == -1) {
+	                    	showDialog(DIALOG_STORE_FAIL);     	
+	                    }
+	                    else if (item == 0 || item == 3) {
+	                    	showDialog(DIALOG_STORE_CASTLE);
+	                    }
+	                    else if (item == 1 || item == 4) {
+	                    	showDialog(DIALOG_STORE_IGLOO);
+	                    }
+	                    else if (item == 2 || item == 5) {
+	                    	showDialog(DIALOG_STORE_CANNON);
+	                    }
+	                    else {
+	                    	showDialog(DIALOG_STORE_CONT);
+	                    }
+                	}
                 }
             });
             dialog = builder.create();
@@ -306,7 +313,7 @@ public class ImageTargets extends Activity {
                     }
                     else if (item == 2) {
                     	//end game
-                    	updateApplicationStatus(APPSTATUS_INIT_APP);
+                    	nativeGameOver(); 
                     }
                 }
             });
@@ -365,6 +372,8 @@ public class ImageTargets extends Activity {
                 	if (item == 0) {
                 		stopCamera();
                 		updateApplicationStatus(APPSTATUS_GAMEOVER);
+                		//TODO: allow reset?
+                		//updateApplicationStatus(APPSTATUS_INIT_APP);
                 	}
                 }
             });
