@@ -702,10 +702,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
             //get the modelview matrix of the corner marker
             trackerID=testID;
             getMarkerOffset(trackerID, x_offset, y_offset);
+            /*
             if (testID >= 4){
                 LOG("using TOWER marker #%d as tracker", testID);
                 LOG("x_offset=%d, y_offset=%d", x_offset, y_offset);
             }
+            */
             break;
         }
     }
