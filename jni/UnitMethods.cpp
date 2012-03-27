@@ -272,17 +272,17 @@ void initUnitDB () {
 	initTower (4, 24, 4, 10.0f, 55.0f, 0.0f);
 	strcpy(tower_type[5].name, "Cannon2");
 	initTower (5, 27, 5, 10.0f, 55.0f, 90.0f);
-	strcpy(tower_type[0].name, "Castle3");
+	strcpy(tower_type[6].name, "Castle3");
 	initTower (6, 22, 6, 50.0f, 70.0f, 0.0f);
-	strcpy(tower_type[1].name, "Igloo3");
+	strcpy(tower_type[7].name, "Igloo3");
 	initTower (7, 25, 7, 10.0f, 60.0f, 0.0f);
-	strcpy(tower_type[2].name, "Cannon3");
+	strcpy(tower_type[8].name, "Cannon3");
 	initTower (8, 28, 8, 10.0f, 60.0f, 90.0f);
-	strcpy(tower_type[3].name, "Castle4");
+	strcpy(tower_type[9].name, "Castle4");
 	initTower (9, 23, 9, 50.0f, 75.0f, 0.0f);
-	strcpy(tower_type[4].name, "Igloo4");
+	strcpy(tower_type[10].name, "Igloo4");
 	initTower (10, 26, 10, 10.0f, 65.0f, 0.0f);
-	strcpy(tower_type[5].name, "Cannon4");
+	strcpy(tower_type[11].name, "Cannon4");
 	initTower (11, 29, 11, 10.0f, 65.0f, 90.0f);
 	
     //missile initializations
@@ -298,17 +298,17 @@ void initUnitDB () {
 	initMissile (4, 4, 20, 20, 12.0f, 40.0f, 0.85f, 1.1f);
 	strcpy(missile_type[5].name, "Cannonball2");
 	initMissile (5, 10, 35, 30, 10.0f, 150.0f, 1.0f, 2.0f);
-	strcpy(missile_type[0].name, "Arrow3");
+	strcpy(missile_type[6].name, "Arrow3");
 	initMissile (6, 2, 25, 21, 40.0f, 75.0f, 1.0f, 0.9f);
-	strcpy(missile_type[1].name, "Snowball3");
+	strcpy(missile_type[7].name, "Snowball3");
 	initMissile (7, 4, 25, 30, 10.0f, 60.0f, 0.80f, 1.1f);
-	strcpy(missile_type[2].name, "Cannonball3");
+	strcpy(missile_type[8].name, "Cannonball3");
 	initMissile (8, 10, 45, 45, 7.0f, 225.0f, 1.0f, 2.0f);
-	strcpy(missile_type[3].name, "Arrow4");
+	strcpy(missile_type[9].name, "Arrow4");
 	initMissile (9, 2, 30, 28, 50.0f, 100.0f, 1.0f, 0.9f);
-	strcpy(missile_type[4].name, "Snowball4");
+	strcpy(missile_type[10].name, "Snowball4");
 	initMissile (10, 4, 30, 40, 12.0f, 80.0f, 0.75f, 1.1f);
-	strcpy(missile_type[5].name, "Cannonball4");
+	strcpy(missile_type[11].name, "Cannonball4");
 	initMissile (11, 10, 50, 60, 10.0f, 300.0f, 1.0f, 2.0f);
 	
 	for (int i = 0; i < NUM_MISSILE_TYPES; i++) {

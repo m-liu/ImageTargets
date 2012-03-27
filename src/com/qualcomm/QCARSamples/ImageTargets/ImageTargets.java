@@ -533,7 +533,7 @@ public class ImageTargets extends Activity {
 				getAssets()));//30
 		mTextures.add(Texture.loadTextureFromApk("blue_glow.png",
 				getAssets()));//31
-		mTextures.add(Texture.loadTextureFromApk("level_path_1_shrunk.png",
+		mTextures.add(Texture.loadTextureFromApk("grass.jpg",
 				getAssets()));//32
 	}
 

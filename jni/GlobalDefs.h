@@ -13,7 +13,7 @@
 #define ENEMY_SCALE 50.0f
 #define ENEMY_MOVEMENT_SPEED 50.0f
 #define HP_SCALE 50.0f
-#define ENEMY_LIFT 20.0f
+#define ENEMY_LIFT 30.0f
 #define HP_LIFT 60.0f
 
 //tower/missile properties

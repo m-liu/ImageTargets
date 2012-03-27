@@ -86,7 +86,7 @@ int startGame = 0;
 int seeTargets = 0;
 static int pauseGame = 0;
 
-char level1path[8][8] = {
+char level1path[BOARD_SIZE][BOARD_SIZE] = {
 {'1', '1', '1', '1', '1', '1', '1', '1'},
 {'0', '0', '0', '0', '0', '0', '0', '1'},
 {'0', '0', '0', '0', '0', '0', '0', '1'},
@@ -97,7 +97,7 @@ char level1path[8][8] = {
 {'0', '0', '0', '0', '0', '0', '0', '1'}
 };
 
-char level2path[8][8] = {
+char level2path[BOARD_SIZE][BOARD_SIZE] = {
 {'1', '0', '0', '0', '1', '1', '1', '1'},
 {'1', '0', '0', '0', '1', '0', '0', '1'},
 {'1', '0', '0', '0', '1', '0', '0', '1'},
@@ -108,7 +108,7 @@ char level2path[8][8] = {
 {'1', '1', '1', '1', '1', '0', '0', '1'}
 };
 
-char level3path[8][8] = {
+char level3path[BOARD_SIZE][BOARD_SIZE] = {
 {'1', '1', '1', '1', '1', '1', '1', '1'},
 {'0', '0', '0', '0', '0', '0', '0', '1'},
 {'0', '1', '1', '1', '1', '1', '0', '1'},
@@ -1394,47 +1394,71 @@ void DrawSelRing (QCAR::Matrix44F selMatrix, QCAR::Matrix44F selProjection, int 
 
 
 
-//draw the enemy path terrain
+//draw the enemy path terrain, tile by tile
 void 
 DrawPath (QCAR::Matrix44F trackerMVM, QCAR::Matrix44F pathProjection, int x_offset, int y_offset, int stageType){
     Texture* thisTexture;
 
-    float centerX = (MARKER_SIZE * (BOARD_SIZE-1))/2;
-    float centerY = (-1)*(MARKER_SIZE * (BOARD_SIZE-1))/2;
+    char (*path_ptr)[BOARD_SIZE];
+    if (stageType==1){
+        path_ptr = level1path;
+    }
+    else if (stageType==2){
+        path_ptr = level2path;
+    }
+    else if (stageType==3){
+        path_ptr = level3path;
+    }
+    else {
+        LOG("ERROR bad stageType");
+    }
 
-	SampleUtils::translatePoseMatrix(centerX + x_offset, centerY + y_offset, -10.0f, &trackerMVM.data[0]);
-    SampleUtils::rotatePoseMatrix(90, 1.0f, 0.0f, 0.0f, &trackerMVM.data[0]);
-    SampleUtils::rotatePoseMatrix(180, 0.0f, 0.0f, 1.0f, &trackerMVM.data[0]);
-    SampleUtils::scalePoseMatrix(400,400,400, &trackerMVM.data[0]);
+    //save the projection and MVM each loop
+    QCAR::Matrix44F tmpMVM;
+    QCAR::Matrix44F tmpProjection;
 
-    //if (stageType==1){ 
-        thisTexture = textures[32];
-    //}
+    for (int j=0; j<BOARD_SIZE; j++){
+        for (int i=0; i<BOARD_SIZE; i++){
+            if (path_ptr[j][i] == '1'){
+                //reset the matrices
+                tmpMVM = trackerMVM;
+                tmpProjection = pathProjection;
+                //calculate tile position
+                int tileX = i * MARKER_SIZE;
+                int tileY = -j * MARKER_SIZE;
+                //render the tile at that position
+                SampleUtils::translatePoseMatrix(tileX + x_offset, tileY + y_offset, 0, &tmpMVM.data[0]);
+                SampleUtils::rotatePoseMatrix(90, 1.0f, 0.0f, 0.0f, &tmpMVM.data[0]);
+                SampleUtils::rotatePoseMatrix(180, 0.0f, 0.0f, 1.0f, &tmpMVM.data[0]);
+                SampleUtils::scalePoseMatrix(MARKER_SIZE,MARKER_SIZE,MARKER_SIZE, &tmpMVM.data[0]);
 
-    SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &trackerMVM.data[0], &pathProjection.data[0]);
-    glUseProgram(shaderProgramID);
-    glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &groundVerts[0]);
-    glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &groundNormals[0]);
-    glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &groundTexCoords[0]);
-    glEnableVertexAttribArray(vertexHandle);
-    glEnableVertexAttribArray(normalHandle);
-    glEnableVertexAttribArray(textureCoordHandle);
-    //blending of graphics?
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                thisTexture = textures[32];
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
-    glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&pathProjection.data[0] );
+                SampleUtils::multiplyMatrix(&projectionMatrix.data[0], &tmpMVM.data[0], &tmpProjection.data[0]);
+                glUseProgram(shaderProgramID);
+                glVertexAttribPointer(vertexHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &groundVerts[0]);
+                glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &groundNormals[0]);
+                glVertexAttribPointer(textureCoordHandle, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) &groundTexCoords[0]);
+                glEnableVertexAttribArray(vertexHandle);
+                glEnableVertexAttribArray(normalHandle);
+                glEnableVertexAttribArray(textureCoordHandle);
+                //blending of graphics?
+                glEnable(GL_BLEND);
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glDrawArrays(GL_TRIANGLES, 0, groundNumVerts);
-    //glDrawElements(GL_TRIANGLES, NUM_CUBE_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &cubeIndices[0]);
-    glDisable(GL_BLEND);
-    SampleUtils::checkGlError("ImageTargets renderFrame");
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, thisTexture->mTextureID);
+                glUniformMatrix4fv(mvpMatrixHandle, 1, GL_FALSE, (GLfloat*)&tmpProjection.data[0] );
 
+                glDrawArrays(GL_TRIANGLES, 0, groundNumVerts);
+                //glDrawElements(GL_TRIANGLES, NUM_CUBE_INDEX, GL_UNSIGNED_SHORT, (const GLvoid*) &cubeIndices[0]);
+                glDisable(GL_BLEND);
+                SampleUtils::checkGlError("ImageTargets renderFrame");
+    
 
-
-
+            }
+        }
+    }
 }
 
 
