@@ -43,7 +43,7 @@ extern MissileUnit missile_type[NUM_MISSILE_TYPES];
 extern TowerUnit tower[MAX_NUM_TOWERS];
 extern TowerUnit tower_type[NUM_TOWER_TYPES];
 //Global Level struct
-extern Level level[NUM_LEVELS];
+extern Level level[NUM_LEVELS+1];
 extern int currentLevel;
 extern int currentScore;
 extern int currentZen;

@@ -26,6 +26,13 @@ updateApplicationStatusGameOver()
     javaEnv2->CallVoidMethod(javaObj2, method);
 }
 
+void
+updateApplicationStatusWin()
+{
+    jmethodID method = javaEnv2->GetMethodID(javaClass2, "updateWin", "()V");
+    javaEnv2->CallVoidMethod(javaObj2, method);
+}
+
 //display a message    
 void displayMessage(char* message)
 {
@@ -75,7 +82,7 @@ void displayLives(int lives)
 //initialize the levels
 void initLevels (){
 
-    for (int i=0; i<NUM_LEVELS; i++){
+    for (int i=0; i<NUM_LEVELS+1; i++){
     level[i].start = 0;
     level[i].end = 0;
     level[i].killCount = 0;

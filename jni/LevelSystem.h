@@ -17,7 +17,7 @@
 #include "UnitMethods.h"
 
 //Global Level struct
-extern Level level[NUM_LEVELS];
+extern Level level[NUM_LEVELS+1];
 extern int currentLevel;
 extern int currentLives;
 //java objects
@@ -38,6 +38,7 @@ void displayLives(int lives);
 
 void updateApplicationStatusEOL(char* level);
 void updateApplicationStatusGameOver();
+void updateApplicationStatusWin();
 
 //initislize the levels
 void initLevels ();
