@@ -179,7 +179,7 @@ if (nextLevel == 0)
 	
 	if (nextLevel == 9)
 	{
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < NUM_ENEMY_PER_ROUND; i++) {
 			makeEnemy (9, i, (i+2)*10);
 		}
 		displayMessage("LEVEL 10 START!");

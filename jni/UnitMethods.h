@@ -66,10 +66,12 @@ void deleteTower(int towerNumber);
 
 void initUnitDB () ;
 
-int animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber, int x_offset, int y_offset);
+int animateMissile(int missileNumber);
+void animateMissileMatrix(QCAR::Matrix44F& missileMatrix, int missileNumber, int x_offset, int y_offset);
 int checkMissileContact(int missileNumber);
 void animateTower(QCAR::Matrix44F& towerMatrix, int mID);
-void animateEnemy(QCAR::Matrix44F& enemyMatrix, QCAR::Matrix44F& HPMatrix, int enemyNumber, int x_offset, int y_offset);
+void animateEnemy(int enemyNumber);
+void animateEnemyMatrix(QCAR::Matrix44F& enemyMatrix, QCAR::Matrix44F& HPMatrix, int enemyNumber, int x_offset, int y_offset);
 void updateMissileDefaultPos(int missileNumber, float lx, float ly);
 void removeEnemy (int enemyNumber);
 void gameOver ();

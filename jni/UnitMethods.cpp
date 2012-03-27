@@ -333,7 +333,7 @@ void initUnitDB () {
 
 
 //animate the missile, returns how many enemies killed
-int animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber, int x_offset, int y_offset)
+int animateMissile(int missileNumber)
 {
     float xdiff;
 	float ydiff;
@@ -423,17 +423,19 @@ int animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber, int x_offs
 			xdiff = enemy[missile[missileNumber].currentTarget].X-missile[missileNumber].X;
 			ydiff = enemy[missile[missileNumber].currentTarget].Y-missile[missileNumber].Y;
 			missile[missileNumber].currentTargetDistance = sqrt((xdiff*xdiff) + (ydiff*ydiff));
-			
-			//offset the object based on corner marker in view and position
-			SampleUtils::translatePoseMatrix(missile[missileNumber].X + x_offset, missile[missileNumber].Y + y_offset, 0.0f, &missileMatrix.data[0]);
-			SampleUtils::rotatePoseMatrix(missile[missileNumber].angle, 0.0f, 0.0f, 1.0f, &missileMatrix.data[0]);
-			SampleUtils::scalePoseMatrix(missile[missileNumber].scale, missile[missileNumber].scale, missile[missileNumber].scale, &missileMatrix.data[0]);
-			
+					
 			checkMissileContact(missileNumber);
 		}
 	}
 
     return 1;
+}
+
+void animateMissileMatrix(QCAR::Matrix44F& missileMatrix, int missileNumber, int x_offset, int y_offset) {
+//offset the object based on corner marker in view and position
+	SampleUtils::translatePoseMatrix(missile[missileNumber].X + x_offset, missile[missileNumber].Y + y_offset, 0.0f, &missileMatrix.data[0]);
+	SampleUtils::rotatePoseMatrix(missile[missileNumber].angle, 0.0f, 0.0f, 1.0f, &missileMatrix.data[0]);
+	SampleUtils::scalePoseMatrix(missile[missileNumber].scale, missile[missileNumber].scale, missile[missileNumber].scale, &missileMatrix.data[0]);
 }
 
 int checkMissileContact(int missileNumber)
@@ -515,7 +517,7 @@ void animateTower(QCAR::Matrix44F& towerMatrix,  int mID)
 
 
 //animate the enemy
-void animateEnemy(QCAR::Matrix44F& enemyMatrix, QCAR::Matrix44F& HPMatrix, int enemyNumber, int x_offset, int y_offset)
+void animateEnemy(int enemyNumber)
 {	
 	if (enemy[enemyNumber].dead == false) {
 		double currentTime = getCurrentTime();  
@@ -576,6 +578,10 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, QCAR::Matrix44F& HPMatrix, int e
 		enemy[enemyNumber].prevTime = currentTime;	
 	}		
 
+}
+
+
+void animateEnemyMatrix(QCAR::Matrix44F& enemyMatrix, QCAR::Matrix44F& HPMatrix, int enemyNumber, int x_offset, int y_offset) {
     //offset the object based on corner marker in view
 	SampleUtils::translatePoseMatrix(enemy[enemyNumber].X + x_offset, enemy[enemyNumber].Y + y_offset, ENEMY_LIFT, &enemyMatrix.data[0]);
 	SampleUtils::rotatePoseMatrix(enemy[enemyNumber].direction, 0.0f, 0.0f, 1.0f, &enemyMatrix.data[0]);
@@ -585,9 +591,7 @@ void animateEnemy(QCAR::Matrix44F& enemyMatrix, QCAR::Matrix44F& HPMatrix, int e
 	SampleUtils::rotatePoseMatrix(enemy[enemyNumber].direction, 0.0f, 0.0f, 1.0f, &HPMatrix.data[0]);
 	SampleUtils::rotatePoseMatrix(270.0f, 1.0f, 0.0f, 0.0f, &HPMatrix.data[0]);
 	SampleUtils::scalePoseMatrix(HP_SCALE, HP_SCALE, HP_SCALE, &HPMatrix.data[0]);
-
 }
-
 
 //update missile positions
 void updateMissileDefaultPos(int missileNumber, float lx, float ly)

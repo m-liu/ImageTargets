@@ -715,8 +715,8 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
                 for (int i=0; i<MAX_NUM_ENEMIES; i++){
                     QCAR::Matrix44F HPMatrix = trackerMVM; 
 					QCAR::Matrix44F enemyMatrix = trackerMVM;   
-					
-                    animateEnemy(enemyMatrix, HPMatrix, i, x_offset, y_offset); //animate the i-th enemy
+					animateEnemy(i);
+                    animateEnemyMatrix(enemyMatrix, HPMatrix, i, x_offset, y_offset); //animate the i-th enemy
                     QCAR::Matrix44F enemyProjection;
 					QCAR::Matrix44F HPProjection;
                     if (enemy[i].deployed && !enemy[i].dead){ 
@@ -783,7 +783,8 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
                     QCAR::Matrix44F missileMatrix = trackerMVM;    
                     getMarkerOffset(trackerID, x_offset, y_offset);
                     if (startGame == 1 && pauseGame == 0) {
-                        animateMissile(missileMatrix, mID, x_offset, y_offset);
+						animateMissile(mID);
+                        animateMissileMatrix(missileMatrix, mID, x_offset, y_offset);
                         //checkMissileContact(mID);
                     }
 #ifdef USE_OPENGL_ES_1_1
