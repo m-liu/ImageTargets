@@ -70,7 +70,7 @@ jobject javaObj2;
 jclass javaClass2;
 
 //Global Level struct
-Level level[NUM_LEVELS];
+Level level[NUM_LEVELS+1];
 int currentLevel = 0;
 int currentLives = 20;
 
@@ -450,6 +450,12 @@ if (currentZen - missile_type[type].cost < 0)
         return (jint)(-2);
     }
     
+	if (tower[selMarkerID].initialized == true)
+	{
+		LOG("can't upgrade, inited");
+		return (jint)(-3);
+	}
+	
     LOG("nativeBuy: selMarkerID=%d, towerType=%d", selMarkerID, towerType);
     //initialize the tower
 	makeTower(towerType, selMarkerID);
@@ -488,6 +494,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeUpgrade(JNIEnv *en
 	{
 		LOG("can't upgrade, cost");
 		return (jint)(-1);
+	}
+	
+	if (tower[selMarkerID].type < 0 || tower[selMarkerID].type > 8)
+	{
+		LOG("can't upgrade, type");
+		return (jint)(-3);
 	}
 
     LOG("nativeUpgrade: selMarkerID=%d", selMarkerID);
@@ -724,7 +736,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 	                    DrawHpBar(HPMatrix, HPProjection,i);
                     }
                 }
-            } 
+            }
 
             //render towers and missiles
             if (marker->getMarkerId() >= 4 && marker->getMarkerId() < MAX_NUM_MARKERS) {

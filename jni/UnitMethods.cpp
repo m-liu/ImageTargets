@@ -489,9 +489,16 @@ int checkMissileContact(int missileNumber)
 					currentLevel++;
 					char levelString[20];
 					sprintf (levelString, "%d", currentLevel);
-
-					updateApplicationStatusEOL(levelString);
+					if (currentLevel != NUM_LEVELS) {
+						updateApplicationStatusEOL(levelString);
+					}
+					else {
+						updateApplicationStatusWin();
+					}
 				}
+				
+				
+				
 
                 enemiesKilled++;
 
@@ -563,15 +570,19 @@ void animateEnemy(int enemyNumber)
 				}
 				else {
 				level[currentLevel].killCount = level[currentLevel].killCount + 1;
-				if (level[currentLevel].killCount >=NUM_ENEMY_PER_ROUND) {
+				removeEnemy(enemyNumber);
+				if (level[currentLevel].killCount >= NUM_ENEMY_PER_ROUND) {
 					level[currentLevel].end = 1;
-					
 					currentLevel++;
 					char levelString[20];
 					sprintf (levelString, "%d", currentLevel);
-					updateApplicationStatusEOL(levelString);
+					if (currentLevel != NUM_LEVELS) {
+						updateApplicationStatusEOL(levelString);
+					}
+					else {
+						updateApplicationStatusWin();
+					}
 				}
-				removeEnemy(enemyNumber);
 				}
 			}
         }
