@@ -678,6 +678,22 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
     QCAR::Matrix44F trackerMVM; //save the corner marker MVM
 
 
+    //game updates - always do even if no tracker found
+    if (startGame == 1 && pauseGame == 0) {
+        for (int i=0; i<MAX_NUM_ENEMIES; i++){
+            animateEnemy(i);
+        }
+        for (int i=0; i<MAX_NUM_TOWERS; i++){
+            if (missile[i].initialized==true){
+                animateMissile(i);
+            }
+        }
+
+    }
+
+
+
+
     // Did we find any trackables this frame?
     // first loop through all trackables to find a reference "tracker" marker
     for(int tIdx = 0; tIdx < state.getNumActiveTrackables(); tIdx++)
@@ -729,7 +745,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
                 for (int i=0; i<MAX_NUM_ENEMIES; i++){
                     QCAR::Matrix44F HPMatrix = trackerMVM; 
 					QCAR::Matrix44F enemyMatrix = trackerMVM;   
-					animateEnemy(i);
+					//animateEnemy(i);
                     animateEnemyMatrix(enemyMatrix, HPMatrix, i, x_offset, y_offset); //animate the i-th enemy
                     QCAR::Matrix44F enemyProjection;
 					QCAR::Matrix44F HPProjection;
@@ -797,7 +813,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
                     QCAR::Matrix44F missileMatrix = trackerMVM;    
                     getMarkerOffset(trackerID, x_offset, y_offset);
                     if (startGame == 1 && pauseGame == 0) {
-						animateMissile(mID);
+						//animateMissile(mID);
                         animateMissileMatrix(missileMatrix, mID, x_offset, y_offset);
                         //checkMissileContact(mID);
                     }
