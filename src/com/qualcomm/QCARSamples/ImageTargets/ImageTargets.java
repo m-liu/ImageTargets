@@ -49,6 +49,7 @@ import com.qualcomm.QCARSamples.ImageTargets.GUIManager;
 /** The main activity for the ImageTargets sample. */
 public class ImageTargets extends Activity {
 	
+	/*
 	AudioManager audioManager;
 	
 	MediaPlayer arrow_sound;
@@ -56,6 +57,7 @@ public class ImageTargets extends Activity {
 	MediaPlayer snowball_sound;
 	MediaPlayer level_sound;
 	MediaPlayer button_sound;
+	*/
 	
 	// Application status constants:
 	private static final int APPSTATUS_UNINITED = -1;
@@ -657,11 +659,13 @@ public class ImageTargets extends Activity {
 	
 	private synchronized void updateApplicationStatus(int appStatus) {
 		
+		/*
 		arrow_sound = MediaPlayer.create(this,R.raw.arrow);
 		snowball_sound = MediaPlayer.create(this,R.raw.snowball);
 		cannon_sound = MediaPlayer.create(this,R.raw.cannon);
 		level_sound = MediaPlayer.create(this,R.raw.harp);
 		button_sound = MediaPlayer.create(this,R.raw.button);
+		*/
 		
 		// Exit if there is no change in status
 		if (mAppStatus == appStatus)
@@ -757,6 +761,7 @@ public class ImageTargets extends Activity {
 	        SettingsButton.setOnClickListener(new OnClickListener() {
 	        	
 	        	public void onClick(View v) {
+	        		/*
 	        		setContentView(R.layout.settings);
 	        		/*audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 		            int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -765,7 +770,7 @@ public class ImageTargets extends Activity {
 	        		
 	        		volControl.setMax(maxVolume);
 	        		volControl.setProgress(curVolume);
-	        		volControl.setOnSeenBarChangeListener(this);*/
+	        		volControl.setOnSeenBarChangeListener(this);
 	        		
 	        		audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 	        	    int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -788,7 +793,7 @@ public class ImageTargets extends Activity {
 	        	        }
 	        	    });
 	        		
-	        		
+	        		*/
 	        	}
 	        });
 	        
@@ -1179,6 +1184,7 @@ public class ImageTargets extends Activity {
         }
     }
 	
+    /*
     public void call_arrow_sound()
     {
         arrow_sound.start();
@@ -1200,5 +1206,5 @@ public class ImageTargets extends Activity {
     {
         button_sound.start();
     }
-	
+	*/
 }

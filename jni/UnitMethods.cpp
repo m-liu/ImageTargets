@@ -17,8 +17,8 @@ call_button_sound()
     // For this application, buttons are handled by the Android SDK
     // Use the environment and class stored in initNativeCallback
     // to call a Java method that toggles the store button
-    jmethodID method = javaEnv2->GetMethodID(javaClass2, "call_button_sound", "()V");
-    javaEnv2->CallVoidMethod(javaObj2, method);
+    //jmethodID method = javaEnv2->GetMethodID(javaClass2, "call_button_sound", "()V");
+    //javaEnv2->CallVoidMethod(javaObj2, method);
 }
 
 void
@@ -27,8 +27,8 @@ call_level_sound()
     // For this application, buttons are handled by the Android SDK
     // Use the environment and class stored in initNativeCallback
     // to call a Java method that toggles the store button
-    jmethodID method = javaEnv2->GetMethodID(javaClass2, "call_level_sound", "()V");
-    javaEnv2->CallVoidMethod(javaObj2, method);
+    //jmethodID method = javaEnv2->GetMethodID(javaClass2, "call_level_sound", "()V");
+    //javaEnv2->CallVoidMethod(javaObj2, method);
 }
 
 void
@@ -37,8 +37,8 @@ call_cannon_sound()
     // For this application, buttons are handled by the Android SDK
     // Use the environment and class stored in initNativeCallback
     // to call a Java method that toggles the store button
-    jmethodID method = javaEnv2->GetMethodID(javaClass2, "call_cannon_sound", "()V");
-    javaEnv2->CallVoidMethod(javaObj2, method);
+    //jmethodID method = javaEnv2->GetMethodID(javaClass2, "call_cannon_sound", "()V");
+    //javaEnv2->CallVoidMethod(javaObj2, method);
 }
 
 void
@@ -47,8 +47,8 @@ call_arrow_sound()
     // For this application, buttons are handled by the Android SDK
     // Use the environment and class stored in initNativeCallback
     // to call a Java method that toggles the store button
-    jmethodID method = javaEnv2->GetMethodID(javaClass2, "call_arrow_sound", "()V");
-    javaEnv2->CallVoidMethod(javaObj2, method);
+    //jmethodID method = javaEnv2->GetMethodID(javaClass2, "call_arrow_sound", "()V");
+    //javaEnv2->CallVoidMethod(javaObj2, method);
 }
 
 void
@@ -57,8 +57,8 @@ call_snowball_sound()
     // For this application, buttons are handled by the Android SDK
     // Use the environment and class stored in initNativeCallback
     // to call a Java method that toggles the store button
-    jmethodID method = javaEnv2->GetMethodID(javaClass2, "call_snowball_sound", "()V");
-    javaEnv2->CallVoidMethod(javaObj2, method);
+    //jmethodID method = javaEnv2->GetMethodID(javaClass2, "call_snowball_sound", "()V");
+    //javaEnv2->CallVoidMethod(javaObj2, method);
 }
 
 /******************
@@ -385,7 +385,7 @@ int animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber, int x_offs
 		}
 		else {
 			if 	(missile[missileNumber].updatedShotTime == false) {
-				
+				/*
 				if (missile[missileNumber].texture == 2) {
 					call_arrow_sound();
 				}
@@ -395,7 +395,7 @@ int animateMissile(QCAR::Matrix44F& missileMatrix, int missileNumber, int x_offs
 				else if (missile[missileNumber].texture == 10) {
 					call_cannon_sound();
 				}
-				
+				*/
 				missile[missileNumber].updatedShotTime = true;
 				missile[missileNumber].prevShotTime = currentTime;
 			}
