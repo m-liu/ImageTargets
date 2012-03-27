@@ -724,7 +724,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 	                    DrawHpBar(HPMatrix, HPProjection,i);
                     }
                 }
-            }
+            } 
 
             //render towers and missiles
             if (marker->getMarkerId() >= 4 && marker->getMarkerId() < MAX_NUM_MARKERS) {
