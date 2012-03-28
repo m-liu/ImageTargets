@@ -22,6 +22,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 	  android:layout_width="fill_parent"
 	  android:layout_height="fill_parent" 
 	  android:orientation="horizontal"
+	  android:paddingLeft="16dip"
 	  >
     
     <ImageView android:id="@+id/imageView1" android:layout_height="wrap_content" android:src="@drawable/grid_sample1_small" android:layout_width="wrap_content"></ImageView>
@@ -29,7 +30,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 	  xmlns:android="http://schemas.android.com/apk/res/android"
 	  android:layout_height="fill_parent" 
 	  android:orientation="horizontal"
-	  android:paddingLeft="20dip"
+	   android:paddingLeft="29dip"
 	  android:layout_width="wrap_content">
     <ImageView android:id="@+id/imageView2" android:layout_height="wrap_content" android:src="@drawable/grid_sample2_small" android:layout_width="wrap_content"></ImageView>
     </LinearLayout>
@@ -38,7 +39,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 	  android:layout_width="fill_parent"
 	  android:layout_height="fill_parent" 
 	  android:orientation="horizontal"
-	  android:paddingLeft="20dip"
+	   android:paddingLeft="30dip"
 	  >
     <ImageView android:id="@+id/imageView2" android:layout_height="wrap_content" android:src="@drawable/grid_sample3_small" android:layout_width="wrap_content"></ImageView>
     </LinearLayout>
@@ -51,9 +52,9 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 	  android:orientation="horizontal"
 	  android:weightSum="1">
 	  
-	    <RadioButton android:text="Level 1" android:id="@+id/radioButton_level1" android:layout_height="wrap_content" android:checked="true" android:layout_width="wrap_content" android:paddingRight="30dip"></RadioButton>
-	    <RadioButton android:text="Level 2" android:id="@+id/radioButton_level2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingRight="30dip"></RadioButton>
-	    <RadioButton android:text="Level 3" android:id="@+id/radioButton_level3" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
+	    <RadioButton android:text="Map Type 1" android:id="@+id/radioButton_level1" android:layout_height="wrap_content" android:checked="true" android:layout_width="wrap_content" android:paddingRight="10dip"></RadioButton>
+	    <RadioButton android:text="Map Type 2" android:id="@+id/radioButton_level2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingRight="10dip"></RadioButton>
+	    <RadioButton android:text="Map Type 3" android:id="@+id/radioButton_level3" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
     </RadioGroup>
     
     <TextView android:id="@+id/textView2" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="Difficulty"></TextView>
@@ -63,8 +64,8 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 		  android:orientation="horizontal"
 		  android:layout_width="wrap_content"
 		  >
-	    <RadioButton android:text="Easy" android:id="@+id/radioButton_difficulty1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true"></RadioButton>
-	    <RadioButton android:text="Medium" android:id="@+id/radioButton_difficulty2" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
+	    <RadioButton android:text="Easy" android:id="@+id/radioButton_difficulty1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" android:paddingRight="20dip"></RadioButton>
+	    <RadioButton android:text="Medium" android:id="@+id/radioButton_difficulty2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingRight="20dip"></RadioButton>
 	    <RadioButton android:text="Hard" android:id="@+id/radioButton_difficulty3" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
 	</RadioGroup>
     
@@ -76,8 +77,8 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 		  android:orientation="horizontal"
 		  android:layout_width="wrap_content"
 		  >
-	    <RadioButton android:text="20" android:id="@+id/radioButton_lives1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true"></RadioButton>
-	    <RadioButton android:text="10" android:id="@+id/radioButton_lives2" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
+	    <RadioButton android:text="20" android:id="@+id/radioButton_lives1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" android:paddingRight="30dip"></RadioButton>
+	    <RadioButton android:text="10" android:id="@+id/radioButton_lives2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingRight="30dip"></RadioButton>
 	    <RadioButton android:text="5" android:id="@+id/radioButton_lives3" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
     </RadioGroup>
     
