@@ -72,6 +72,7 @@ public class ImageTargets extends Activity {
 	private static final int APPSTATUS_INIT_EOL = 8;
 	private static final int APPSTATUS_GAMEOVER = 9;
 
+	private static final int DIALOG_WIN = 97;
     private static final int DIALOG_GAMEOVER = 98;
 	private static final int DIALOG_PAUSE = 99;
     private static final int DIALOG_STORE = 100;
@@ -380,6 +381,26 @@ public class ImageTargets extends Activity {
                 }
             });
             dialog = builderg.create();
+            break;
+            
+        case DIALOG_WIN:
+            final CharSequence[] itemsw = {"Click here to continue"};
+        	AlertDialog.Builder builderw = new AlertDialog.Builder(this);
+            TextView currentScore2 = (TextView) findViewById(R.id.current_score);
+            builderw.setTitle("YOU BEAT THE GAME! Final Score: " + currentScore2.getText())
+            //builderg.setTitle("GAME OVER\n\nFINAL SCORE: ")
+            .setItems(itemsw, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                	
+                	if (item == 0) {
+                		stopCamera();
+                		updateApplicationStatus(APPSTATUS_GAMEOVER);
+                		//TODO: allow reset?
+                		//updateApplicationStatus(APPSTATUS_INIT_APP);
+                	}
+                }
+            });
+            dialog = builderw.create();
             break;
             
         case DIALOG_STORE_CASTLE:
@@ -1129,6 +1150,19 @@ public class ImageTargets extends Activity {
     		
     	     public void run() {
     	     	showDialog(DIALOG_GAMEOVER);
+    	     }
+    	});
+		
+	}
+	
+	public void updateWin() {
+		PauseState = true;
+		EOLState = true;
+
+    	runOnUiThread(new Runnable() {
+    		
+    	     public void run() {
+    	     	showDialog(DIALOG_WIN);
     	     }
     	});
 		

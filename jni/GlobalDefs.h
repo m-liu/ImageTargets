@@ -16,6 +16,8 @@
 #define ENEMY_LIFT 30.0f
 #define HP_LIFT 60.0f
 
+#define MISSILE_RANGE 140.0f
+
 //tower/missile properties
 #define NUM_MISSILE_TYPES 12
 #define NUM_TOWER_TYPES 12

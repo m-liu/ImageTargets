@@ -362,7 +362,7 @@ int animateMissile(int missileNumber)
 				missile[missileNumber].currentTargetDistance = possibleTargetDistance;
 			}
 		}
-		if (missile[missileNumber].currentTargetDistance > 200) {
+		if (missile[missileNumber].currentTargetDistance > MISSILE_RANGE) {
 			missile[missileNumber].currentTarget = -1;
 		}
 	}
@@ -377,7 +377,7 @@ int animateMissile(int missileNumber)
 		xdiff = enemy[missile[missileNumber].currentTarget].X-missile[missileNumber].X;
 		ydiff = enemy[missile[missileNumber].currentTarget].Y-missile[missileNumber].Y;
 		missile[missileNumber].currentTargetDistance = sqrt((xdiff*xdiff) + (ydiff*ydiff));
-		if (missile[missileNumber].currentTargetDistance > 200) {
+		if (missile[missileNumber].currentTargetDistance > MISSILE_RANGE) {
 			missile[missileNumber].X = missile[missileNumber].defaultX;
 			missile[missileNumber].Y = missile[missileNumber].defaultY;
 			missile[missileNumber].currentTarget = -1;
