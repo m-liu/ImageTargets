@@ -538,11 +538,11 @@ void animateEnemy(int enemyNumber)
 		{
 			enemy[enemyNumber].deploydelay = 0;
 			if (stageType != 3) {
-				enemy[enemyNumber].X = 350.0f; //arbitrary initial positions
+				enemy[enemyNumber].X = 350.0f; //initial positions
 				enemy[enemyNumber].Y = -350.0f;
 			}
 			else if (stageType == 3) {
-				enemy[enemyNumber].X = 150.0f; //arbitrary initial positions
+				enemy[enemyNumber].X = 150.0f; //initial positions
 				enemy[enemyNumber].Y = -200.0f;
 			}
 			enemy[enemyNumber].direction = 90.0f;
@@ -727,7 +727,7 @@ void moveEnemy (int enemyNumber, float timeDiff)
 		else if ((enemy[enemyNumber].section == 3 || enemy[enemyNumber].section == 4) && enemy[enemyNumber].X < 350.0f){
 			enemy[enemyNumber].section = 4;
 			enemy[enemyNumber].Y = -350.0f;
-			enemy[enemyNumber].X -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
+			enemy[enemyNumber].X += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 0.0f; //right
 		}
 		else if ((enemy[enemyNumber].section == 4 || enemy[enemyNumber].section == 5) && enemy[enemyNumber].Y < 0.0f){
