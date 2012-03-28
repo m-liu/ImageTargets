@@ -551,7 +551,7 @@ void animateEnemy(int enemyNumber)
 		}
 		else {
 			moveEnemy(enemyNumber, timeDiff);
-			//TODO: FIX THIS
+			
 			bool endpath = false;
 			if (stageType == 1) {
 				endpath = enemy[enemyNumber].X < 0.0f;
@@ -668,27 +668,31 @@ void moveEnemy (int enemyNumber, float timeDiff)
 	
 	//Level2: S-shaped
 	else if (stageType == 2) {
-		if (enemy[enemyNumber].X == 350.0f && enemy[enemyNumber].Y < 0.0f) {
+		if (enemy[enemyNumber].section == 0 && enemy[enemyNumber].X == 350.0f && enemy[enemyNumber].Y < 0.0f) {
 			enemy[enemyNumber].Y += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 90.0f; //up
 		}
-		else if (enemy[enemyNumber].X > 200.0f){
+		else if ((enemy[enemyNumber].section == 0 || enemy[enemyNumber].section == 1) && enemy[enemyNumber].X > 200.0f){
+			enemy[enemyNumber].section = 1;
 			enemy[enemyNumber].Y = 0.0f;
 			enemy[enemyNumber].X -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 180.0f; //left
 		}
-		else if (enemy[enemyNumber].Y > -350.0f){
+		else if ((enemy[enemyNumber].section == 1 || enemy[enemyNumber].section == 2) && enemy[enemyNumber].Y > -350.0f){
+			enemy[enemyNumber].section = 2;
 			enemy[enemyNumber].X = 200.0f;
 			enemy[enemyNumber].Y -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 270.0f; //down
 		}
-		else if (enemy[enemyNumber].X > 0.0f){
+		else if ((enemy[enemyNumber].section == 2 || enemy[enemyNumber].section == 3) && enemy[enemyNumber].X > 0.0f){
+			enemy[enemyNumber].section = 3;
 			enemy[enemyNumber].Y = -350.0f;
 			enemy[enemyNumber].X -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 180.0f; //left
 		}
 		else
 		{
+			enemy[enemyNumber].section = 4;
 			enemy[enemyNumber].X = 0.0f;
 			enemy[enemyNumber].Y += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 90.0f; //up
