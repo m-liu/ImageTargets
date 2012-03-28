@@ -462,8 +462,9 @@ if (currentZen - missile_type[type].cost < 0)
 
     //deduct cost
 	currentZen = currentZen - missile_type[towerType].cost;
+	LOG("nativeBuy: before deduct zen");
 	displayZen(currentZen);
-	
+	LOG("nativeBuy: after deduct zen");
 	hideStoreButton();
 	showDeleteButton();
 	
@@ -506,11 +507,12 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeUpgrade(JNIEnv *en
 
     //deduct cost
 	currentZen = currentZen - tower[selMarkerID].upgradeCost;
+	LOG("nativeUpgrade: before deduct zen");
 	displayZen(currentZen);
-	
+	LOG("nativeUpgrade: after deduct zen");
 	//initialize the tower
 	upgradeTower(selMarkerID);
-	
+	LOG("nativeUpgrade: after upgrade");
 	hideStoreButton();
 	if ((tower[selMarkerID].type != 9 && tower[selMarkerID].type != 10 && tower[selMarkerID].type != 11) 
 		&& (currentZen - tower[selMarkerID].upgradeCost >= 0)
