@@ -175,6 +175,7 @@ float snap2Grid (float x);
 //for tap event computations
 
 bool checkTapMarker (const QCAR::Marker* marker, QCAR::Matrix44F markerMVM);
+bool hasPathCollision (int trackerID, QCAR::Matrix44F trackerMVM, QCAR::Matrix44F towerMatrix, int stageType);
 bool
 linePlaneIntersection(QCAR::Vec3F lineStart, QCAR::Vec3F lineEnd,
                       QCAR::Vec3F pointOnPlane, QCAR::Vec3F planeNormal,
@@ -762,7 +763,9 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 
 
                 //if marker is tapped, show store and upgrade buttons
-                if ( checkTapMarker(marker, towerMatrix) ){
+                if ( checkTapMarker(marker, towerMatrix) 
+                        && !hasPathCollision(trackerID, trackerMVM, towerMatrix, stageType) )
+                {
                     if (!tower[mID].initialized){
 						showStoreButton();
 						hideUpgradeButton();
@@ -820,8 +823,11 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 #endif
 
                 }
-
-                else if (selMarkerID != mID) { //if tower is uninitialized and not selected, display a ring to indicate marker is recognized
+        
+                //if tower is uninitialized & !selected, display a ring to indicate marker is recognized
+                else if (selMarkerID != mID 
+                        && !hasPathCollision(trackerID, trackerMVM, towerMatrix, stageType)) 
+                {                                  
                     DrawSelRing(towerMatrix, towerProjection, 0); 
                 }
 
@@ -1686,3 +1692,36 @@ bool checkTapMarker (const QCAR::Marker* marker, QCAR::Matrix44F markerMVM){
 }
 
 
+bool hasPathCollision (int trackerID, QCAR::Matrix44F trackerMVM, QCAR::Matrix44F towerMatrix, int stageType){
+    float xBoard, yBoard;
+    convert2BoardCoord (trackerID, trackerMVM, towerMatrix, xBoard, yBoard);
+
+    char (*path_ptr)[BOARD_SIZE];
+    if (stageType==1){
+        path_ptr = level1path;
+    }
+    else if (stageType==2){
+        path_ptr = level2path;
+    }
+    else if (stageType==3){
+        path_ptr = level3path;
+    }
+    else {
+        LOG("ERROR bad stageType");
+    }
+
+
+    //determine the tile index the xBoard and yBoard coresponds to
+    int xTile = xBoard/TILE_SIZE;
+    int yTile = -yBoard/TILE_SIZE;
+
+    if (path_ptr[yTile][xTile] == '1'){
+        //LOG("path collision detected for (%d, %d)", xTile, yTile);
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+    
