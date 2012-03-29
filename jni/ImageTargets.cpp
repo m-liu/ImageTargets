@@ -170,6 +170,7 @@ void DrawPath (QCAR::Matrix44F trackerMVM, QCAR::Matrix44F pathProjection, int x
 
 void getMarkerOffset(int trackedCornerID, int &x_offset, int &y_offset);
 void convert2BoardCoord (int cornerID, QCAR::Matrix44F cornerMVM, QCAR::Matrix44F targetMVM, float &x, float &y);
+float snap2Grid (float x);
 
 //for tap event computations
 
@@ -603,8 +604,8 @@ JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_onQCARInitializedNative(JNIEnv *, jobject)
 {
 
-    QCAR::setHint(QCAR::HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 100);
-    QCAR::setHint(QCAR::HINT_IMAGE_TARGET_MULTI_FRAME_ENABLED, 1);
+    QCAR::setHint(QCAR::HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 20);
+    //QCAR::setHint(QCAR::HINT_IMAGE_TARGET_MULTI_FRAME_ENABLED, 1);
 }
 
 JNIEXPORT void JNICALL
@@ -707,8 +708,8 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
         //use corner markers OR initialized towers as trackers
         if ( (testID < 4) ||
                 (tower[testID].initialized==true && 
-                 tower[testID].boardX != 0 && 
-                 tower[testID].boardY != 0 ) ) 
+                 tower[testID].boardX != -100000 && 
+                 tower[testID].boardY != -100000 ) ) 
         {
             //get the modelview matrix of the corner marker
             trackerID=testID;
@@ -1533,7 +1534,30 @@ void convert2BoardCoord (int cornerID, QCAR::Matrix44F cornerMVM, QCAR::Matrix44
     getMarkerOffset(cornerID, x_offset, y_offset);
     //translate the cornerMVM according to offset
     SampleUtils::translatePoseMatrix(x_offset, y_offset, 0, &cornerMVM.data[0]);
-    //compute the board coordinates    
+    //compute the board coordinates by finding translation between the two MVMs
+    // T = CornerMVM ^-1 * TargetMVM
+
+    //inverse the cornerMVM
+    QCAR::Matrix44F invCornerMVM;
+    invCornerMVM = SampleMath::Matrix44FInverse(cornerMVM);
+    
+
+    QCAR::Vec4F transVec, targetVec;
+    //extract the translation components of the targetMVM
+    targetVec.data[0] = targetMVM.data[12]; 
+    targetVec.data[1] = targetMVM.data[13]; 
+    targetVec.data[2] = targetMVM.data[14]; 
+    targetVec.data[3] = targetMVM.data[15]; 
+    //multiply this target vec with inverse cornerMVM
+    transVec = SampleMath::Vec4FTransform(targetVec, invCornerMVM);
+
+    //extract the x,y translations only
+    x = transVec.data[0];
+    y = transVec.data[1];
+    //LOG ("NEW: marker has board coordinates: (%f, %f)", x, y);
+    
+    /*
+    // BAD BAD BAD!!! 
     x = ( cornerMVM.data[5] * targetMVM.data[12] - cornerMVM.data[4] * targetMVM.data[13] 
             - cornerMVM.data[5] * cornerMVM.data[12] + cornerMVM.data[4] * cornerMVM.data[13] )
         / ( cornerMVM.data[0] * cornerMVM.data[5] - cornerMVM.data[4] * cornerMVM.data[1] );
@@ -1541,6 +1565,28 @@ void convert2BoardCoord (int cornerID, QCAR::Matrix44F cornerMVM, QCAR::Matrix44
             - cornerMVM.data[1] * cornerMVM.data[12] + cornerMVM.data[0] * cornerMVM.data[13] )
         / ( cornerMVM.data[1] * cornerMVM.data[4] - cornerMVM.data[0] * cornerMVM.data[5] );
     //LOG ("Board (x,y)=(%f, %f)", x, y);
+    */
+
+    //TODO: enable this?
+    //Assume snapping to an 8x8 grid.
+    x = snap2Grid(x);
+    y = (-1) * snap2Grid(-y);
+    //LOG ("marker snapped to coordinates: (%f, %f)", x, y);
+    
+}
+
+//provide an estimate if the markers snaps to the board grid
+float snap2Grid (float x){
+
+    for (int i=0; i< BOARD_SIZE; i++){
+        if ( (x > i*TILE_SIZE - TILE_SIZE/2 ) && (x <= i*TILE_SIZE + TILE_SIZE/2) ) {
+            return (i*TILE_SIZE);
+        }
+    }
+
+    //If no match found, return the original value
+    LOG("BAD ESTIMATE FOR BOARD COORDINATES x=%f", x);
+    return x;
 }
 
 

@@ -133,8 +133,8 @@ void makeTower(int towerType, int towerNumber)
 	tower[towerNumber].upgradeCost = missile_type[towerType%3].cost + 1;
 	tower[towerNumber].initialized = true;
 	tower[towerNumber].upgradeLevel = 1;
-	tower[towerNumber].boardX = 0;
-	tower[towerNumber].boardY = 0;
+	tower[towerNumber].boardX = -100000;
+	tower[towerNumber].boardY = -100000;
 };
 
 void upgradeTower(int towerNumber)

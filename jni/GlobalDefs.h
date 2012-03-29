@@ -15,7 +15,6 @@
 #define HP_SCALE 50.0f
 #define ENEMY_LIFT 30.0f
 #define HP_LIFT 60.0f
-#define TILE_SIZE 50.0f
 
 #define MISSILE_RANGE 140.0f
 
@@ -27,8 +26,8 @@
 #define TOWER_SCALE 75.0f
 #define MISSILE_SCALE 40.0f
 
-#define STARTING_X 350.0f
-#define STARTING_Y -350.0.0f
+//#define STARTING_X 350.0f
+//#define STARTING_Y -350.0.0f
 
 
 //game properties
@@ -41,7 +40,12 @@
 #define MAX_NUM_MARKERS (MAX_NUM_TOWERS+4) //# towers + 4 corners
 
 
+#define TILE_SIZE 50.0f //size of each 8x8 tile
 
+/*
+#define BOARD_SIZE_UNITS 350 //distance between corner markers
+#define BOARD_DIST_BETWEEN_MARKERS (BOARD_SIZE_UNITS/(BOARD_SIZE-1))  //350/7=50 UNITS
+*/
 
 // Structures: 
 struct EnemyUnit
