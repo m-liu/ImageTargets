@@ -200,6 +200,7 @@ void initTower (int type, int texture, int missiletype, float lift, float scale,
 	tower_type[type].upgradeLevel = 0;
 	tower_type[type].boardX = 0;
 	tower_type[type].boardY = 0;
+	tower_type[type].upgradeCost = missile_type[type%3].cost + 1;
 };
  
 void initUnitDB () {
@@ -259,6 +260,32 @@ void initUnitDB () {
 		enemy_type[i].section = 0;
 	}
 	
+	//missile initializations
+	strcpy(missile_type[0].name, "Arrow");
+	initMissile (0, 2, 15, 7, 40.0f, 25.0f, 1.0f, 0.9f);
+	strcpy(missile_type[1].name, "Snowball");
+	initMissile (1, 4, 14, 10, 10.0f, 20.0f, 0.90f, 1.1f);
+	strcpy(missile_type[2].name, "Cannonball");
+	initMissile (2, 10, 25, 15, 7.0f, 75.0f, 1.0f, 2.0f);
+	strcpy(missile_type[3].name, "Arrow2");
+	initMissile (3, 2, 20, 14, 50.0f, 50.0f, 1.0f, 0.9f);
+	strcpy(missile_type[4].name, "Snowball2");
+	initMissile (4, 4, 20, 20, 12.0f, 40.0f, 0.85f, 1.1f);
+	strcpy(missile_type[5].name, "Cannonball2");
+	initMissile (5, 10, 35, 30, 10.0f, 150.0f, 1.0f, 2.0f);
+	strcpy(missile_type[6].name, "Arrow3");
+	initMissile (6, 2, 25, 21, 40.0f, 75.0f, 1.0f, 0.9f);
+	strcpy(missile_type[7].name, "Snowball3");
+	initMissile (7, 4, 25, 30, 10.0f, 60.0f, 0.80f, 1.1f);
+	strcpy(missile_type[8].name, "Cannonball3");
+	initMissile (8, 10, 45, 45, 7.0f, 225.0f, 1.0f, 2.0f);
+	strcpy(missile_type[9].name, "Arrow4");
+	initMissile (9, 2, 30, 28, 50.0f, 100.0f, 1.0f, 0.9f);
+	strcpy(missile_type[10].name, "Snowball4");
+	initMissile (10, 4, 30, 40, 12.0f, 80.0f, 0.75f, 1.1f);
+	strcpy(missile_type[11].name, "Cannonball4");
+	initMissile (11, 10, 50, 60, 10.0f, 300.0f, 1.0f, 2.0f);
+	
 	//tower initializations
 	strcpy(tower_type[0].name, "Castle");
 	initTower (0, 0, 0, 50.0f, 60.0f, 0.0f);
@@ -284,32 +311,6 @@ void initUnitDB () {
 	initTower (10, 26, 10, 10.0f, 65.0f, 0.0f);
 	strcpy(tower_type[11].name, "Cannon4");
 	initTower (11, 29, 11, 10.0f, 65.0f, 90.0f);
-	
-    //missile initializations
-	strcpy(missile_type[0].name, "Arrow");
-	initMissile (0, 2, 15, 7, 40.0f, 25.0f, 1.0f, 0.9f);
-	strcpy(missile_type[1].name, "Snowball");
-	initMissile (1, 4, 14, 10, 10.0f, 20.0f, 0.90f, 1.1f);
-	strcpy(missile_type[2].name, "Cannonball");
-	initMissile (2, 10, 25, 15, 7.0f, 75.0f, 1.0f, 2.0f);
-	strcpy(missile_type[3].name, "Arrow2");
-	initMissile (3, 2, 20, 14, 50.0f, 50.0f, 1.0f, 0.9f);
-	strcpy(missile_type[4].name, "Snowball2");
-	initMissile (4, 4, 20, 20, 12.0f, 40.0f, 0.85f, 1.1f);
-	strcpy(missile_type[5].name, "Cannonball2");
-	initMissile (5, 10, 35, 30, 10.0f, 150.0f, 1.0f, 2.0f);
-	strcpy(missile_type[6].name, "Arrow3");
-	initMissile (6, 2, 25, 21, 40.0f, 75.0f, 1.0f, 0.9f);
-	strcpy(missile_type[7].name, "Snowball3");
-	initMissile (7, 4, 25, 30, 10.0f, 60.0f, 0.80f, 1.1f);
-	strcpy(missile_type[8].name, "Cannonball3");
-	initMissile (8, 10, 45, 45, 7.0f, 225.0f, 1.0f, 2.0f);
-	strcpy(missile_type[9].name, "Arrow4");
-	initMissile (9, 2, 30, 28, 50.0f, 100.0f, 1.0f, 0.9f);
-	strcpy(missile_type[10].name, "Snowball4");
-	initMissile (10, 4, 30, 40, 12.0f, 80.0f, 0.75f, 1.1f);
-	strcpy(missile_type[11].name, "Cannonball4");
-	initMissile (11, 10, 50, 60, 10.0f, 300.0f, 1.0f, 2.0f);
 	
 	for (int i = 0; i < NUM_MISSILE_TYPES; i++) {
 		missile_type[i].initialized = false;
@@ -653,14 +654,14 @@ void moveEnemy (int enemyNumber, float timeDiff)
 {
 	//Level1: basic
 	if (stageType == 1) {
-		if (enemy[enemyNumber].Y < 0.0f) {
-			enemy[enemyNumber].X = 350.0f;
+		if (enemy[enemyNumber].Y < 0 * TILE_SIZE) {
+			enemy[enemyNumber].X = 7 * TILE_SIZE;
 			enemy[enemyNumber].Y += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 90.0f; //up
 		}
 		else
 		{
-			enemy[enemyNumber].Y = 0.0f;
+			enemy[enemyNumber].Y = 0 * TILE_SIZE;
 			enemy[enemyNumber].X -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 180.0f; //left
 		}
@@ -668,32 +669,32 @@ void moveEnemy (int enemyNumber, float timeDiff)
 	
 	//Level2: S-shaped
 	else if (stageType == 2) {
-		if (enemy[enemyNumber].section == 0 && enemy[enemyNumber].X == 350.0f && enemy[enemyNumber].Y < 0.0f) {
+		if (enemy[enemyNumber].section == 0 && enemy[enemyNumber].X == 7 * TILE_SIZE && enemy[enemyNumber].Y < 0 * TILE_SIZE) {
 			enemy[enemyNumber].Y += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 90.0f; //up
 		}
-		else if ((enemy[enemyNumber].section == 0 || enemy[enemyNumber].section == 1) && enemy[enemyNumber].X > 200.0f){
+		else if ((enemy[enemyNumber].section == 0 || enemy[enemyNumber].section == 1) && enemy[enemyNumber].X > 4 * TILE_SIZE){
 			enemy[enemyNumber].section = 1;
-			enemy[enemyNumber].Y = 0.0f;
+			enemy[enemyNumber].Y = 0 * TILE_SIZE;
 			enemy[enemyNumber].X -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 180.0f; //left
 		}
-		else if ((enemy[enemyNumber].section == 1 || enemy[enemyNumber].section == 2) && enemy[enemyNumber].Y > -350.0f){
+		else if ((enemy[enemyNumber].section == 1 || enemy[enemyNumber].section == 2) && enemy[enemyNumber].Y > -7 * TILE_SIZE){
 			enemy[enemyNumber].section = 2;
-			enemy[enemyNumber].X = 200.0f;
+			enemy[enemyNumber].X = 4 * TILE_SIZE;
 			enemy[enemyNumber].Y -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 270.0f; //down
 		}
-		else if ((enemy[enemyNumber].section == 2 || enemy[enemyNumber].section == 3) && enemy[enemyNumber].X > 0.0f){
+		else if ((enemy[enemyNumber].section == 2 || enemy[enemyNumber].section == 3) && enemy[enemyNumber].X > 0 * TILE_SIZE){
 			enemy[enemyNumber].section = 3;
-			enemy[enemyNumber].Y = -350.0f;
+			enemy[enemyNumber].Y = -7 * TILE_SIZE;
 			enemy[enemyNumber].X -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 180.0f; //left
 		}
 		else
 		{
 			enemy[enemyNumber].section = 4;
-			enemy[enemyNumber].X = 0.0f;
+			enemy[enemyNumber].X = 0 * TILE_SIZE;
 			enemy[enemyNumber].Y += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 90.0f; //up
 		}
@@ -701,45 +702,45 @@ void moveEnemy (int enemyNumber, float timeDiff)
 	
 	//Level3: spiral
 	else if (stageType == 3) {
-		if (enemy[enemyNumber].section == 0 && enemy[enemyNumber].X <= 250.0f) {
-			enemy[enemyNumber].Y = -200.0f;
+		if (enemy[enemyNumber].section == 0 && enemy[enemyNumber].X <= 5 * TILE_SIZE) {
+			enemy[enemyNumber].Y = -4 * TILE_SIZE;
 			enemy[enemyNumber].X += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 0.0f; //right
 		}
-		else if ((enemy[enemyNumber].section == 0 || enemy[enemyNumber].section == 1) && enemy[enemyNumber].Y < -100.0f){
+		else if ((enemy[enemyNumber].section == 0 || enemy[enemyNumber].section == 1) && enemy[enemyNumber].Y < -2 * TILE_SIZE){
 			enemy[enemyNumber].section = 1;
 			enemy[enemyNumber].Y += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
-			enemy[enemyNumber].X = 250.0f;
+			enemy[enemyNumber].X = 5 * TILE_SIZE;
 			enemy[enemyNumber].direction = 90.0f; //up
 		}
-		else if ((enemy[enemyNumber].section == 1 || enemy[enemyNumber].section == 2) && enemy[enemyNumber].X > 50.0f){
+		else if ((enemy[enemyNumber].section == 1 || enemy[enemyNumber].section == 2) && enemy[enemyNumber].X > 1 * TILE_SIZE){
 			enemy[enemyNumber].section = 2;
-			enemy[enemyNumber].Y = -100.0f;
+			enemy[enemyNumber].Y = -2 * TILE_SIZE;
 			enemy[enemyNumber].X -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 180.0f; //left
 		}
-		else if ((enemy[enemyNumber].section == 2 || enemy[enemyNumber].section == 3) && enemy[enemyNumber].Y > -350.0f){
+		else if ((enemy[enemyNumber].section == 2 || enemy[enemyNumber].section == 3) && enemy[enemyNumber].Y > -7 * TILE_SIZE){
 			enemy[enemyNumber].section = 3;
-			enemy[enemyNumber].X = 50.0f;
+			enemy[enemyNumber].X = 1 * TILE_SIZE;
 			enemy[enemyNumber].Y -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 270.0f; //down
 		}
-		else if ((enemy[enemyNumber].section == 3 || enemy[enemyNumber].section == 4) && enemy[enemyNumber].X < 350.0f){
+		else if ((enemy[enemyNumber].section == 3 || enemy[enemyNumber].section == 4) && enemy[enemyNumber].X < 7 * TILE_SIZE){
 			enemy[enemyNumber].section = 4;
-			enemy[enemyNumber].Y = -350.0f;
+			enemy[enemyNumber].Y = -7 * TILE_SIZE;
 			enemy[enemyNumber].X += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 0.0f; //right
 		}
-		else if ((enemy[enemyNumber].section == 4 || enemy[enemyNumber].section == 5) && enemy[enemyNumber].Y < 0.0f){
+		else if ((enemy[enemyNumber].section == 4 || enemy[enemyNumber].section == 5) && enemy[enemyNumber].Y < 0 * TILE_SIZE){
 			enemy[enemyNumber].section = 5;
-			enemy[enemyNumber].X = 350.0f;
+			enemy[enemyNumber].X = 7 * TILE_SIZE;
 			enemy[enemyNumber].Y += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 90.0f; //up
 		}
 		else
 		{
 			enemy[enemyNumber].section = 6;
-			enemy[enemyNumber].Y = 0.0f;
+			enemy[enemyNumber].Y = 0 * TILE_SIZE;
 			enemy[enemyNumber].X -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 180.0f; //left
 		}
@@ -748,15 +749,51 @@ void moveEnemy (int enemyNumber, float timeDiff)
 	//default to basic
 	else
 	{
-		if (enemy[enemyNumber].Y < 0.0f) {
+		if (enemy[enemyNumber].Y < 0 * TILE_SIZE) {
 			enemy[enemyNumber].Y += timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 90.0f; //up
 		}
 		else
 		{
-			enemy[enemyNumber].Y = 0.0f;
+			enemy[enemyNumber].Y = 0 * TILE_SIZE;
 			enemy[enemyNumber].X -= timeDiff * ENEMY_MOVEMENT_SPEED * enemy[enemyNumber].speed;
 			enemy[enemyNumber].direction = 180.0f; //left
 		}
+	}
+}
+
+void renderBuyTower () {
+
+	if (buyMarker != -1) {
+		LOG("BuyTower: selMarkerID=%d, towerType=%d", buyMarker, buyType);
+		//initialize the tower
+		makeTower(buyType, buyMarker);
+
+		//deduct cost
+		currentZen = currentZen - missile_type[buyType].cost;
+		LOG("nativeBuy: before deduct zen");
+		displayZen(currentZen);
+		LOG("nativeBuy: after deduct zen");
+		
+		buyMarker = -1;
+		buyType = -1;
+	}
+}
+
+void renderUpgradeTower () {
+
+	if (upgMarker != -1) {
+		LOG("nativeUpgrade: selMarkerID=%d", upgMarker);
+
+		//deduct cost
+		currentZen = currentZen - tower[upgMarker].upgradeCost;
+		LOG("nativeUpgrade: before deduct zen");
+		displayZen(currentZen);
+		LOG("nativeUpgrade: after deduct zen");
+		//initialize the tower
+		upgradeTower(upgMarker);
+		LOG("nativeUpgrade: after upgrade");
+		
+		upgMarker = -1;
 	}
 }

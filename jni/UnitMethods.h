@@ -53,6 +53,11 @@ extern int stageType;
 extern int startGame;
 extern int seeTargets;
 
+extern int buyMarker;
+extern int buyType;
+
+extern int upgMarker;
+
 double getCurrentTime();
 //Set all missiles to deinitialized state
 void deinitAllMissiles ();
@@ -76,5 +81,8 @@ void updateMissileDefaultPos(int missileNumber, float lx, float ly);
 void removeEnemy (int enemyNumber);
 void gameOver ();
 void moveEnemy (int enemyNumber, float timeDiff);
+
+void renderBuyTower();
+void renderUpgradeTower();
 
 #endif // _UNITDB_H_

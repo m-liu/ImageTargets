@@ -272,7 +272,7 @@ public class ImageTargets extends Activity {
                     }
                 	else {
                 		int success = nativeBuy((int)item);
-	                    if (success == -1) {
+	                    if (success <= -1) {
 	                    	showDialog(DIALOG_STORE_FAIL);     	
 	                    }
 	                    else if (item == 0 || item == 3) {
@@ -752,7 +752,7 @@ public class ImageTargets extends Activity {
 	        				}
 	        				
 	        				if (lives1_button.isChecked()) {
-	        					lives = 20;
+	        					lives = 200;
 	        				}
 	        				else if (lives2_button.isChecked()) {
 	        					lives = 10;

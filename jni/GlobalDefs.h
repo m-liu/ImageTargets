@@ -15,6 +15,7 @@
 #define HP_SCALE 50.0f
 #define ENEMY_LIFT 30.0f
 #define HP_LIFT 60.0f
+#define TILE_SIZE 50.0f
 
 #define MISSILE_RANGE 140.0f
 
