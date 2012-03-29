@@ -303,7 +303,7 @@ public class ImageTargets extends Activity {
                     
                 	
                 	if (item == 0) {
-                    	mGUIManager.nativeLeave();
+                    	//mGUIManager.nativeLeave();
                      	nativeNext();
                      	mGUIManager.newLevel(String.valueOf(currentLevel+1));
                      	EOLState = false;
@@ -1135,7 +1135,7 @@ public class ImageTargets extends Activity {
     		
     	     public void run() {
 
-             	mGUIManager.nativeStore();
+             	//mGUIManager.nativeStore();
     	     	showDialog(DIALOG_EOL);
     	     }
     	});

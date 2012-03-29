@@ -82,7 +82,7 @@ void removeEnemy (int enemyNumber);
 void gameOver ();
 void moveEnemy (int enemyNumber, float timeDiff);
 
-void renderBuyTower();
-void renderUpgradeTower();
+//void renderBuyTower();
+//void renderUpgradeTower();
 
 #endif // _UNITDB_H_

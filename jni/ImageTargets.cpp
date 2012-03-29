@@ -462,20 +462,9 @@ if (currentZen - missile_type[type].cost < 0)
 		LOG("can't upgrade, inited");
 		return (jint)(-3);
 	}
-	
-	hideStoreButton();
-		showDeleteButton();
+
 		
 	buyType = (int)type;
-		
-		if ((type != 9 && type != 10 && type != 11) 
-			&& (currentZen - tower_type[buyType].upgradeCost >= tower_type[buyType].upgradeCost)
-			)
-			showUpgradeButton(tower_type[buyType].upgradeCost);
-		else
-			hideUpgradeButton2(tower_type[buyType].upgradeCost);
-
-	
 	buyMarker = selMarkerID;
 	
 	return (jint)0;
@@ -504,17 +493,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeUpgrade(JNIEnv *en
 		LOG("can't upgrade, type");
 		return (jint)(-3);
 	}
-	
-	hideStoreButton();
-	showDeleteButton();
-	if ((tower[selMarkerID].type < 6) 
-		&& (currentZen - tower[selMarkerID].upgradeCost >= tower[selMarkerID].upgradeCost)
-		)
-		showUpgradeButton(tower[selMarkerID].upgradeCost);
-	else
-		hideUpgradeButton2(tower[selMarkerID].upgradeCost);
-
-	
+		
 	upgMarker = selMarkerID;
 	
 	return (jint)0;
@@ -623,6 +602,64 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_initNativeCallba
     // Store the class of the calling object for later use
     jclass objClass = env->GetObjectClass(obj);
     javaClass = (jclass) env->NewGlobalRef(objClass);
+}
+
+
+void renderBuyTower () {
+
+	if (buyMarker != -1) {
+		LOG("BuyTower: selMarkerID=%d, towerType=%d", buyMarker, buyType);
+		//initialize the tower
+		makeTower(buyType, buyMarker);
+
+		//deduct cost
+		currentZen = currentZen - missile_type[buyType].cost;
+		LOG("nativeBuy: before deduct zen");
+		displayZen(currentZen);
+		LOG("nativeBuy: after deduct zen");
+		
+					
+		hideStoreButton();
+		showDeleteButton();
+		if ((currentZen - tower_type[buyType].upgradeCost >= 0)
+			)
+			showUpgradeButton(tower_type[buyType].upgradeCost);
+		else
+			hideUpgradeButton2(tower_type[buyType].upgradeCost);
+
+	
+		
+		buyMarker = -1;
+		buyType = -1;
+	}
+}
+
+void renderUpgradeTower () {
+
+	if (upgMarker != -1) {
+		LOG("nativeUpgrade: selMarkerID=%d", upgMarker);
+
+		//deduct cost
+		currentZen = currentZen - tower[upgMarker].upgradeCost;
+		LOG("nativeUpgrade: before deduct zen");
+		displayZen(currentZen);
+		LOG("nativeUpgrade: after deduct zen");
+		//initialize the tower
+		upgradeTower(upgMarker);
+		LOG("nativeUpgrade: after upgrade");
+		
+		hideStoreButton();
+		showDeleteButton();
+		if ((tower[upgMarker].type < 9) 
+			&& (currentZen - tower[upgMarker].upgradeCost >= 0)
+			)
+			showUpgradeButton(tower[upgMarker].upgradeCost);
+		else
+			hideUpgradeButton2(tower[upgMarker].upgradeCost);
+
+		
+		upgMarker = -1;
+	}
 }
 
 JNIEXPORT void JNICALL
@@ -901,7 +938,6 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 	}
 	*/
 }
-
 
 
 void

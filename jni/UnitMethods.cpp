@@ -761,39 +761,3 @@ void moveEnemy (int enemyNumber, float timeDiff)
 		}
 	}
 }
-
-void renderBuyTower () {
-
-	if (buyMarker != -1) {
-		LOG("BuyTower: selMarkerID=%d, towerType=%d", buyMarker, buyType);
-		//initialize the tower
-		makeTower(buyType, buyMarker);
-
-		//deduct cost
-		currentZen = currentZen - missile_type[buyType].cost;
-		LOG("nativeBuy: before deduct zen");
-		displayZen(currentZen);
-		LOG("nativeBuy: after deduct zen");
-		
-		buyMarker = -1;
-		buyType = -1;
-	}
-}
-
-void renderUpgradeTower () {
-
-	if (upgMarker != -1) {
-		LOG("nativeUpgrade: selMarkerID=%d", upgMarker);
-
-		//deduct cost
-		currentZen = currentZen - tower[upgMarker].upgradeCost;
-		LOG("nativeUpgrade: before deduct zen");
-		displayZen(currentZen);
-		LOG("nativeUpgrade: after deduct zen");
-		//initialize the tower
-		upgradeTower(upgMarker);
-		LOG("nativeUpgrade: after upgrade");
-		
-		upgMarker = -1;
-	}
-}
