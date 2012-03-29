@@ -85,6 +85,8 @@ int buyMarker = -1;
 
 int upgMarker = -1;
 
+int delMarker = -1;
+
 bool displayedMessage = false;
 
 int startGame = 0;
@@ -513,12 +515,13 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_nativeDelete(JNIEnv*, jo
 	
     LOG("nativeDelete: selMarkerID=%d", selMarkerID);
 	
-	//initialize the tower
-	deleteTower(selMarkerID);
+	  if (!tower[selMarkerID].initialized){
+        LOG("ERROR nativeDelete: selMarkerID < 0");
+        return;
+    }
 	
-	showStoreButton();
-	hideUpgradeButton();
-	hideDeleteButton();
+	delMarker = selMarkerID;
+	
 }
 
 JNIEXPORT void JNICALL
@@ -661,6 +664,20 @@ void renderUpgradeTower () {
 		upgMarker = -1;
 	}
 }
+
+void renderDeleteTower () {
+	if (delMarker != -1) {
+		//initialize the tower
+		deleteTower(selMarkerID);
+		
+		showStoreButton();
+		hideUpgradeButton();
+		hideDeleteButton();
+		delMarker = -1;
+	
+	}
+}
+
 
 JNIEXPORT void JNICALL
 Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargets_initNativeCallback(JNIEnv* env, jobject obj)
@@ -904,6 +921,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 	
 	renderBuyTower();
 	renderUpgradeTower();
+	renderDeleteTower();
 
     glDisable(GL_DEPTH_TEST);
 
