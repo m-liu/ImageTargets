@@ -58,6 +58,12 @@ extern int buyType;
 
 extern int upgMarker;
 
+extern int soundflag_arrow;
+extern int soundflag_snowball;
+extern int soundflag_cannon;
+extern int soundflag_level;
+
+
 double getCurrentTime();
 //Set all missiles to deinitialized state
 void deinitAllMissiles ();

@@ -26,6 +26,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,6 +50,7 @@ import com.qualcomm.QCARSamples.ImageTargets.GUIManager;
 /** The main activity for the ImageTargets sample. */
 public class ImageTargets extends Activity {
 	
+	private SoundManager mSoundManager;
 	/*
 	AudioManager audioManager;
 	
@@ -98,6 +100,8 @@ public class ImageTargets extends Activity {
 	int difficulty = 0;
 	int lives = 0;
     
+	Context myMainContext = this;
+	
 	// Our OpenGL view:
 	private QCARSampleGLView mGlView;
 	
@@ -295,13 +299,15 @@ public class ImageTargets extends Activity {
             
         case DIALOG_EOL:
             final CharSequence[] items2 = {"Next Level", "Buy/Upgrade Towers", "Quit Game"};
+            Log.e("TEST", "DIALOG_EOL 1");
         	AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
         	levelBuilder = builder2;
+        	Log.e("TEST", "DIALOG_EOL 2");
             builder2.setTitle("LEVEL COMPLETE")
             .setItems(items2, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
                     
-                	
+                	Log.e("TEST", "DIALOG_EOL 3");
                 	if (item == 0) {
                     	//mGUIManager.nativeLeave();
                      	nativeNext();
@@ -946,9 +952,9 @@ public class ImageTargets extends Activity {
                         	mRenderer.hideUnpauseButton();
                         	mGUIManager.nativeUnpause();
                         	
-                        	if (EOLState == true) {
-                            	EOLState = false;
-                             	mGUIManager.newLevel(String.valueOf(currentLevel+1));
+                        	if (mRenderer.EOLState == 1) {
+                        		mRenderer.EOLState = 0;
+                             	mGUIManager.newLevel(String.valueOf(mRenderer.currentLevel+1));
                             	nativeNext();
                         	}
                         }
@@ -1052,6 +1058,9 @@ public class ImageTargets extends Activity {
 
         mGUIManager = new GUIManager(getApplicationContext());
         mRenderer.setGUIManager(mGUIManager);
+        
+        mSoundManager = new SoundManager(getApplicationContext());
+		mRenderer.setSoundManager(mSoundManager);
 		
 	}
 
@@ -1125,20 +1134,25 @@ public class ImageTargets extends Activity {
 	private native boolean setFocusMode(int mode);
 
 	public void updateEOL(String level) {
+		Log.e("TEST", "DIALOG_EOL 0.1");
 		PauseState = true;
 		EOLState = true;
+		Log.e("TEST", "DIALOG_EOL 0.1.1");
 		currentLevel = Integer.parseInt(level);
 		
 		mGUIManager.newLevel("END "+level);
-
+		/*Log.e("TEST", "DIALOG_EOL 0.2");
     	runOnUiThread(new Runnable() {
     		
     	     public void run() {
-
+    	    	 Log.e("TEST", "DIALOG_EOL 0.3");
              	//mGUIManager.nativeStore();
     	     	showDialog(DIALOG_EOL);
     	     }
-    	});
+    	});*/
+		mRenderer.hidePauseButton();
+    	mRenderer.showUnpauseButton();
+		
 		
 	}
 	

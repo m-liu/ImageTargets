@@ -14,9 +14,10 @@
 void
 updateApplicationStatusEOL(char* level)
 {
-	jstring js = javaEnv2->NewStringUTF(level);
-    jmethodID method = javaEnv2->GetMethodID(javaClass2, "updateEOL", "(Ljava/lang/String;)V");
-    javaEnv2->CallVoidMethod(javaObj2, method, js);
+	//jstring js = javaEnv2->NewStringUTF(level);
+    //jmethodID method = javaEnv2->GetMethodID(javaClass2, "updateEOL", "(Ljava/lang/String;)V");
+    //javaEnv2->CallVoidMethod(javaObj2, method, js);
+    //startLevel(currentLevel);
 }
 
 void

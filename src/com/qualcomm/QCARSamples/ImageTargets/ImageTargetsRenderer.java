@@ -19,6 +19,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.opengl.GLSurfaceView;
 import android.os.Message;
+import android.util.Log;
 
 import com.qualcomm.QCAR.QCAR;
 import com.qualcomm.QCARSamples.ImageTargets.GUIManager;
@@ -27,12 +28,20 @@ import com.qualcomm.QCARSamples.ImageTargets.GUIManager;
 /** The renderer class for the ImageTargets sample. */
 public class ImageTargetsRenderer implements GLSurfaceView.Renderer
 {
+	private SoundManager mSoundManager;
+	
     public boolean mIsActive = false;
     private GUIManager mGUIManager;
     
     /** Native function for initializing the renderer. */
     public native void initRendering();
     
+    public native void resetSoundFlag();
+    public native int getSoundFlag(int type);
+    public native int getCurrentLevel();
+    
+    public int EOLState = 0;
+    public int currentLevel;
     
     /** Native function to update the renderer. */
     public native void updateRendering(int width, int height);
@@ -84,6 +93,35 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
             return;
 
         // Call our native function to render content
+        //renderFrame();
+        
+        if (getSoundFlag(0) == 1){
+        	Log.e("TEST", "getSoundFlag(0) == 1");
+        	mSoundManager.playSound(0,1);
+        }
+        if (getSoundFlag(1) == 1){
+        	Log.e("TEST", "getSoundFlag(1) == 1");
+        	mSoundManager.playSound(1,1);
+        }
+        if (getSoundFlag(2) == 1){
+        	Log.e("TEST", "getSoundFlag(2) == 1");
+        	mSoundManager.playSound(2,1);
+        }
+        if (getSoundFlag(3) == 1){
+        	Log.e("TEST", "getSoundFlag(3) == 1");
+        	mSoundManager.playSound(3,1);
+        	currentLevel =  getCurrentLevel();
+    		
+    		mGUIManager.newLevel("END "+currentLevel);
+    		
+    		hidePauseButton();
+        	showUnpauseButton();
+        	EOLState = 1;
+        }
+        
+        resetSoundFlag();
+        
+        
         renderFrame();
     }
     
@@ -263,6 +301,21 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
     public void setGUIManager(GUIManager guiManager)
     {
         mGUIManager = guiManager;
+    }
+    
+    /** Called from native to play a sound effect. */
+    public void playSound(int soundIndex, float volume)
+    {
+        mSoundManager.playSound(soundIndex, volume);
+    	//mSoundManager.setSoundFlag(soundIndex, volume);
+    }
+    public void setSoundManager(SoundManager soundManager)
+    {
+        mSoundManager = soundManager;
+    }
+    
+    public void resetEOLState(){
+    	EOLState = 0;
     }
     
 }

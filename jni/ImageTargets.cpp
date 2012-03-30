@@ -75,7 +75,7 @@ int currentLevel = 0;
 int currentLives = 20;
 
 int currentScore = 0;
-int currentZen = 20;
+int currentZen = 2000;
 
 float currentDiff = 1;
 int stageType = 1;
@@ -92,6 +92,11 @@ bool displayedMessage = false;
 int startGame = 0;
 int seeTargets = 0;
 static int pauseGame = 0;
+int soundflag_arrow = 0;
+int soundflag_snowball = 0;
+int soundflag_cannon = 0;
+int soundflag_level = 0;
+
 
 char level1path[BOARD_SIZE][BOARD_SIZE] = {
 {'1', '1', '1', '1', '1', '1', '1', '1'},
@@ -1218,6 +1223,42 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_updateRendering(
     configureVideoBackground();
 }
 
+JNIEXPORT int JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_getSoundFlag(
+                                                    JNIEnv* env, jobject obj,jint type)
+{
+    if (type == 0){
+    	return soundflag_arrow;
+    }
+    else if (type == 1){
+    	return soundflag_snowball;
+    }
+    else if (type == 2){
+    	return soundflag_cannon;
+    }
+    else if (type == 3){
+    	return soundflag_level;
+    }
+    else 
+    	return -1;
+}
+
+JNIEXPORT int JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_getCurrentLevel(
+                                                    JNIEnv* env, jobject obj)
+{
+    return currentLevel;
+}
+
+JNIEXPORT void JNICALL
+Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_resetSoundFlag(
+                                                    JNIEnv* env, jobject obj){
+    soundflag_arrow = 0;
+    soundflag_cannon = 0;
+    soundflag_snowball = 0;
+    soundflag_level = 0;
+}
+
 #ifdef __cplusplus
 }
 #endif
@@ -1777,5 +1818,7 @@ bool hasPathCollision (int trackerID, QCAR::Matrix44F trackerMVM, QCAR::Matrix44
         return false;
     }
 }
+
+
 
     
