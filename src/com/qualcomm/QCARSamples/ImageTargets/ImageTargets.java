@@ -955,6 +955,7 @@ public class ImageTargets extends Activity {
                         	
                         	if (mRenderer.EOLState == 1) {
                         		mRenderer.EOLState = 0;
+                        		mGUIManager.newContinue("Continue Game");
                              	mGUIManager.newLevel(String.valueOf(mRenderer.currentLevel+1));
                             	nativeNext();
                         	}

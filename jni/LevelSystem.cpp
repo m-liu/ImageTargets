@@ -30,8 +30,8 @@ updateApplicationStatusGameOver()
 void
 updateApplicationStatusWin()
 {
-    jmethodID method = javaEnv2->GetMethodID(javaClass2, "updateWin", "()V");
-    javaEnv2->CallVoidMethod(javaObj2, method);
+   //jmethodID method = javaEnv2->GetMethodID(javaClass2, "updateWin", "()V");
+   //javaEnv2->CallVoidMethod(javaObj2, method);
 }
 
 //display a message    

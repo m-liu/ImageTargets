@@ -339,6 +339,20 @@ public class GUIManager extends Activity{
     	});
     }
     
+    public void newContinue(String newButton)
+    {
+    	final String temp = newButton;
+    	//extended activity. Hopefully not too much overhead?
+    	runOnUiThread(new Runnable() {
+    		
+    	     public void run() {
+    	    	 
+             	unpauseButton.setText(temp);
+
+    	    }
+    	});
+    }
+    
     public void newLives(String lives)
     {
     	final String temp = lives;

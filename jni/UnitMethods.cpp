@@ -439,11 +439,16 @@ int checkMissileContact(int missileNumber)
 					currentLevel++;
 					char levelString[20];
 					sprintf (levelString, "%d", currentLevel);
+					char emessage[80];
 					if (currentLevel != NUM_LEVELS) {
-						updateApplicationStatusEOL(levelString);
+						sprintf (emessage, "Reached End of level %d! Press Next Level to continue!", currentLevel);
+						displayMessage(emessage);
+						//updateApplicationStatusEOL(levelString);
 					}
 					else {
-						updateApplicationStatusWin();
+						sprintf (emessage, "Reached the end of the game! Press End Game to continue!");
+						displayMessage(emessage);
+						//updateApplicationStatusWin();
 					}
 				}
 				
@@ -527,11 +532,16 @@ void animateEnemy(int enemyNumber)
 					currentLevel++;
 					char levelString[20];
 					sprintf (levelString, "%d", currentLevel);
+					char emessage[80];
 					if (currentLevel != NUM_LEVELS) {
-						updateApplicationStatusEOL(levelString);
+						sprintf (emessage, "Reached End of level %d! Press Next Level to continue!", currentLevel);
+						displayMessage(emessage);
+						//updateApplicationStatusEOL(levelString);
 					}
 					else {
-						updateApplicationStatusWin();
+						sprintf (emessage, "Reached the end of the game! Press End Game to continue!");
+						displayMessage(emessage);
+						//updateApplicationStatusWin();
 					}
 				}
 				}
