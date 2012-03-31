@@ -39,7 +39,7 @@
    android:orientation="vertical"
    android:layout_width="fill_parent"
    android:layout_height="fill_parent"
-   android:background="@drawable/masonry_wall_texture"
+   android:background="@drawable/main_menu_background"
    android:gravity="center_horizontal"
    >
     
