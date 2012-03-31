@@ -96,7 +96,7 @@ int soundflag_arrow = 0;
 int soundflag_snowball = 0;
 int soundflag_cannon = 0;
 int soundflag_level = 0;
-
+int soundflag_coin = 0;
 
 char level1path[BOARD_SIZE][BOARD_SIZE] = {
 {'1', '1', '1', '1', '1', '1', '1', '1'},
@@ -878,7 +878,9 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 #ifdef USE_OPENGL_ES_1_1
 #else
                     QCAR::Matrix44F missileProjection;
-                    DrawMissile(missileMatrix, missileProjection, missile[mID].texture); 
+                    if (missile[mID].currentTarget != -1) {
+                    	DrawMissile(missileMatrix, missileProjection, missile[mID].texture); 
+                    }
 #endif
 
                 }
@@ -1239,6 +1241,9 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_getSoundFlag(
     else if (type == 3){
     	return soundflag_level;
     }
+    else if (type == 4){
+    	return soundflag_coin;
+    }
     else 
     	return -1;
 }
@@ -1257,6 +1262,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_resetSoundFlag(
     soundflag_cannon = 0;
     soundflag_snowball = 0;
     soundflag_level = 0;
+    soundflag_coin = 0;
 }
 
 #ifdef __cplusplus

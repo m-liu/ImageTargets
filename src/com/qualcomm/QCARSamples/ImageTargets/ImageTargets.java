@@ -338,6 +338,7 @@ public class ImageTargets extends Activity {
                     
                 	
                 	if (item == 0) {
+                		PauseState = false;
  
                     	mGUIManager.nativeLeave();              
                     	
@@ -1073,7 +1074,6 @@ public class ImageTargets extends Activity {
 
 		menu.add("Toggle flash");
 		menu.add("Autofocus");
-		menu.add("Nothing");
 		SubMenu focusModes = menu.addSubMenu("Focus Modes");
 		focusModes.add("Auto Focus").setCheckable(true);
 		focusModes.add("Fixed Focus").setCheckable(true);

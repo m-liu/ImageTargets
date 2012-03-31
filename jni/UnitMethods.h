@@ -62,6 +62,7 @@ extern int soundflag_arrow;
 extern int soundflag_snowball;
 extern int soundflag_cannon;
 extern int soundflag_level;
+extern int soundflag_coin;
 
 
 double getCurrentTime();

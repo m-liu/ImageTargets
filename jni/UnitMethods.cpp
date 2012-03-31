@@ -404,7 +404,7 @@ int checkMissileContact(int missileNumber)
 			
 			//if hit damages enemy enough, enemy is killed and and kill count is increased
 			if (enemy[missile[missileNumber].currentTarget].HP <= 0.0f) {
-			
+				soundflag_coin = 1;
 				int temp = missile[missileNumber].currentTarget;
 				enemy[missile[missileNumber].currentTarget].X = 10000.0f;
 				enemy[missile[missileNumber].currentTarget].Y = -10000.0f;

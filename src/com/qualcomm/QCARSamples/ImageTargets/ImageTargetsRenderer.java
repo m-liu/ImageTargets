@@ -118,6 +118,10 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
         	showUnpauseButton();
         	EOLState = 1;
         }
+        if (getSoundFlag(4) == 1){
+        	Log.e("TEST", "getSoundFlag(4) == 1");
+        	mSoundManager.playSound(4,1);
+        }
         
         resetSoundFlag();
         
