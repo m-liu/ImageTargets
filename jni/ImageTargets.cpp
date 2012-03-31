@@ -1810,13 +1810,20 @@ bool hasPathCollision (int trackerID, QCAR::Matrix44F trackerMVM, QCAR::Matrix44
     int xTile = xBoard/TILE_SIZE;
     int yTile = -yBoard/TILE_SIZE;
 
-    if (path_ptr[yTile][xTile] == '1'){
-        //LOG("path collision detected for (%d, %d)", xTile, yTile);
-        return true;
+    //boundary check!
+    if (xTile >= 0 && xTile <BOARD_SIZE && yTile >= 0 && yTile <BOARD_SIZE){
+        if (path_ptr[yTile][xTile] == '1'){
+            //LOG("path collision detected for (%d, %d)", xTile, yTile);
+            return true;
+        }
+        else{
+            return false;
+        }
     }
-    else{
-        return false;
+    else {
+        LOG ("hasPathCollision: xTile or yTile out of bounds (%d, %d) and are ignored", xTile, yTile);
     }
+    return true;
 }
 
 

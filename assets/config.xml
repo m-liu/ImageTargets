@@ -1,107 +1,21 @@
 <?xml version="1.0"?>
 <QCARConfig xsi:noNamespaceSchemaLocation="qcar_config.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Tracking>
-        <Marker type="id-frame" id="0" size="50 50" name="mymarker1" />
-<Marker type="id-frame" id="1" size="50 50" name="mymarker2" />
-<Marker type="id-frame" id="2" size="50 50" name="mymarker3" />
-<Marker type="id-frame" id="3" size="50 50" name="mymarker4" />
-<Marker type="id-frame" id="4" size="50 50" name="mymarker5" />
-<Marker type="id-frame" id="5" size="50 50" name="mymarker6" />
-<Marker type="id-frame" id="6" size="50 50" name="mymarker7" />
-<Marker type="id-frame" id="7" size="50 50" name="mymarker8" />
-<Marker type="id-frame" id="8" size="50 50" name="mymarker9" />
-<Marker type="id-frame" id="9" size="50 50" name="mymarker10" />
-<Marker type="id-frame" id="10" size="50 50" name="mymarker11" />
-<Marker type="id-frame" id="11" size="50 50" name="mymarker12" />
-<Marker type="id-frame" id="12" size="50 50" name="mymarker13" />
-<Marker type="id-frame" id="13" size="50 50" name="mymarker14" />
-<Marker type="id-frame" id="14" size="50 50" name="mymarker15" />
-<Marker type="id-frame" id="15" size="50 50" name="mymarker16" />
-<Marker type="id-frame" id="16" size="50 50" name="mymarker17" />
-<Marker type="id-frame" id="17" size="50 50" name="mymarker18" />
-<Marker type="id-frame" id="18" size="50 50" name="mymarker19" />
-<Marker type="id-frame" id="19" size="50 50" name="mymarker20" />
-<Marker type="id-frame" id="20" size="50 50" name="mymarker21" />
-<Marker type="id-frame" id="21" size="50 50" name="mymarker22" />
-<Marker type="id-frame" id="22" size="50 50" name="mymarker23" />
-<Marker type="id-frame" id="23" size="50 50" name="mymarker24" />
-<Marker type="id-frame" id="24" size="50 50" name="mymarker25" />
-<Marker type="id-frame" id="25" size="50 50" name="mymarker26" />
-<Marker type="id-frame" id="26" size="50 50" name="mymarker27" />
-<Marker type="id-frame" id="27" size="50 50" name="mymarker28" />
-<Marker type="id-frame" id="28" size="50 50" name="mymarker29" />
-<Marker type="id-frame" id="29" size="50 50" name="mymarker30" />
-<Marker type="id-frame" id="30" size="50 50" name="mymarker31" />
-<Marker type="id-frame" id="31" size="50 50" name="mymarker32" />
-<Marker type="id-frame" id="32" size="50 50" name="mymarker33" />
-<Marker type="id-frame" id="33" size="50 50" name="mymarker34" />
-<Marker type="id-frame" id="34" size="50 50" name="mymarker35" />
-<Marker type="id-frame" id="35" size="50 50" name="mymarker36" />
-<Marker type="id-frame" id="36" size="50 50" name="mymarker37" />
-<Marker type="id-frame" id="37" size="50 50" name="mymarker38" />
-<Marker type="id-frame" id="38" size="50 50" name="mymarker39" />
-<Marker type="id-frame" id="39" size="50 50" name="mymarker40" />
-<Marker type="id-frame" id="40" size="50 50" name="mymarker41" />
-<Marker type="id-frame" id="41" size="50 50" name="mymarker42" />
-<Marker type="id-frame" id="42" size="50 50" name="mymarker43" />
-<Marker type="id-frame" id="43" size="50 50" name="mymarker44" />
-<Marker type="id-frame" id="44" size="50 50" name="mymarker45" />
-<Marker type="id-frame" id="45" size="50 50" name="mymarker46" />
-<Marker type="id-frame" id="46" size="50 50" name="mymarker47" />
-<Marker type="id-frame" id="47" size="50 50" name="mymarker48" />
-<Marker type="id-frame" id="48" size="50 50" name="mymarker49" />
-<Marker type="id-frame" id="49" size="50 50" name="mymarker50" />
-<Marker type="id-frame" id="50" size="50 50" name="mymarker51" />
-<Marker type="id-frame" id="51" size="50 50" name="mymarker52" />
-<Marker type="id-frame" id="52" size="50 50" name="mymarker53" />
-<Marker type="id-frame" id="53" size="50 50" name="mymarker54" />
-<Marker type="id-frame" id="54" size="50 50" name="mymarker55" />
-<Marker type="id-frame" id="55" size="50 50" name="mymarker56" />
-<Marker type="id-frame" id="56" size="50 50" name="mymarker57" />
-<Marker type="id-frame" id="57" size="50 50" name="mymarker58" />
-<Marker type="id-frame" id="58" size="50 50" name="mymarker59" />
-<Marker type="id-frame" id="59" size="50 50" name="mymarker60" />
-<Marker type="id-frame" id="60" size="50 50" name="mymarker61" />
-<Marker type="id-frame" id="61" size="50 50" name="mymarker62" />
-<Marker type="id-frame" id="62" size="50 50" name="mymarker63" />
-<Marker type="id-frame" id="63" size="50 50" name="mymarker64" />
-<Marker type="id-frame" id="64" size="50 50" name="mymarker65" />
-<Marker type="id-frame" id="65" size="50 50" name="mymarker66" />
-<Marker type="id-frame" id="66" size="50 50" name="mymarker67" />
-<Marker type="id-frame" id="67" size="50 50" name="mymarker68" />
-<Marker type="id-frame" id="68" size="50 50" name="mymarker69" />
-<Marker type="id-frame" id="69" size="50 50" name="mymarker70" />
-<Marker type="id-frame" id="70" size="50 50" name="mymarker71" />
-<Marker type="id-frame" id="71" size="50 50" name="mymarker72" />
-<Marker type="id-frame" id="72" size="50 50" name="mymarker73" />
-<Marker type="id-frame" id="73" size="50 50" name="mymarker74" />
-<Marker type="id-frame" id="74" size="50 50" name="mymarker75" />
-<Marker type="id-frame" id="75" size="50 50" name="mymarker76" />
-<Marker type="id-frame" id="76" size="50 50" name="mymarker77" />
-<Marker type="id-frame" id="77" size="50 50" name="mymarker78" />
-<Marker type="id-frame" id="78" size="50 50" name="mymarker79" />
-<Marker type="id-frame" id="79" size="50 50" name="mymarker80" />
-<Marker type="id-frame" id="80" size="50 50" name="mymarker81" />
-<Marker type="id-frame" id="81" size="50 50" name="mymarker82" />
-<Marker type="id-frame" id="82" size="50 50" name="mymarker83" />
-<Marker type="id-frame" id="83" size="50 50" name="mymarker84" />
-<Marker type="id-frame" id="84" size="50 50" name="mymarker85" />
-<Marker type="id-frame" id="85" size="50 50" name="mymarker86" />
-<Marker type="id-frame" id="86" size="50 50" name="mymarker87" />
-<Marker type="id-frame" id="87" size="50 50" name="mymarker88" />
-<Marker type="id-frame" id="88" size="50 50" name="mymarker89" />
-<Marker type="id-frame" id="89" size="50 50" name="mymarker90" />
-<Marker type="id-frame" id="90" size="50 50" name="mymarker91" />
-<Marker type="id-frame" id="91" size="50 50" name="mymarker92" />
-<Marker type="id-frame" id="92" size="50 50" name="mymarker93" />
-<Marker type="id-frame" id="93" size="50 50" name="mymarker94" />
-<Marker type="id-frame" id="94" size="50 50" name="mymarker95" />
-<Marker type="id-frame" id="95" size="50 50" name="mymarker96" />
-<Marker type="id-frame" id="96" size="50 50" name="mymarker97" />
-<Marker type="id-frame" id="97" size="50 50" name="mymarker98" />
-<Marker type="id-frame" id="98" size="50 50" name="mymarker99" />
-<Marker type="id-frame" id="99" size="50 50" name="mymarker100" />
-<Marker type="id-frame" id="100" size="50 50" name="mymarker101" />
+	<Marker type="id-frame" id="0" size="50 50" name="mymarker1" />
+	<Marker type="id-frame" id="1" size="50 50" name="mymarker2" />
+	<Marker type="id-frame" id="2" size="50 50" name="mymarker3" />
+	<Marker type="id-frame" id="3" size="50 50" name="mymarker4" />
+	<Marker type="id-frame" id="4" size="50 50" name="mymarker5" />
+	<Marker type="id-frame" id="5" size="50 50" name="mymarker6" />
+	<Marker type="id-frame" id="6" size="50 50" name="mymarker7" />
+	<Marker type="id-frame" id="7" size="50 50" name="mymarker8" />
+	<Marker type="id-frame" id="8" size="50 50" name="mymarker9" />
+	<Marker type="id-frame" id="9" size="50 50" name="mymarker10" />
+	<Marker type="id-frame" id="10" size="50 50" name="mymarker11" />
+	<Marker type="id-frame" id="11" size="50 50" name="mymarker12" />
+	<Marker type="id-frame" id="12" size="50 50" name="mymarker13" />
+	<Marker type="id-frame" id="13" size="50 50" name="mymarker14" />
+
 						
   </Tracking>
 </QCARConfig>
