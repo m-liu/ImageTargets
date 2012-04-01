@@ -240,25 +240,25 @@ void initUnitDB () {
 	strcpy(tower_type[0].name, "Castle");
 	initTower (0, 0, 0, 50.0f, 60.0f, 0.0f);
 	strcpy(tower_type[1].name, "Igloo");
-	initTower (1, 3, 1, 10.0f, 50.0f, 0.0f);
+	initTower (1, 3, 1, 25.0f, 50.0f, 0.0f);
 	strcpy(tower_type[2].name, "Cannon");
 	initTower (2, 9, 2, 10.0f, 50.0f, 90.0f);
 	strcpy(tower_type[3].name, "Castle2");
 	initTower (3, 21, 3, 50.0f, 65.0f, 0.0f);
 	strcpy(tower_type[4].name, "Igloo2");
-	initTower (4, 24, 4, 10.0f, 55.0f, 0.0f);
+	initTower (4, 24, 4, 25.0f, 55.0f, 0.0f);
 	strcpy(tower_type[5].name, "Cannon2");
 	initTower (5, 27, 5, 10.0f, 55.0f, 90.0f);
 	strcpy(tower_type[6].name, "Castle3");
 	initTower (6, 22, 6, 50.0f, 70.0f, 0.0f);
 	strcpy(tower_type[7].name, "Igloo3");
-	initTower (7, 25, 7, 10.0f, 60.0f, 0.0f);
+	initTower (7, 25, 7, 25.0f, 60.0f, 0.0f);
 	strcpy(tower_type[8].name, "Cannon3");
 	initTower (8, 28, 8, 10.0f, 60.0f, 90.0f);
 	strcpy(tower_type[9].name, "Castle4");
 	initTower (9, 23, 9, 50.0f, 75.0f, 0.0f);
 	strcpy(tower_type[10].name, "Igloo4");
-	initTower (10, 26, 10, 10.0f, 65.0f, 0.0f);
+	initTower (10, 26, 10, 25.0f, 65.0f, 0.0f);
 	strcpy(tower_type[11].name, "Cannon4");
 	initTower (11, 29, 11, 10.0f, 65.0f, 90.0f);
 	
@@ -493,12 +493,12 @@ void animateEnemy(int enemyNumber)
 		{
 			enemy[enemyNumber].deploydelay = 0;
 			if (stageType != 3) {
-				enemy[enemyNumber].X = 350.0f; //initial positions
-				enemy[enemyNumber].Y = -350.0f;
+				enemy[enemyNumber].X = 7*TILE_SIZE; //initial positions
+				enemy[enemyNumber].Y = -7*TILE_SIZE;
 			}
 			else if (stageType == 3) {
-				enemy[enemyNumber].X = 150.0f; //initial positions
-				enemy[enemyNumber].Y = -200.0f;
+				enemy[enemyNumber].X = 3*TILE_SIZE; //initial positions
+				enemy[enemyNumber].Y = -4*TILE_SIZE;
 			}
 			enemy[enemyNumber].direction = 90.0f;
 			enemy[enemyNumber].HP = enemy[enemyNumber].max_HP;

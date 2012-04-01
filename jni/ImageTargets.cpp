@@ -878,7 +878,7 @@ Java_com_qualcomm_QCARSamples_ImageTargets_ImageTargetsRenderer_renderFrame(JNIE
 #ifdef USE_OPENGL_ES_1_1
 #else
                     QCAR::Matrix44F missileProjection;
-                    if (missile[mID].currentTarget != -1) {
+                    if (missile[mID].currentTarget != -1 &&  missile[mID].updatedShotTime == true) {
                     	DrawMissile(missileMatrix, missileProjection, missile[mID].texture); 
                     }
 #endif
@@ -1560,13 +1560,13 @@ DrawPath (QCAR::Matrix44F trackerMVM, QCAR::Matrix44F pathProjection, int x_offs
                 tmpMVM = trackerMVM;
                 tmpProjection = pathProjection;
                 //calculate tile position
-                int tileX = i * MARKER_SIZE;
-                int tileY = -j * MARKER_SIZE;
+                int tileX = i * TILE_SIZE;
+                int tileY = -j * TILE_SIZE;
                 //render the tile at that position
                 SampleUtils::translatePoseMatrix(tileX + x_offset, tileY + y_offset, 0, &tmpMVM.data[0]);
                 SampleUtils::rotatePoseMatrix(90, 1.0f, 0.0f, 0.0f, &tmpMVM.data[0]);
                 SampleUtils::rotatePoseMatrix(180, 0.0f, 0.0f, 1.0f, &tmpMVM.data[0]);
-                SampleUtils::scalePoseMatrix(MARKER_SIZE,MARKER_SIZE,MARKER_SIZE, &tmpMVM.data[0]);
+                SampleUtils::scalePoseMatrix(TILE_SIZE, TILE_SIZE, TILE_SIZE, &tmpMVM.data[0]);
 
                 thisTexture = textures[32];
 
@@ -1606,18 +1606,18 @@ void getMarkerOffset(int trackerID, int &x_offset, int &y_offset){
     }
     else if (trackerID ==1) //top right marker
     {
-        x_offset = (-1) * (MARKER_SIZE * (BOARD_SIZE-1));
+        x_offset = (-1) * (TILE_SIZE * (BOARD_SIZE-1));
         y_offset = 0;
     }
     else if (trackerID==2) //bottom left marker
     {
         x_offset = 0;
-        y_offset = (MARKER_SIZE * (BOARD_SIZE-1));
+        y_offset = (TILE_SIZE * (BOARD_SIZE-1));
     }
     else if (trackerID==3) //bottom right marker
     {
-        x_offset = (-1) * (MARKER_SIZE * (BOARD_SIZE-1));
-        y_offset = (MARKER_SIZE * (BOARD_SIZE-1));
+        x_offset = (-1) * (TILE_SIZE * (BOARD_SIZE-1));
+        y_offset = (TILE_SIZE * (BOARD_SIZE-1));
     }
     else if (trackerID > 3 && trackerID < MAX_NUM_MARKERS) //using towers as tracker
     {   

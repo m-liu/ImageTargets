@@ -40,7 +40,9 @@
 #define MAX_NUM_MARKERS (MAX_NUM_TOWERS+4) //# towers + 4 corners
 
 
-#define TILE_SIZE 50.0f //size of each 8x8 tile
+//#define TILE_SIZE 50.0f //size of each 8x8 tile
+//CALIBRATED DISTNACE BETWEEN CORNER MARKERS: 442 TO 444
+#define TILE_SIZE 63.14f //distnace between each 8x8 tile
 
 /*
 #define BOARD_SIZE_UNITS 350 //distance between corner markers
