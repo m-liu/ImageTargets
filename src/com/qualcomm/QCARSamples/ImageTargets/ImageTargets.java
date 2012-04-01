@@ -953,7 +953,11 @@ public class ImageTargets extends Activity {
                         	mRenderer.hideUnpauseButton();
                         	mGUIManager.nativeUnpause();
                         	
-                        	if (mRenderer.EOLState == 1) {
+                        	if (mRenderer.EOLState == 2) {
+                        		updateApplicationStatus(APPSTATUS_GAMEOVER);
+                        	}
+                        	
+                        	else if (mRenderer.EOLState == 1) {
                         		mRenderer.EOLState = 0;
                         		mGUIManager.newContinue("Continue Game");
                              	mGUIManager.newLevel(String.valueOf(mRenderer.currentLevel+1));

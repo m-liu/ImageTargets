@@ -111,21 +111,28 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
         	Log.e("TEST", "getSoundFlag(3) == 1");
         	mSoundManager.playSound(3,1);
         	currentLevel =  getCurrentLevel();
-    		
-        	if (currentLevel != 10) {
+        	EOLState = 1;
+        	
+        	if (currentLevel == 11) {
+        		EOLState = 2;
+        		mGUIManager.newLevel("GAME OVER! Press Next Level to continue!");
+        		mGUIManager.newContinue("End Game");
+            	}
+        	
+        	else if (currentLevel != 10) {
         	
     		mGUIManager.newLevel("End of Level "+currentLevel + "! Press Next Level to continue!");
     		mGUIManager.newContinue("Next Level");
         	}
         	else {
-        		
+        		EOLState = 2;
         		mGUIManager.newLevel("End of Level "+currentLevel + " and you beat the game! Press End Game to continue!");
         		mGUIManager.newContinue("End Game");	
         	}
         		
     		hidePauseButton();
         	showUnpauseButton();
-        	EOLState = 1;
+
         }
         if (getSoundFlag(4) == 1){ 
         	Log.e("TEST", "getSoundFlag(4) == 1");

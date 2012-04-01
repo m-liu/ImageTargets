@@ -606,8 +606,12 @@ void gameOver ()
 	for (int enemyNumber2 = 0; enemyNumber2 < MAX_NUM_ENEMIES; enemyNumber2++) {
 		removeEnemy(enemyNumber2);
 	}
-
-	updateApplicationStatusGameOver();
+	currentLevel = 11;
+	soundflag_level = 1;
+	char emessage[80];
+	sprintf (emessage, "GAME OVER! Press End Game to continue!");
+	displayMessage(emessage);
+	//updateApplicationStatusGameOver();
 }
 
 void moveEnemy (int enemyNumber, float timeDiff)

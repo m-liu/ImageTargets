@@ -205,7 +205,7 @@ public class GUIManager extends Activity{
                         
                     case DISPLAY_INFO_TOAST:
                         String text = (String) msg.obj;
-                        int duration = Toast.LENGTH_SHORT;
+                        int duration = Toast.LENGTH_LONG;
                         Toast toast = Toast.makeText(applicationContext, text, duration);
                         toast.show();
                         break;

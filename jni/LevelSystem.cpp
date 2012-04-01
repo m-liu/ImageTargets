@@ -23,8 +23,8 @@ updateApplicationStatusEOL(char* level)
 void
 updateApplicationStatusGameOver()
 {
-    jmethodID method = javaEnv2->GetMethodID(javaClass2, "updateGameOver", "()V");
-    javaEnv2->CallVoidMethod(javaObj2, method);
+    //jmethodID method = javaEnv2->GetMethodID(javaClass2, "updateGameOver", "()V");
+    //javaEnv2->CallVoidMethod(javaObj2, method);
 }
 
 void
