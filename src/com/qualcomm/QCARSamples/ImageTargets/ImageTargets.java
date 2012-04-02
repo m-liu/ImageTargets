@@ -40,6 +40,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import android.media.AudioManager;
 
@@ -51,9 +52,9 @@ import com.qualcomm.QCARSamples.ImageTargets.GUIManager;
 public class ImageTargets extends Activity {
 	
 	private SoundManager mSoundManager;
-	/*
-	AudioManager audioManager;
 	
+	AudioManager audioManager;
+	/*
 	MediaPlayer arrow_sound;
 	MediaPlayer cannon_sound;
 	MediaPlayer snowball_sound;
@@ -73,6 +74,7 @@ public class ImageTargets extends Activity {
 	private static final int APPSTATUS_INIT_MENU = 7;
 	private static final int APPSTATUS_INIT_EOL = 8;
 	private static final int APPSTATUS_GAMEOVER = 9;
+	private static final int APPSTATUS_INIT_MENU_BACK = 10;
 
 	private static final int DIALOG_WIN = 97;
     private static final int DIALOG_GAMEOVER = 98;
@@ -517,7 +519,7 @@ public class ImageTargets extends Activity {
 				getAssets()));//8
 		mTextures.add(Texture.loadTextureFromApk("cannon.jpg",
 				getAssets()));//9
-		mTextures.add(Texture.loadTextureFromApk("hp_bar_10.png",
+		mTextures.add(Texture.loadTextureFromApk("cannonball.png",
 				getAssets()));//10
 		mTextures.add(Texture.loadTextureFromApk("hp_bar_full.png",
 				getAssets()));//11
@@ -675,7 +677,7 @@ public class ImageTargets extends Activity {
 	@Override
 	public void onBackPressed() {
 		if (mAppStatus == APPSTATUS_INIT_MENU)
-			updateApplicationStatus(APPSTATUS_INIT_APP);
+			updateApplicationStatus(APPSTATUS_INIT_MENU_BACK);
 	}
 	
 	/**
@@ -708,12 +710,19 @@ public class ImageTargets extends Activity {
 			// Initialize application elements that do not rely on QCAR
 			// initialization
 			initApplication();
+			initApplicationAR();
 		    initNativeCallback();
 			//Show main menu
 	        updateApplicationStatus(APPSTATUS_INIT_MENU);
 			
 			break;
+		
+		case APPSTATUS_INIT_MENU_BACK:
 			
+			updateApplicationStatus(APPSTATUS_INIT_MENU);
+			
+			break;
+		
 		case APPSTATUS_INIT_MENU:
 			
 			setContentView(R.layout.main);
@@ -759,7 +768,7 @@ public class ImageTargets extends Activity {
 	        				}
 	        				
 	        				if (lives1_button.isChecked()) {
-	        					lives = 200;
+	        					lives = 20;
 	        				}
 	        				else if (lives2_button.isChecked()) {
 	        					lives = 10;
@@ -789,16 +798,8 @@ public class ImageTargets extends Activity {
 	        SettingsButton.setOnClickListener(new OnClickListener() {
 	        	
 	        	public void onClick(View v) {
-	        		/*
-	        		setContentView(R.layout.settings);
-	        		/*audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-		            int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-		            int curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-	        		SeekBar volControl = (SeekBar)findViewById(R.id.volbar);
 	        		
-	        		volControl.setMax(maxVolume);
-	        		volControl.setProgress(curVolume);
-	        		volControl.setOnSeenBarChangeListener(this);
+	        		setContentView(R.layout.settings);
 	        		
 	        		audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 	        	    int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -807,6 +808,9 @@ public class ImageTargets extends Activity {
 	        	    volControl.setMax(maxVolume);
 	        	    volControl.setProgress(curVolume);
 	        	    volControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+	        	    	
+	        	    	
+	        	    	
 	        	        @Override
 	        	        public void onStopTrackingTouch(SeekBar arg0) {
 	        	        }
@@ -817,13 +821,44 @@ public class ImageTargets extends Activity {
 
 	        	        @Override
 	        	        public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+	        	        	
 	        	            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, arg1, 0);
+	        	            
+	        	            if (mRenderer.playSoundEffects){
+	        	            	mRenderer.mSoundManager.playSound(0,1);
+	        	            }
 	        	        }
 	        	    });
+	        	    
+	        	    
+	        	    final ToggleButton SoundEffectToggle = (ToggleButton) findViewById(R.id.toggleButton1);
 	        		
-	        		*/
+	        	 
+	        		SoundEffectToggle.setOnClickListener(new OnClickListener() {
+	        	 
+	        			@Override
+	        			public void onClick(View v) {
+	        	 
+	        				if(SoundEffectToggle.isChecked()) {
+	        					Log.e("TOGGLE", "TOGGLE IS ON");
+	        					mRenderer.playSoundEffects = true;
+	        					//Log.e("TOGGLE", "mRenderer.playSoundEffects = %i");
+	        		        }
+	        				else {
+	        					Log.e("TOGGLE", "TOGGLE IS OFF");
+	        					mRenderer.playSoundEffects = false;
+	        				}
+	        				
+	        			}
+	        	 
+	        		});
+	        		
 	        	}
 	        });
+	        
+	        
+	        
+	        
 	        
 	      //Credits Button
 	        Button CreditsButton = (Button)findViewById(R.id.credits_button);
@@ -855,7 +890,7 @@ public class ImageTargets extends Activity {
 			// Initialize Augmented Reality-specific application elements
 			// that may rely on the fact that the QCAR SDK has been
 			// already initialized
-			initApplicationAR();
+			//initApplicationAR();
 
 			// Proceed to next application initialization status
 			updateApplicationStatus(APPSTATUS_INIT_TRACKER);

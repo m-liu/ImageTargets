@@ -28,7 +28,7 @@ import com.qualcomm.QCARSamples.ImageTargets.GUIManager;
 /** The renderer class for the ImageTargets sample. */
 public class ImageTargetsRenderer implements GLSurfaceView.Renderer
 {
-	private SoundManager mSoundManager;
+	public SoundManager mSoundManager;
 	
     public boolean mIsActive = false;
     private GUIManager mGUIManager;
@@ -42,6 +42,7 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
     
     public int EOLState = 0;
     public int currentLevel;
+    public boolean playSoundEffects = true;
     
     /** Native function to update the renderer. */
     public native void updateRendering(int width, int height);
@@ -94,28 +95,38 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
 
         // Call our native function to render content
         //renderFrame();
+        if (playSoundEffects) {
+        	Log.e("TEST", "play");
+        }
+        else {
+        	Log.e("TEST"," not play");
+        	
+        }
         
-        if (getSoundFlag(0) == 1){
+        
+        if (getSoundFlag(0) == 1 && playSoundEffects){
         	Log.e("TEST", "getSoundFlag(0) == 1");
         	mSoundManager.playSound(0,1);
         }
-        if (getSoundFlag(1) == 1){
+        if (getSoundFlag(1) == 1 && playSoundEffects){
         	Log.e("TEST", "getSoundFlag(1) == 1");
         	mSoundManager.playSound(1,1);
         }
-        if (getSoundFlag(2) == 1){
+        if (getSoundFlag(2) == 1 && playSoundEffects){
         	Log.e("TEST", "getSoundFlag(2) == 1");
         	mSoundManager.playSound(2,1);
         }
         if (getSoundFlag(3) == 1){
         	Log.e("TEST", "getSoundFlag(3) == 1");
-        	mSoundManager.playSound(3,1);
+        	if (playSoundEffects){
+        		mSoundManager.playSound(3,1);
+        	}
         	currentLevel =  getCurrentLevel();
         	EOLState = 1;
         	
         	if (currentLevel == 11) {
         		EOLState = 2;
-        		mGUIManager.newLevel("GAME OVER! Press Next Level to continue!");
+        		mGUIManager.newLevel("GAME OVER! Press End Game to continue!");
         		mGUIManager.newContinue("End Game");
             	}
         	
@@ -134,7 +145,7 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
         	showUnpauseButton();
 
         }
-        if (getSoundFlag(4) == 1){ 
+        if (getSoundFlag(4) == 1 && playSoundEffects){ 
         	Log.e("TEST", "getSoundFlag(4) == 1");
         	mSoundManager.playSound(4,1);
         }

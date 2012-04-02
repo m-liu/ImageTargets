@@ -75,7 +75,7 @@ int currentLevel = 0;
 int currentLives = 20;
 
 int currentScore = 0;
-int currentZen = 2000;
+int currentZen = 20;
 
 float currentDiff = 1;
 int stageType = 1;
@@ -673,7 +673,14 @@ void renderUpgradeTower () {
 void renderDeleteTower () {
 	if (delMarker != -1) {
 		//initialize the tower
+			
+		currentZen = floor(currentZen + missile[delMarker].cost/2);
+		LOG("nativeBuy: before deduct zen");
+		displayZen(currentZen);
+		
 		deleteTower(selMarkerID);
+		
+		
 		
 		showStoreButton();
 		hideUpgradeButton();

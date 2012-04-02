@@ -32,7 +32,7 @@ public class SoundManager{
     	mSoundIds.add(mSoundPool.load(context, R.raw.snowball, 1));
     	mSoundIds.add(mSoundPool.load(context, R.raw.cannon, 1));
     	mSoundIds.add(mSoundPool.load(context, R.raw.harp, 1));
-    	mSoundIds.add(mSoundPool.load(context, R.raw.coin, 1));
+    	mSoundIds.add(mSoundPool.load(context, R.raw.coin1, 1));
     }
     
     
