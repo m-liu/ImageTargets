@@ -768,10 +768,10 @@ public class ImageTargets extends Activity {
 	        				}
 	        				
 	        				if (lives1_button.isChecked()) {
-	        					lives = 20;
+	        					lives = 200;
 	        				}
 	        				else if (lives2_button.isChecked()) {
-	        					lives = 10;
+	        					lives = 20;
 	        				}
 	        				else if (lives3_button.isChecked()) {
 	        					lives = 5;

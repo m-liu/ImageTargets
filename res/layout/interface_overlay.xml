@@ -88,7 +88,7 @@
     
     <Button android:id="@+id/pause_button"
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="100px"
+        android:layout_width="120px"
         android:layout_height="70px"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
@@ -98,7 +98,7 @@
     
     <Button android:id="@+id/unpause_button"
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="100px"
+        android:layout_width="120px"
         android:layout_height="70px"
         android:layout_alignParentRight="true"
         android:layout_above="@id/pause_button"
@@ -108,7 +108,7 @@
         
     <Button android:id="@+id/start_button"
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="100px"
+        android:layout_width="120px"
         android:layout_height="70px"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
@@ -118,7 +118,7 @@
        
     <Button android:id="@+id/store_button"
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="100px"
+        android:layout_width="120px"
         android:layout_height="70px"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
@@ -129,7 +129,7 @@
     
     <Button android:id="@+id/upgrade_button"
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="100px"
+        android:layout_width="120px"
         android:layout_height="70px"
         android:layout_toRightOf="@id/store_button"
         android:layout_alignParentBottom="true"
@@ -140,7 +140,7 @@
     
         <Button android:id="@+id/delete_button"
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="100px"
+        android:layout_width="120px"
         android:layout_height="70px"
         android:layout_toRightOf="@id/upgrade_button"
         android:layout_alignParentBottom="true"

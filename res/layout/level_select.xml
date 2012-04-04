@@ -77,8 +77,8 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 		  android:orientation="horizontal"
 		  android:layout_width="wrap_content"
 		  >
-	    <RadioButton android:text="20" android:id="@+id/radioButton_lives1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" android:paddingRight="30dip"></RadioButton>
-	    <RadioButton android:text="10" android:id="@+id/radioButton_lives2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingRight="30dip"></RadioButton>
+	    <RadioButton android:text="200" android:id="@+id/radioButton_lives1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" android:paddingRight="30dip"></RadioButton>
+	    <RadioButton android:text="20" android:id="@+id/radioButton_lives2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingRight="30dip"></RadioButton>
 	    <RadioButton android:text="5" android:id="@+id/radioButton_lives3" android:layout_width="wrap_content" android:layout_height="wrap_content"></RadioButton>
     </RadioGroup>
     
