@@ -69,7 +69,8 @@ endif
 #       from string constant to ‘char*’
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../media
-LOCAL_CFLAGS := -Wall -Wno-write-strings $(OPENGLES_DEF)
+LOCAL_CFLAGS := -O2 -Wall -Wno-write-strings $(OPENGLES_DEF)
+NDK_DEBUG=0
 
 # The list of additional linker flags to be used when building your
 # module. This is useful to pass the name of specific system libraries

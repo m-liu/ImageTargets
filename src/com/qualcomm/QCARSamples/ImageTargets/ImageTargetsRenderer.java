@@ -95,29 +95,29 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
 
         // Call our native function to render content
         //renderFrame();
-        if (playSoundEffects) {
-        	Log.e("TEST", "play");
+        /*if (playSoundEffects) {
+        	//log.e("TEST", "play");
         }
         else {
-        	Log.e("TEST"," not play");
+        	//log.e("TEST"," not play");
         	
-        }
+        }*/
         
         
         if (getSoundFlag(0) == 1 && playSoundEffects){
-        	Log.e("TEST", "getSoundFlag(0) == 1");
+        	//log.e("TEST", "getSoundFlag(0) == 1");
         	mSoundManager.playSound(0,1);
         }
         if (getSoundFlag(1) == 1 && playSoundEffects){
-        	Log.e("TEST", "getSoundFlag(1) == 1");
+        	//log.e("TEST", "getSoundFlag(1) == 1");
         	mSoundManager.playSound(1,1);
         }
         if (getSoundFlag(2) == 1 && playSoundEffects){
-        	Log.e("TEST", "getSoundFlag(2) == 1");
+        	//log.e("TEST", "getSoundFlag(2) == 1");
         	mSoundManager.playSound(2,1);
         }
         if (getSoundFlag(3) == 1){
-        	Log.e("TEST", "getSoundFlag(3) == 1");
+        	//log.e("TEST", "getSoundFlag(3) == 1");
         	if (playSoundEffects){
         		mSoundManager.playSound(3,1);
         	}
@@ -146,7 +146,7 @@ public class ImageTargetsRenderer implements GLSurfaceView.Renderer
 
         }
         if (getSoundFlag(4) == 1 && playSoundEffects){ 
-        	Log.e("TEST", "getSoundFlag(4) == 1");
+        	//log.e("TEST", "getSoundFlag(4) == 1");
         	mSoundManager.playSound(4,1);
         }
         
